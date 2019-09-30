@@ -1,0 +1,8 @@
+<resources>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey"></string>
+    <string name="app_name">BIPPIIS</string>
+    <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
+    <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
+    <string name="fb_app_id">2430663280550309</string>
+    <string name="ak_client_token">ee0dd37f8da6ecdd498746bfcaad78c7</string>
+</resources>
