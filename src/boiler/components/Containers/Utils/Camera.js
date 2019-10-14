@@ -52,7 +52,7 @@ class Camera extends Component {
       },
     },
     depth: 0,
-    type: 'front',
+    type: 'back',
     whiteBalance: 'auto',
     ratio: '16:9',
     recordOptions: {
@@ -165,15 +165,14 @@ class Camera extends Component {
         ImagePicker.openCropper({
           path: data.uri,
           width: 300,
-          height: 400
+          height: 300
         }).then(image => {
           console.log(image);
           RNFS.readFile(image.path, 'base64')
           .then(res => { 
             console.log('read ok');
-            Actions.pop();
-            this.props.toggleShowImageModal(true);
             this.props.captureUpdate({prop: 'image', value: "data:image/jpeg;base64,"+res});
+            Actions.viewImage();
             console.log("data:image/jpeg;base64,"+res)
           })
           .catch(err => {

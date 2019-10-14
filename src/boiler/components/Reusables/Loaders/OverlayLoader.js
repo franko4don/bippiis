@@ -62,7 +62,7 @@ class OverlayLoader extends Component{
             animationType="fade"
             style={{backgroundColor: '#000000'+calculateOpacity(50)}}
             >
-            <StatusBar hidden={true}/>
+            <StatusBar translucent={true} backgroundColor={'#000000'+calculateOpacity(50)}/>
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000000'+calculateOpacity(50)}}>
                 <View style={{}}>
                     <Animated.Image

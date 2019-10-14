@@ -9,6 +9,7 @@ import { ProfileSection } from '../../Presenters/Profile/ProfileSection';
 import { LOGOTRANSPARENT, DOCUMENT } from '../../../style/images'
 import {toggleImageViewModal, profileUpdate} from './../../../redux/actions';
 import ImageViewModal from '../Modals/ImageViewModal';
+import _ from 'lodash';
 
 class Profile extends Component {
 
@@ -18,6 +19,50 @@ class Profile extends Component {
           activeTab: 0
         }
         this.data = {}
+    }
+
+    renderDocuments(){
+        let {documents} = this.props.user;
+        let splitDocuments = _.chunk(documents, 5);
+        let data = [];
+        
+        splitDocuments.map((item1, index1) => {
+            
+            let subdata = item1.map((item2, index2) => {
+                return(
+                <TouchableOpacity
+                    key={Math.random().toString(36)}
+                    style={{marginLeft: 15}}
+                    onPress={() => {
+                        this.props.toggleImageViewModal(); 
+                        this.props.profileUpdate({prop: 'activeImage', value: {uri: item2.document}})}
+                    }
+                >
+                    <Image
+                        source={{uri: item2.document}}
+                        style={{width: 200, height: 250}}
+                        
+                    />
+                </TouchableOpacity>);
+            });
+        
+            data.push(
+            <View key={index1} style={{flexDirection: 'row', justifyContent: item1.length == 5 ? 'space-between' : 'flex-start'}}>
+                {subdata}
+            </View>
+            )
+        });
+          
+        return data;
+    }
+
+    prepareQualifications(){
+        const {user} = this.props;
+        let value = "";
+        user.qualifications.map((item, index) => {
+            value += `${index + 1}. ${item.qualification}\n`
+        });
+        return value.trim('\n');
     }
 
     profileHeading = () => {
@@ -72,7 +117,7 @@ class Profile extends Component {
 
 
     render() {
-
+        const {user} = this.props;
         return (
             
             <Container contentContainerStyle={{flexGrow: 1}}  style={{backgroundColor: BACKGROUND}}>
@@ -100,73 +145,73 @@ class Profile extends Component {
                             
                                 <ProfileSection
                                     label={'BIPPIIS Number:'}
-                                    data={'BNS-4893715'}
+                                    data={user.civil_servants.bippiis_number}
                                 />
 
                                 <ProfileSection
                                     label={'Surname:'}
-                                    data={'Obeagu'}
+                                    data={user.civil_servants.surname}
                                 />
                                 <ProfileSection
                                     label={'First Name:'}
-                                    data={'Divine'}
+                                    data={user.civil_servants.first_name}
                                 />
                                 <ProfileSection
                                     label={'Other Name(s):'}
-                                    data={'Divine'}
+                                    data={user.civil_servants.other_names}
                                 />
                                 <ProfileSection
                                     label={'Date Of Birth:'}
-                                    data={'27/07/1989'}
+                                    data={user.civil_servants.dob}
                                 />
                                 <ProfileSection
                                     label={'Place Of Birth:'}
-                                    data={'Enugu'}
+                                    data={user.civil_servants.pob}
                                 />
                                 <ProfileSection
                                     label={'Gender:'}
-                                    data={'Male'}
+                                    data={user.civil_servants.gender}
                                 />
                                 <ProfileSection
                                     label={'Marital Status:'}
-                                    data={'Single'}
+                                    data={user.civil_servants.marital_status}
                                 />
                                 <ProfileSection
                                     label={'Blood Group:'}
-                                    data={'A+'}
+                                    data={user.civil_servants.blood_group}
                                 />
                                 <ProfileSection
                                     label={'Nationality:'}
-                                    data={'Nigeria'}
+                                    data={user.civil_servants.nationality}
                                 />
                                 <ProfileSection
                                     label={'State Of Origin:'}
-                                    data={'Enugu'}
+                                    data={user.civil_servants.state_origin}
                                 />
                                 <ProfileSection
                                     label={'Home Town:'}
-                                    data={'Akpugo'}
+                                    data={user.civil_servants.home_town}
                                 />
                                 <ProfileSection
                                     label={'Religion:'}
-                                    data={'Christianity'}
+                                    data={user.civil_servants.religion}
                                 />
                                 <ProfileSection
                                     label={'Email Address:'}
-                                    data={'divike@gmail.com'}
+                                    data={user.civil_servants.email}
                                 />
                                 <ProfileSection
                                     label={'Phone Number:'}
-                                    data={'07032125552'}
+                                    data={user.civil_servants.phone}
                                 />
                                 <ProfileSection
                                     label={'Residential Address:'}
-                                    data={'Lagos Nigeria'}
+                                    data={user.civil_servants.residential_address}
                                 />
 
                                 <ProfileSection
                                     label={'Permanent Home Address:'}
-                                    data={'Lagos Nigeria'}
+                                    data={user.civil_servants.permanent_address}
                                 />
                                 </ImageBackground>
                             </ScrollView>
@@ -186,11 +231,11 @@ class Profile extends Component {
                                 >
                                 <ProfileSection
                                     label={'Highest Qualification:'}
-                                    data={'B.Sc Statistics/Computer Science'}
+                                    data={user.civil_servants.highest_qualification}
                                 />
                                 <ProfileSection
                                     label={'Other Qualifications:'}
-                                    data={'1. WAEC\n2. FSLC'}
+                                    data={this.prepareQualifications()}
                                 />
                                
                                 </ImageBackground>
@@ -208,15 +253,15 @@ class Profile extends Component {
                                 >
                                 <ProfileSection
                                     label={'Ministry, Department Or Agency (MDA):'}
-                                    data={'Benue State Local Government Pensions Board'}
+                                    data={user.civil_servants.ministry}
                                 />
                                 <ProfileSection
                                     label={'Local Government Posted To:'}
-                                    data={'Ado'}
+                                    data={user.civil_servants.lga_posted_to}
                                 />
                                 <ProfileSection
                                     label={'Work Station:'}
-                                    data={'Benue State Pensions Board'}
+                                    data={user.civil_servants.work_station}
                                 />
                                 <ProfileSection
                                     label={'Employment Status:'}
@@ -224,27 +269,27 @@ class Profile extends Component {
                                 />
                                 <ProfileSection
                                     label={'Personnel Sub-head Number:'}
-                                    data={'123456'}
+                                    data={user.civil_servants.subhead_number}
                                 />
                                 <ProfileSection
                                     label={'Date Of First Appointment:'}
-                                    data={'03/09/2019'}
+                                    data={user.civil_servants.first_appointment_date}
                                 />
                                 <ProfileSection
                                     label={'Job Title/Responsibility:'}
-                                    data={'Head Of Training'}
+                                    data={user.civil_servants.job_title}
                                 />
                                 <ProfileSection
                                     label={'Date Of Last Promotion:'}
-                                    data={'23/09/2019'}
+                                    data={user.civil_servants.last_promotion_date}
                                 />
                                 <ProfileSection
                                     label={'Grade Level/Step:'}
-                                    data={'Grade 06 / Step 03'}
+                                    data={user.civil_servants.grade_level}
                                 />
                                 <ProfileSection
                                     label={'Rank:'}
-                                    data={'Chief Admin'}
+                                    data={user.civil_servants.rank}
                                 />
                                 </ImageBackground>
                             </ScrollView>
@@ -262,15 +307,15 @@ class Profile extends Component {
                                 >
                                 <ProfileSection
                                     label={'Bank:'}
-                                    data={'Access Bank'}
+                                    data={user.civil_servants.bank}
                                 />
                                 <ProfileSection
                                     label={'Account Number:'}
-                                    data={'1019850999'}
+                                    data={user.civil_servants.account_number}
                                 />
                                 <ProfileSection
                                     label={'Bank Verification Number (BVN):'}
-                                    data={'1234567890'}
+                                    data={user.civil_servants.bvn}
                                 />
                                 
                                 </ImageBackground>
@@ -289,27 +334,27 @@ class Profile extends Component {
                                 >
                                 <ProfileSection
                                     label={`Next Of Kin's Surname: `}
-                                    data={'Okebugwu'}
+                                    data={user.civil_servants.nok_surname}
                                 />
                                 <ProfileSection
                                     label={`Next Of Kin's First Name: `}
-                                    data={'Joy'}
+                                    data={user.civil_servants.nok_firstname}
                                 />
                                 <ProfileSection
                                     label={`Next Of Kin's Midde Name: `}
-                                    data={'Onyedikachi'}
+                                    data={user.civil_servants.nok_middlename}
                                 />
                                 <ProfileSection
                                     label={`Relationship With Next Of Kin: `}
-                                    data={'Wife'}
+                                    data={user.civil_servants.nok_rel}
                                 />
                                 <ProfileSection
                                     label={`Next Of Kin's Phone Number: `}
-                                    data={'NIL'}
+                                    data={user.civil_servants.nok_phone}
                                 />
                                 <ProfileSection
                                     label={`Next Of Kin's Contact Address: `}
-                                    data={'Lagos, Nigeria'}
+                                    data={user.civil_servants.nok_address}
                                 />
                                 
                                 </ImageBackground>
@@ -327,54 +372,7 @@ class Profile extends Component {
                                     style={{width: null, flex: 1}}
                                     resizeMode={'contain'}
                                 >
-                                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                        <TouchableOpacity
-                                            onPress={() => {this.props.toggleImageViewModal(); this.props.profileUpdate({prop: 'activeImage', value: DOCUMENT})}}
-                                        >
-                                            <Image
-                                                source={DOCUMENT}
-                                                style={{width: 200, height: 200}}
-                                                resizeMode={'contain'}
-                                            />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => {this.props.toggleImageViewModal(); this.props.profileUpdate({prop: 'activeImage', value: DOCUMENT})}}
-                                        >
-                                            <Image
-                                                source={DOCUMENT}
-                                                style={{width: 200, height: 200}}
-                                                resizeMode={'contain'}
-                                            />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => {this.props.toggleImageViewModal(); this.props.profileUpdate({prop: 'activeImage', value: DOCUMENT})}}
-                                        >
-                                            <Image
-                                                source={DOCUMENT}
-                                                style={{width: 200, height: 200}}
-                                                resizeMode={'contain'}
-                                            />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => {this.props.toggleImageViewModal(); this.props.profileUpdate({prop: 'activeImage', value: DOCUMENT})}}
-                                        >
-                                            <Image
-                                                source={DOCUMENT}
-                                                style={{width: 200, height: 200}}
-                                                resizeMode={'contain'}
-                                            />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => {this.props.toggleImageViewModal(); this.props.profileUpdate({prop: 'activeImage', value: DOCUMENT})}}
-                                        >
-                                            <Image
-                                                source={DOCUMENT}
-                                                style={{width: 200, height: 200}}
-                                                resizeMode={'contain'}
-                                            />
-                                        </TouchableOpacity>
-                                       
-                                    </View>
+                                    {this.renderDocuments()}
                                 
                                 </ImageBackground>
                             </ScrollView>
@@ -422,7 +420,8 @@ const styles = {
 }
 
 const mapStateToProps = (state) => {
-    return {}
+    const {user} = state.boilerService.auth;
+    return {user}
 };
 
 export default connect(mapStateToProps, {toggleImageViewModal, profileUpdate})(Profile);

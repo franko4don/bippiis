@@ -1,4 +1,4 @@
-import { LOGIN_UPDATE, TOGGLESHOWIMAGEMODAL, TOGGLEIMAGEVIEWMODAL } from './types'
+import { LOGIN_UPDATE, TOGGLESHOWIMAGEMODAL, TOGGLEERRORMODAL, TOGGLEIMAGEVIEWMODAL, TOGGLESUCCESSMODAL } from './types'
 
 
 export const toggleShowImageModal = (payload) => {
@@ -24,4 +24,29 @@ export const toggleImageViewModal = (payload) => {
       
     }
 };
+
+export const toggleSuccessModal = (payload) => {
+    
+    return (dispatch) => {
+
+        dispatch({
+            type: TOGGLESUCCESSMODAL,
+            payload
+        })
+      
+    }
+};
+
+export const toggleErrorModal = (payload) => {
+    
+    return (dispatch) => {
+
+        dispatch({
+            type: TOGGLEERRORMODAL,
+            payload
+        })
+      
+    }
+};
+
 

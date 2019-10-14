@@ -1,9 +1,11 @@
 
-import {TOGGLESHOWIMAGEMODAL, TOGGLEIMAGEVIEWMODAL} from './../actions/types'
+import {TOGGLESHOWIMAGEMODAL, TOGGLESUCCESSMODAL, TOGGLEIMAGEVIEWMODAL, TOGGLEERRORMODAL} from './../actions/types'
 
 const INITIAL_STATE = {
     showImageModal: false,
-    viewImageModal: false
+    viewImageModal: false,
+    showSuccessModal: false,
+    showErrorModal: false
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -14,6 +16,12 @@ export default (state = INITIAL_STATE, action) => {
 
         case TOGGLEIMAGEVIEWMODAL:
             return { ...state,  viewImageModal: action.payload};
+
+        case TOGGLESUCCESSMODAL:
+            return { ...state,  showSuccessModal: action.payload};
+
+        case TOGGLEERRORMODAL:
+            return {...state, showErrorModal: action.payload}
 
         default: return state
     }

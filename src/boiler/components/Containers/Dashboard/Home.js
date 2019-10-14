@@ -11,6 +11,17 @@ import { HomeSection } from '../../Presenters/Home/HomeSection';
 import { calculateOpacity } from '../../../../Helper';
 import { Actions } from 'react-native-router-flux';
 import ImageModal from '../Modals/ImageModal';
+import FaceCaptureIcon from '../../../assets/svgs/FaceCaptureIcon';
+import BiometricCaptureIcon from '../../../assets/svgs/BiometricCaptureIcon';
+import TakeAttendancIcon from '../../../assets/svgs/TakeAttendanceIcon';
+import ViewProfileIcon from '../../../assets/svgs/ViewProfileIcon';
+import UpdateProfileIcon from '../../../assets/svgs/UpdateProfileIcon';
+import FinancialReportIcon from '../../../assets/svgs/FinancialReportIcon';
+import HealthInsuranceIcon from '../../../assets/svgs/HealthInsuranceIcon';
+import StaffIdIcon from '../../../assets/svgs/StaffIdIcon';
+import VasIcon from '../../../assets/svgs/VasIcon';
+import {getUserData} from './../../../redux/actions';
+import ErrorModal from '../Modals/ErrorModal';
 
 const AnimatedView = Animated.createAnimatedComponent(View)
 
@@ -43,6 +54,7 @@ class Home extends Component {
 
     componentWillMount(){
         this.animate();
+        this.props.getUserData();
     }
     
     componentDidMount(){
@@ -79,7 +91,8 @@ class Home extends Component {
         return (
              
             <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1}} style={{backgroundColor: BACKGROUND}}>
-                <ImageModal/>
+                
+                <ErrorModal/>
                 <StatusBar translucent={true} backgroundColor={'transparent'}/>
                 
                 <ImageBackground 
@@ -116,19 +129,29 @@ class Home extends Component {
                     <Text style={{color: '#707070', fontSize: 24, fontFamily: FONTFAMILYREGULAR}}>Activities</Text>
                 </View>
                 <View style={{flexDirection: 'row', margin: 5,  justifyContent: 'space-between'}}>
-                    <HomeSection onPress={() => Actions.camera()} name="Biometrics / Face Capture" image={ICONBIOMETRICS}/>
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Transfer History" image={ICONPROFILEUPDATE}/>
-                    <HomeSection onPress={() => Actions.profile()} name="View Profile" image={ICONPROFILE}/>
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Promotion History" image={ICONPROFILEUPDATE}/>
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Fin Report" image={ICONFINANCIALREPORT}/>
+                    <HomeSection 
+                        onPress={() => {
+                            if(this.props.user.civil_servants.face_capture){
+                                ToastAndroid.show('You have already completed face capture', ToastAndroid.SHORT);
+                            }else{
+                                Actions.camera();
+                            }
+                            
+                        }}
+                        name="Face Capture" 
+                    image={<FaceCaptureIcon/>}/>
+                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Biometric Capture" image={<BiometricCaptureIcon/>}/>
+                    <HomeSection onPress={() => Actions.attendance()} name="Take Attendance" image={<TakeAttendancIcon/>}/>
+                    <HomeSection onPress={() => Actions.profile()} name="View Profile" image={<ViewProfileIcon/>}/>
+                    <HomeSection onPress={() => Actions.updateProfile()} name="Update Profile" image={<UpdateProfileIcon/>}/>
                 </View>
 
                 <View style={{flexDirection: 'row', marginLeft: 5, marginRight: 5, marginTop: 20, justifyContent: 'space-between'}}>
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Attendance/Verification" image={ICONVERIFICATION}/>
-                    <HomeSection onPress={() => Actions.query()} name="Queries" image={ICONFINANCIALREPORT}/>
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Appa Form" image={ICONPROFILE}/>
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Health Insurance" image={ICONHEALTH}/>
-                    <HomeSection onPress={() => Actions.leave()} name="Apply for Leave" image={ICONATTENDANCE}/>
+                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Financial Report" image={<FinancialReportIcon/>}/>
+                    <HomeSection onPress={() => Actions.insurance()} name="Health Insurance" image={<HealthInsuranceIcon/>}/>
+                    <HomeSection onPress={() => Actions.staffid()} name="Staff Id" image={<StaffIdIcon/>}/>
+                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Pencom status" image={<StaffIdIcon/>}/>
+                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Value Added Services" image={<VasIcon/>}/>
                    
                 </View>
       
@@ -144,7 +167,8 @@ const styles = {
 }
 
 const mapStateToProps = (state) => {
-    return {}
+    const {user} = state.boilerService.auth;
+    return {user}
 };
 
-export default connect(mapStateToProps, {})(Home);
+export default connect(mapStateToProps, {getUserData})(Home);

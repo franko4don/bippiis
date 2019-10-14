@@ -23,7 +23,7 @@ class ImageViewModal extends Component {
                 animationType="fade"
                 
             >
-                <StatusBar translucent={false} backgroundColor={'transparent'}/>
+                <StatusBar translucent={true} backgroundColor={'#000000'+calculateOpacity(50)}/>
                
                 <View style={{backgroundColor: '#000000'+calculateOpacity(50), flex: 1, justifyContent: 'center', paddingRight: 10, paddingLeft: 10}}>
                     
@@ -41,7 +41,7 @@ class ImageViewModal extends Component {
                         <View>
                             <Image
                                 source={this.props.activeImage}
-                                style={{width: width - 30, height: 400}}
+                                style={{width: 300, height: 400, alignSelf: 'center'}}
                                 resizeMode={'contain'}
                             />
                         </View>
@@ -66,7 +66,7 @@ const styles = {
         marginLeft: 20,
         marginRight: 20,
         paddingRight: 15,
-        paddingTop: 15,
+        paddingTop: 10,
         marginBottom: 40,
         paddingBottom: 20,
       }

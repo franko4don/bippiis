@@ -12,11 +12,12 @@ const HomeSection = (props) => {
     return (
         <TouchableOpacity style={styles.cardStyle} onPress={onPress} activeOpacity={0.8}>
             <View style={{padding: 10}}>
-                <Image
+                {/* <Image
                     source={image}
                     style={{width: 40, height: 40, alignSelf: 'center'}}
                     resizeMode={'contain'}
-                />
+                /> */}
+                {image}
                 
                 <Text style={{color: '#363636', paddingTop: 10, paddingBottom: 15, textAlign: 'center', fontSize: 13}}>{name}</Text>
                  

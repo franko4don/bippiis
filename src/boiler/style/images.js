@@ -14,6 +14,9 @@ const TRANSAPARENTBACKGROUND = require('./../assets/images/transparentbackground
 const EXTRATRANSAPARENTBACKGROUND = require('./../assets/images/extratransparentbackground.png');
 const LOGOTRANSPARENT = require('./../assets/images/logotransparent.png');
 const DOCUMENT = require('./../assets/images/document.jpeg');
+const HIS = require('./../assets/images/his.png');
+const SUCCESS = require('./../assets/images/icons/success.png');
+const ERROR = require('./../assets/images/icons/error.png');
 
 export {
     GOVERNOR, ICONBIOMETRICS, ICONFACECAPTURE,
@@ -22,5 +25,6 @@ export {
     TRANSAPARENTBACKGROUND,EXTRATRANSAPARENTBACKGROUND,
     ICONATTENDANCE, ICONHEALTH, ICONIDCARD,
     LOGOTRANSPARENT, ICONVERIFICATION,
-    ICONCHEVRON, DOCUMENT
+    ICONCHEVRON, DOCUMENT, HIS,
+    SUCCESS, ERROR
 }

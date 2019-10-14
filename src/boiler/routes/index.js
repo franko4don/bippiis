@@ -9,8 +9,33 @@ import SQLiteDemo from '../components/Containers/Db/SQLiteDemo';
 import Camera from '../components/Containers/Utils/Camera';
 import Query from '../components/Containers/Query/Query';
 import Leave from '../components/Containers/Leave/Leave';
+import ViewImage from '../components/Containers/Profile/ViewImage';
+import CreatePassword from '../components/Containers/Auth/CreatePassword';
+import LoginWithPassword from '../components/Containers/Auth/LoginWithPassword';
+import Insurance from '../components/Containers/Vas/Insurance';
+import StaffId from '../components/Containers/Vas/StaffId';
+import Attendance from '../components/Containers/Vas/Attendance';
+import UpdateProfile from '../components/Containers/Profile/UpdateProfile';
 
 export default scenes = [
+        <Scene 
+            name="login"
+            key="login"
+            // initial
+            component={Login}
+        />,
+        <Scene 
+            name="createPassword"
+            key="createPassword"
+            // initial
+            component={CreatePassword}
+        />,
+        <Scene 
+            name="loginWithPassword"
+            key="loginWithPassword"
+            // initial
+            component={LoginWithPassword}
+        />,
         <Scene 
             name="camera"
             key="camera"
@@ -51,15 +76,68 @@ export default scenes = [
             component={Leave}
         />,
         <Scene 
+            name="view Image"
+            key="viewImage"
+            // initial
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            navigationBarStyle={{elevation: 5}}
+            title={'Face Capture'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={ViewImage}
+        />,
+        <Scene 
+            name="insurance"
+            key="insurance"
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            // initial
+            navigationBarStyle={{elevation: 5}}
+            title={'Apply for Insurance'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={Insurance}
+        />,
+        <Scene 
+            name="staffid"
+            key="staffid"
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            // initial
+            navigationBarStyle={{elevation: 5}}
+            title={'ID Application'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={StaffId}
+        />,
+        <Scene 
+            name="attendance"
+            key="attendance"
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            navigationBarStyle={{elevation: 5}}
+            title={'Mark Attendance'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={Attendance}
+        />,
+        <Scene 
+            name="updateProfile"
+            key="updateProfile"
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            navigationBarStyle={{elevation: 5}}
+            title={'Bio Data'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={UpdateProfile}
+        />,
+        <Scene 
             name="login"
             key="home"
             component={Home}
         />,
-        <Scene 
-            name="login"
-            key="login"
-            initial
-            component={Login}
-        />
+        
 
     ]

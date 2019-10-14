@@ -17,6 +17,14 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>  
+    <uses-feature
+        android:name="android.hardware.usb.host"
+        android:required="false" />
+    <uses-feature 
+        android:name="android.hardware.nfc"
+        android:required="false"/>
+        
 
     <application
       android:name=".MainApplication"
@@ -59,6 +67,12 @@
               android:pathPrefix="/" />
         </intent-filter>
       </activity>
+      <activity
+            android:name="com.biippss.usbprinter.MainActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
+            android:launchMode="singleTask" >
+        </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
       <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_name"
                 android:value="PredictPal"/>

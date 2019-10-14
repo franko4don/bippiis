@@ -100,7 +100,7 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "28.0.3"
     aaptOptions {
         cruncherEnabled = false
     }
@@ -112,10 +112,12 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 4
+        multiDexEnabled true
         versionName "1.0.1"
         missingDimensionStrategy 'react-native-camera', 'general'
         ndk {
-            abiFilters "armeabi-v7a", "x86"
+            abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a',
+                   'arm64-v8a'
         }
     }
     signingConfigs {
@@ -137,7 +139,7 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk true  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86"
+            include "armeabi-v7a", "x86", "armeabi"
         }
     }
     buildTypes {
@@ -152,7 +154,7 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a":1, "x86":2, "armeabi":3]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
@@ -194,14 +196,17 @@ dependencies {
     implementation project(':react-native-share')
     implementation "com.android.support:support-annotations:+"
     implementation project(':react-native-google-signin')
-    implementation project(':react-native-fbsdk')
+    // implementation project(':react-native-fbsdk')
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation project(':react-native-view-overflow')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-sqlite-storage')
+    implementation 'com.android.support:multidex:1.0.2'
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:23.0.1"
+    implementation "com.google.zxing:core:3.3.3"
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation fileTree(dir: 'jniLibs', include: ['*.so'])
     
 }
 

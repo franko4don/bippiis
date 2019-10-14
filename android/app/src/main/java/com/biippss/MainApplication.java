@@ -29,7 +29,7 @@ import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyti
 import com.microsoft.appcenter.reactnative.appcenter.AppCenterReactNativePackage;
 import cl.json.RNSharePackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
+// import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.entria.views.RNViewOverflowPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
@@ -41,17 +41,24 @@ import org.pgsqlite.SQLitePluginPackage;
 // import com.facebook.CallbackManager;
 // import com.facebook.FacebookSdk;
 import com.biippss.KillAppPackage;
+import com.biippss.PrinterPackage;
 
 import java.util.Arrays;
 import java.util.List;
+import android.content.res.Resources;
 
 public class MainApplication extends Application implements ReactApplication {
 
+  private static Resources resources;
   // private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
 
   // protected static CallbackManager getCallbackManager() {
   //   return mCallbackManager;
   // }
+
+  public static Resources getAppResources() {
+      return resources;
+  }
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
@@ -96,11 +103,12 @@ public class MainApplication extends Application implements ReactApplication {
             new AppCenterReactNativePackage(MainApplication.this),
             new RNSharePackage(),
             new RNGoogleSigninPackage(),
-            new FBSDKPackage(),
+            // new FBSDKPackage(),
             new RNViewOverflowPackage(),
             new VectorIconsPackage(),
             new KillAppPackage(),
-            new SQLitePluginPackage()
+            new SQLitePluginPackage(),
+            new PrinterPackage()
       );
     }
 
@@ -118,6 +126,7 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    resources = getResources();
     // FacebookSdk.setApplicationId("2430663280550309");
     // FacebookSdk.sdkInitialize(this);
     SoLoader.init(this, /* native exopackage */ false);

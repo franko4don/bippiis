@@ -39,3 +39,6 @@ To run the app on your device or emulator
 
 # Warning
 Push only the boiler folder to the working branch
+
+## Codepush
+appcenter codepush release-react -a franko4don/Bippiis -d Production

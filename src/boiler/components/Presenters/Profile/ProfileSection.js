@@ -13,7 +13,7 @@ const ProfileSection = (props) => {
         <View style={styles.cardStyle}>
            
            <Text style={{color: '#333333'+calculateOpacity(75)}}>{label}</Text>
-           <View style={{backgroundColor: WHITE, marginTop: 5, justifyContent: 'center',borderWidth: 0.8, borderColor: '#DCDCDC', paddingTop: 3, borderRadius: 3}}>
+           <View style={{ marginTop: 5, justifyContent: 'center',borderBottomWidth: 2, borderColor: '#DCDCDC', paddingTop: 3, borderRadius: 3}}>
                 <Text style={{color: '#333333', padding: 5 }}>{data}</Text>
             </View>         
         </View>

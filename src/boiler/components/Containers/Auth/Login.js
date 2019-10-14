@@ -3,12 +3,16 @@ import {ScrollView, NativeModules, Image, View, ImageBackground, StatusBar} from
 import { connect } from 'react-redux';
 import { BACKGROUND, GREEN, WHITE } from '../../../style/colors';
 import { LOGO, TRANSAPARENTBACKGROUND, EXTRATRANSAPARENTBACKGROUND } from '../../../style/images';
-import { Text, RoundedInput, RoundedButton } from '../../Reusables';
+import { Text, RoundedInput, RoundedButton, UploadButton } from '../../Reusables';
 import { FONTFAMILYBOLD } from '../../../../fonts';
 import { FONTFAMILYREGULAR } from '../../../style/fonts';
+import {loginUpdate, authenticateUser} from './../../../redux/actions';
 import { OverlayLoader } from '../../Reusables/Loaders/OverlayLoader';
 import { Actions } from 'react-native-router-flux';
 import Splashscreen from 'react-native-splash-screen';
+import { UploadedFile } from '../../Reusables/Other/UploadedFile';
+import ErrorModal from '../Modals/ErrorModal';
+import SuccessModal from '../Modals/SuccessModal';
 
 class Login extends Component {
 
@@ -19,12 +23,20 @@ class Login extends Component {
         
     }
 
+    login(){
+        const {bippiis_number} = this.props;
+        this.props.authenticateUser({bippiis_number});
+    }
+
     render() {
      
         return (
              
             <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1}} style={{backgroundColor: BACKGROUND}}>
                 <StatusBar hidden={true}/>
+                <ErrorModal/>
+                <SuccessModal message="Awesome" />
+                {this.props.loginLoading ? <OverlayLoader/> : null}
                 <ImageBackground
                     source={EXTRATRANSAPARENTBACKGROUND}
                     style={{width: null, flex: 1, height: null}}
@@ -50,14 +62,17 @@ class Login extends Component {
                 <View style={{marginLeft: 20, flex: 1, marginTop: 30, marginRight: 20, justifyContent: 'center'}}>
                     <RoundedInput
                         label={'Enter BIPPIIS Number'}
-                        
+                        value={this.props.bippiis_number}
+                        onChangeText={(value) => this.props.loginUpdate({prop: 'bippiis_number', value})}
+                        error={this.props.errors.hasOwnProperty('bippiis_number') ? this.props.errors.bippiis_number[0] : ''}
                     />
                     <RoundedButton
                         name={'Submit'}
-                        onPress={() => Actions.reset('home')}
+                        onPress={() => this.login()}
                         buttonStyle={{marginTop: 25}}
                         textStyle={{textAlign: 'center', color: WHITE, fontSize: 20}}
                     />
+                    
                 </View>
                 </ImageBackground>
             </ScrollView>
@@ -71,7 +86,10 @@ const styles = {
 }
 
 const mapStateToProps = (state) => {
-    return {}
+    const {bippiis_number} = state.boilerService.auth;
+    const {loginLoading} = state.boilerService.loader;
+    const {errors} = state.boilerService.error;
+    return {bippiis_number, loginLoading, errors}
 };
 
-export default connect(mapStateToProps, {})(Login);
+export default connect(mapStateToProps, {loginUpdate, authenticateUser})(Login);
