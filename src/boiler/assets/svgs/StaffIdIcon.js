@@ -2,7 +2,7 @@ import React from 'react'
 import Svg, { G, Path, Circle } from 'react-native-svg'
 
 const StaffIdIcon = props => (
-  <Svg width={50} height={50} style={{alignSelf: 'center'}} {...props}>
+  <Svg width={37} height={45} style={{alignSelf: 'center'}} {...props}>
     <G transform="translate(-10 -.001)" fill="#0aaf2c">
       <Path
         data-name="Path 90"

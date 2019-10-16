@@ -31,14 +31,12 @@ class ErrorModal extends Component {
                 <View style={{backgroundColor: '#000000'+calculateOpacity(50), flex: 1, justifyContent: 'center', paddingRight: 10, paddingLeft: 10}}>
                     
                     <Card style={styles.cardStyle}>
-                        <View style={{flexDirection: 'row', marginBottom: 15, justifyContent: 'space-between'}}>
-                            
-                        </View>
-                        <Text style={{color: 'red', textAlign: 'center', fontSize:28, marginBottom: 35, marginTop: 20}}>Failure!</Text>
+                        
+                        <Text style={{color: 'red', textAlign: 'center', fontSize:28, marginBottom: 10, marginTop: 20}}>Failure!</Text>
                         <View style={{marginTop: 30}}>
                             <Image
                                 source={ERROR}
-                                style={{width: 120, height: 120, alignSelf: 'center'}}
+                                style={{width: 80, height: 80, alignSelf: 'center'}}
                                 resizeMode={'contain'}
                             />
                         </View>
@@ -52,8 +50,8 @@ class ErrorModal extends Component {
                                         this.props.toggleErrorModal(false);
                                       
                                         
-                                        }} style={{alignSelf: 'center', flex: 1, justifyContent: 'flex-end'}} >
-                                    <Text style={{color: '#707070', textAlign: 'center', fontSize: 18, marginBottom: 15}}>OK</Text>
+                                        }} style={[styles.buttonStyle,{alignSelf: 'center', justifyContent: 'flex-end'}]} >
+                                    <Text style={{color: WHITE, textAlign: 'center', fontSize: 18}}>OK</Text>
                                 </TouchableOpacity>
                                 
                                 
@@ -73,16 +71,27 @@ class ErrorModal extends Component {
 
 const styles = {
     cardStyle: {
-        flex: 1,
+        height: 400,
+        width: 350,
         borderRadius: 10,
         marginTop: 60,
+        alignSelf: 'center',
         marginLeft: 5,
         marginRight: 5,
         paddingRight: 15,
         paddingTop: 15,
         marginBottom: 40,
         paddingBottom: 20,
-      }
+      },
+      buttonStyle: {
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingTop: 5,
+        paddingBottom: 5,
+        marginTop: 15,
+        borderRadius: 2,
+        backgroundColor: 'red'
+    }
 }
 
 const mapStateToProps = (state) => {

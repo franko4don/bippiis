@@ -1,4 +1,4 @@
-import { LOGIN_UPDATE, LOGIN_LOADING, LOGIN_USER, GET_USER, GET_ERRORS, GET_ERROR_MESSAGE } from './types'
+import { LOGIN_UPDATE, LOGIN_LOADING, LOGIN_USER, GET_USER, GET_ERRORS, GET_ERROR_MESSAGE, USER_DATA_LOADING, LOGOUT_USER } from './types'
 import client from './../../rclient/client';
 import config from './../config';
 import axios from 'axios';
@@ -164,22 +164,46 @@ export const createPassword = (data) => {
 export const getUserData = () => {
     
     return (dispatch) => {
-
+        dispatch({
+            type: USER_DATA_LOADING,
+            payload: true
+        });
         client.get('user')
             .then(res => {
                 dispatch({
                     type: GET_USER,
                     payload: res.data.data
                 });
+                dispatch({
+                    type: USER_DATA_LOADING,
+                    payload: false
+                });
                 console.log(res, 'Response');
             })
             .catch(err => {
-                
+                dispatch({
+                    type: USER_DATA_LOADING,
+                    payload: false
+                });
                 console.log(err.response, 'Response error');
             })
       
     }
 };
+
+export const logoutUser = () => {
+    
+    return (dispatch) => {
+
+        dispatch({
+            type: LOGOUT_USER,
+
+        });
+        Actions.reset('login');
+      
+    }
+};
+
 
 export const boilerAuthenticate = () => {
     

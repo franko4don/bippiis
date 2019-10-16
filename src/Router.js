@@ -8,6 +8,7 @@ import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import boilerScenes from './boiler/routes/index';
 import Splashscreen from 'react-native-splash-screen';
+import ViewImage from './boiler/components/Containers/Profile/ViewImage';
 
 class RouterComponent extends Component {
 
@@ -156,7 +157,7 @@ class RouterComponent extends Component {
              
                 <Router>     
                     <Scene key="root" hideNavBar>
-                    
+                        {/* <Scene key={'image'} component={ViewImage} /> */}
                         {/* Register user routes */}
                         {boilerScenes.map(item => {
                             return item;

@@ -1,13 +1,13 @@
 
-import {LOGIN_UPDATE, GET_USER, LOGIN_USER} from './../actions/types'
+import {LOGIN_UPDATE, GET_USER, LOGIN_USER, LOGOUT_USER} from './../actions/types'
 import axios from './../../rclient/client';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 
 const INITIAL_STATE = {
-    password: 'tomcat',
+    password: '',
     password_confirmation: '',
-    bippiis_number: 'BNS-6057284',
+    bippiis_number: '',
     user: {},
     auth: false,
     token: ''
@@ -21,7 +21,21 @@ export default (state = INITIAL_STATE, action) => {
 
         case LOGIN_USER:
             storeUserData(action.payload);
-            return { ...state, auth: true, token: action.payload.token, user: action.payload.data};
+            return { 
+                ...state, auth: true,
+                 token: action.payload.token, 
+                 user: action.payload.data,
+                 
+                };
+
+        case LOGOUT_USER:
+                return {
+                    ...state, 
+                    bippiis_number: '',
+                    password: '',
+                    password_confirmation: '',
+                    user: {}
+                }
 
         case GET_USER:
             return {...state, user: action.payload}
@@ -42,6 +56,5 @@ const activateAxios = (payload) => {
 }
 
 const deleteUserData = () => {
-    AsyncStorage.removeItem('token');
     delete axios.defaults.headers.common['Authorization'];
 }

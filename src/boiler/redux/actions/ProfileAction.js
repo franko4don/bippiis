@@ -110,6 +110,13 @@ export const markAttendance = () => {
                         payload: err.response.data.message
                     });
                 }
+                if(err.response.status == 404){
+                    dispatch(toggleErrorModal(true));
+                    dispatch({
+                        type: GET_ERROR_MESSAGE,
+                        payload: err.response.data.message
+                    });
+                }
                 console.log(err.response, 'Response error');
             })
       

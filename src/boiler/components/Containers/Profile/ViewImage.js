@@ -9,6 +9,7 @@ import { Actions } from 'react-native-router-flux';
 import { OverlayLoader } from '../../Reusables/Loaders/OverlayLoader';
 import {uploadPassport} from './../../../redux/actions';
 import SuccessModal from '../Modals/SuccessModal';
+import moment from 'moment';
 
 class ViewImage extends Component {
 
@@ -19,11 +20,12 @@ class ViewImage extends Component {
 
     render() {
         const {width} = Dimensions.get('screen');
+        const {civil_servants} = this.props.user;
         return (
             
                    <View style={{flex: 1, backgroundColor: BACKGROUND, justifyContent: 'center'}}>
                    {this.props.passportLoading ? <OverlayLoader/> : null}
-                   <SuccessModal message={'You have successfully completed face capture'} />
+                   <SuccessModal print={true} time={moment().format('ddd Do MMM, YYYY - hh:ss A')} staffName={civil_servants.surname +' '+ civil_servants.first_name} operation={'Face Capture'} bippiis_number={civil_servants.bippiis_number}  message={'You have successfully completed face capture'} />
                     <Card style={styles.cardStyle}>
                        
                         <View>
@@ -58,20 +60,21 @@ class ViewImage extends Component {
 
 const styles = {
     cardStyle: {
-     
+        backgroundColor: BACKGROUND,
         marginLeft: 20,
         marginRight: 20,
         paddingRight: 15,
         paddingTop: 40,
-        elevation: 5,
+        elevation: 0,
         paddingBottom: 30,
       }
 }
 
 const mapStateToProps = (state) => {
     const {passportLoading} = state.boilerService.loader;
+    const {user} = state.boilerService.auth;
     const {image} = state.boilerService.capture;
-    return {passportLoading, image}
+    return {passportLoading, image, user}
 };
 
 export default connect(mapStateToProps, {uploadPassport})(ViewImage);

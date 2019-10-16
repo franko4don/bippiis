@@ -2,7 +2,7 @@ import React from 'react'
 import Svg, { G, Path } from 'react-native-svg'
 
 const TakeAttendancIcon = props => (
-  <Svg width={50} height={50} {...props}>
+  <Svg width={50} height={50} style={{alignSelf: 'center'}} {...props}>
     <G data-name="fingerprint (1)" fill="#0aaf2c">
       <Path
         data-name="Path 57"

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {ScrollView, NativeModules, Dimensions, ImageBackground, Image, View, StatusBar, ToastAndroid} from 'react-native';
+import {ScrollView, NativeModules, Dimensions, ImageBackground, Alert, Image, View, StatusBar, ToastAndroid} from 'react-native';
 import { connect } from 'react-redux';
 import { BACKGROUND, GREEN, WHITE } from '../../../style/colors';
 import { HIS, ICONIDCARD } from '../../../style/images';
@@ -9,6 +9,7 @@ import { FONTFAMILYREGULAR, FONTFAMILYSEMIBOLD } from '../../../style/fonts';
 import { OverlayLoader } from '../../Reusables/Loaders/OverlayLoader';
 import SuccessModal from '../Modals/SuccessModal';
 import {applyForId} from './../../../redux/actions';
+import moment from 'moment';
 
 class StaffId extends Component {
 
@@ -32,14 +33,24 @@ class StaffId extends Component {
 
     render() {
         const {width, height} = Dimensions.get('screen');
-
+        const {civil_servants} = this.props.user;
+        
         return (
              
             <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1}} style={{backgroundColor: BACKGROUND}}>
                 {this.props.idLoading ? <OverlayLoader/>: null}
                 <StatusBar backgroundColor={WHITE} translucent={false} barStyle={'dark-content'} />
                 <View style={{padding: 10, paddingTop: 50}}>
-                    <SuccessModal message={'You have successfully applied for Id Card'}/>
+
+                    <SuccessModal 
+                        print={true} 
+                        time={moment().format('ddd Do MMM, YYYY - hh:ss A')} 
+                        staffName={civil_servants.surname +' '+ civil_servants.first_name} 
+                        operation={'IdCard Request'} 
+                        bippiis_number={civil_servants.bippiis_number}  
+                        message={'You have successfully applied for Id Card'} 
+                       
+                    />
                      <Image
                         source={ICONIDCARD}
                         style={{width: 100, height: 100, alignSelf: 'center'}}
@@ -73,7 +84,8 @@ const styles = {
 
 const mapStateToProps = (state) => {
     const {idLoading} = state.boilerService.loader;
-    return {idLoading}
+    const {user} = state.boilerService.auth;
+    return {idLoading, user}
 };
 
 export default connect(mapStateToProps, {applyForId})(StaffId);

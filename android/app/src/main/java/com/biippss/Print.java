@@ -29,9 +29,10 @@ public class Print extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-    public void startPrinter() {
+    public void startPrinter(String content) {
         ReactApplicationContext context = getReactApplicationContext();
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("contentToPrint", content);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
 	}

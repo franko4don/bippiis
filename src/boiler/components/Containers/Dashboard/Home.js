@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {ScrollView, NativeModules, Dimensions, Animated, Easing, ImageBackground, Image, View, StatusBar, ToastAndroid} from 'react-native';
+import {ScrollView, NativeModules, Dimensions, Animated, TouchableOpacity, Easing, DeviceEventEmitter, ImageBackground, Image, View, StatusBar, ToastAndroid} from 'react-native';
 import { connect } from 'react-redux';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { BACKGROUND, GREEN, WHITE } from '../../../style/colors';
 import { LOGO, ICONBIOMETRICS, ICONFACECAPTURE, ICONPROFILE, ICONPROFILEUPDATE, ICONFINANCIALREPORT, TRANSAPARENTBACKGROUND, GOVERNOR, ICONHEALTH, ICONATTENDANCE, ICONIDCARD, ICONVERIFICATION } from '../../../style/images';
 import { Text, RoundedInput, RoundedButton } from '../../Reusables';
@@ -20,8 +21,9 @@ import FinancialReportIcon from '../../../assets/svgs/FinancialReportIcon';
 import HealthInsuranceIcon from '../../../assets/svgs/HealthInsuranceIcon';
 import StaffIdIcon from '../../../assets/svgs/StaffIdIcon';
 import VasIcon from '../../../assets/svgs/VasIcon';
-import {getUserData} from './../../../redux/actions';
+import {getUserData, logoutUser} from './../../../redux/actions';
 import ErrorModal from '../Modals/ErrorModal';
+import SuccessModal from '../Modals/SuccessModal';
 
 const AnimatedView = Animated.createAnimatedComponent(View)
 
@@ -55,6 +57,10 @@ class Home extends Component {
     componentWillMount(){
         this.animate();
         this.props.getUserData();
+        DeviceEventEmitter.addListener('onIdle', (e) => {
+            console.log(e);
+            this.props.logoutUser()
+        });
     }
     
     componentDidMount(){
@@ -71,6 +77,7 @@ class Home extends Component {
 
     componentWillUnmount(){
         clearInterval(this.timer);
+        DeviceEventEmitter.removeListener('onIdle');
     }
 
     animate(){
@@ -91,9 +98,10 @@ class Home extends Component {
         return (
              
             <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1}} style={{backgroundColor: BACKGROUND}}>
-                
+              
                 <ErrorModal/>
                 <StatusBar translucent={true} backgroundColor={'transparent'}/>
+                {this.props.userDataLoading ? <OverlayLoader/> : null}
                 
                 <ImageBackground 
                     source={TRANSAPARENTBACKGROUND}
@@ -125,6 +133,16 @@ class Home extends Component {
                     </View>
                 </View>
                 </ImageBackground>
+                <TouchableOpacity onPress={() => this.props.logoutUser()} style={{padding: 8, alignSelf: 'flex-end', marginTop: 5, marginRight: 5, flexDirection: 'row'}}>
+                    <View style={{justifyContent: 'center'}}>
+                        <MaterialCommunityIcon name="power" size={22} color={'red'} />
+                    </View>
+                    
+                    <View style={{justifyContent: 'center'}}>
+                        <Text style={{paddingLeft: 5, fontSize: 16, color: 'red'}}>Logout</Text>
+                    </View>
+                    
+                </TouchableOpacity>
                 <View style={{padding: 15}}>
                     <Text style={{color: '#707070', fontSize: 24, fontFamily: FONTFAMILYREGULAR}}>Activities</Text>
                 </View>
@@ -149,8 +167,8 @@ class Home extends Component {
                 <View style={{flexDirection: 'row', marginLeft: 5, marginRight: 5, marginTop: 20, justifyContent: 'space-between'}}>
                     <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Financial Report" image={<FinancialReportIcon/>}/>
                     <HomeSection onPress={() => Actions.insurance()} name="Health Insurance" image={<HealthInsuranceIcon/>}/>
-                    <HomeSection onPress={() => Actions.staffid()} name="Staff Id" image={<StaffIdIcon/>}/>
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Pencom status" image={<StaffIdIcon/>}/>
+                    <HomeSection onPress={() => Actions.staffid()} name="Staff Identity Card" image={<StaffIdIcon/>}/>
+                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Pencom Status" image={<StaffIdIcon/>}/>
                     <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Value Added Services" image={<VasIcon/>}/>
                    
                 </View>
@@ -168,7 +186,8 @@ const styles = {
 
 const mapStateToProps = (state) => {
     const {user} = state.boilerService.auth;
-    return {user}
+    const {userDataLoading} = state.boilerService.loader;
+    return {user, userDataLoading}
 };
 
-export default connect(mapStateToProps, {getUserData})(Home);
+export default connect(mapStateToProps, {getUserData, logoutUser})(Home);

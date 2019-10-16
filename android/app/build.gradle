@@ -111,9 +111,9 @@ android {
         applicationId "com.biippss"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 4
+        versionCode 5
         multiDexEnabled true
-        versionName "1.0.1"
+        versionName "1.0.2"
         missingDimensionStrategy 'react-native-camera', 'general'
         ndk {
             abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a',

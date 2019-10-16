@@ -14,7 +14,7 @@ const ProfileSection = (props) => {
            
            <Text style={{color: '#333333'+calculateOpacity(75)}}>{label}</Text>
            <View style={{ marginTop: 5, justifyContent: 'center',borderBottomWidth: 2, borderColor: '#DCDCDC', paddingTop: 3, borderRadius: 3}}>
-                <Text style={{color: '#333333', padding: 5 }}>{data}</Text>
+                <Text style={{color: '#333333', padding: 5 }}>{data && data.length > 0 ? data : 'Nil'}</Text>
             </View>         
         </View>
     );

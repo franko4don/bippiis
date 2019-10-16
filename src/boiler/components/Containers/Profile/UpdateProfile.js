@@ -17,6 +17,7 @@ import { OverlayLoader } from '../../Reusables/Loaders/OverlayLoader';
 import SuccessModal from '../Modals/SuccessModal';
 import config from './../../../redux/config';
 import { UploadedFile } from '../../Reusables/Other/UploadedFile';
+import moment from 'moment';
 
 class UpdateProfile extends Component {
 
@@ -37,10 +38,12 @@ class UpdateProfile extends Component {
           certificate: '',
           author: config.author,
           highest_qualification: '',
+          residential_address: '',
           doc_title: '',
           document: '',
           mime: '',
-          another: null
+          another: null,
+          operation: ''
         }
         this.data = {}
     }
@@ -55,12 +58,12 @@ class UpdateProfile extends Component {
     }
 
     updateProfile(){
-        this.setState({message: 'You have successfully updated your profile', another: null});
+        this.setState({message: 'You have successfully updated your profile', another: null, operation: 'Profile Update'});
         this.props.updateProfile(this.state);
     }
 
     updateQualification(){
-        this.setState({message: 'You have successfully updated your qualifications', another: true});
+        this.setState({message: 'You have successfully updated your qualifications', another: true, operation: 'Qualification Update'});
         this.props.updateQualification(this.state);
     }
 
@@ -95,16 +98,16 @@ class UpdateProfile extends Component {
     }
 
     updateDocument(){
-        this.setState({message: 'You have successfully uploaded a document', another: true});
+        this.setState({message: 'You have successfully uploaded a document', another: true, operation: 'Document Upload'});
         this.props.updateDocument(this.state);
     }
 
     componentWillMount(){
         const {civil_servants} = this.props.user;
-        const {email, nok_address, nok_rel, nok_firstname, highest_qualification, nok_middlename, nok_phone, nok_surname, phone} = civil_servants;
+        const {email, nok_address, nok_rel, nok_firstname, residential_address, highest_qualification, nok_middlename, nok_phone, nok_surname, phone} = civil_servants;
 
         this.setState({
-            email, nok_address, nok_firstname, highest_qualification, nok_rel, nok_middlename, nok_phone, nok_rel,nok_surname, phone
+            email, nok_address, nok_firstname, highest_qualification, residential_address, nok_rel, nok_middlename, nok_phone, nok_rel,nok_surname, phone
         });
     }
 
@@ -160,13 +163,27 @@ class UpdateProfile extends Component {
 
 
     render() {
-
+        const {civil_servants} = this.props.user;
         return (
             
             <Container contentContainerStyle={{flexGrow: 1}}  style={{backgroundColor: BACKGROUND}}>
                 <StatusBar translucent={false} backgroundColor={WHITE} barStyle="dark-content"/>
                {this.props.profileLoading ? <OverlayLoader/> : null}
                <SuccessModal 
+                    print={true} 
+                    time={moment().format('ddd Do MMM, YYYY - hh:ss A')} 
+                    staffName={civil_servants.surname +' '+ civil_servants.first_name} 
+                    operation={this.state.operation} 
+                    bippiis_number={civil_servants.bippiis_number}  
+                    onPress={() => {
+                        this.props.toggleSuccessModal(false);
+                        this.clearFields()
+                    }}
+                    message={this.state.message} 
+                    another={this.state.another} 
+                    anotherText={'Add'}
+                />
+               {/* <SuccessModal 
                 onPress={() => {
                     this.props.toggleSuccessModal(false);
                     this.clearFields()
@@ -174,7 +191,7 @@ class UpdateProfile extends Component {
                 message={this.state.message} 
                 another={this.state.another} 
                 anotherText={'Add'}
-                />
+                /> */}
                 <Tabs  
                     onChangeTab={({ i }) => {this.setState({activeTab: i}); console.log(i, 'activeTab')}}
                     style={styles.tabStyle}
@@ -205,6 +222,12 @@ class UpdateProfile extends Component {
                                 value={this.state.phone}
                                 onChangeText={(value) => this.setState({'phone': value})}
                                 error={this.props.errors.hasOwnProperty('phone') ? this.props.errors.phone[0] : ''}
+                            />
+                            <SquareInput
+                                label={'Residential Address'}
+                                value={this.state.residential_address}
+                                onChangeText={(value) => this.setState({'residential_address': value})}
+                                error={this.props.errors.hasOwnProperty('residential_address') ? this.props.errors.residential_address[0] : ''}
                             />
                             <SquareInput
                                 label={'Next of Kin Surname'}

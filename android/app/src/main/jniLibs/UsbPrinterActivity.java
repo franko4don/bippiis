@@ -91,6 +91,7 @@ public class UsbPrinterActivity extends ReactActivity {
 	ProgressDialog dialog;
 	UsbThermalPrinter mUsbThermalPrinter = new UsbThermalPrinter(UsbPrinterActivity.this);
 	private String picturePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/111.bmp";
+	private String picturePath1 = Environment.getExternalStorageDirectory().getAbsolutePath() + "/112.bmp";
 
 	private class MyHandler extends Handler {
 		@Override
@@ -179,7 +180,9 @@ public class UsbPrinterActivity extends ReactActivity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.usbprint_text);
 		initView();
-		// savepic();
+		savepic();
+		savepic1();
+
 		handler = new MyHandler();
 		buttonBarcodePrint = (Button) findViewById(R.id.print_barcode);
 
@@ -203,6 +206,11 @@ public class UsbPrinterActivity extends ReactActivity {
 		// if(SystemUtil.getDeviceType() == StringUtil.DeviceModelEnum.TPS900.ordinal()){
 		// 	editTextPrintGray.setText("5");
 		// }
+		String whatToPrint = getIntent().getStringExtra("contentToPrint");
+		printFirstPicture(picturePath);
+		printIt(whatToPrint);
+		printFirstPicture(picturePath1);
+		
 
 		buttonQrcodePrint.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -751,6 +759,7 @@ public class UsbPrinterActivity extends ReactActivity {
 				mUsbThermalPrinter.addString(printContent);
 				mUsbThermalPrinter.printString();
 				mUsbThermalPrinter.walkPaper(20);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 				Result = e.toString();
@@ -818,6 +827,9 @@ public class UsbPrinterActivity extends ReactActivity {
 				if (file.exists()) {
 					mUsbThermalPrinter.printLogo(BitmapFactory.decodeFile(picturePath),false);
 					mUsbThermalPrinter.walkPaper(20);
+					if(picturePath == picturePath1){
+						UsbPrinterActivity.this.finish();
+					}
 				} else {
 					runOnUiThread(new Runnable() {
 
@@ -933,7 +945,7 @@ public class UsbPrinterActivity extends ReactActivity {
 			FileOutputStream fos = null;
 			byte[] tmp = new byte[1024];
 			try {
-				inputStream = getApplicationContext().getAssets().open("syhlogo.png");
+				inputStream = getApplicationContext().getAssets().open("logo.png");
 				fos = new FileOutputStream(file);
 				int length = 0;
 				while((length = inputStream.read(tmp)) > 0){
@@ -949,6 +961,117 @@ public class UsbPrinterActivity extends ReactActivity {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
+		}
+	}
+
+	private void savepic1() {
+		File file = new File(picturePath1);
+		if (!file.exists()) {
+			InputStream inputStream = null;
+			FileOutputStream fos = null;
+			byte[] tmp = new byte[1024];
+			try {
+				inputStream = getApplicationContext().getAssets().open("gamint.jpg");
+				fos = new FileOutputStream(file);
+				int length = 0;
+				while((length = inputStream.read(tmp)) > 0){
+					fos.write(tmp, 0, length);
+				}
+				fos.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					inputStream.close();
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void PrintIt(String textToPrint) {
+		String exditText;
+		exditText = editTextLeftDistance.getText().toString();
+		if (exditText == null || exditText.length() < 1) {
+			Toast.makeText(UsbPrinterActivity.this, getString(R.string.left_margin) + getString(R.string.lengthNotEnougth), Toast.LENGTH_LONG).show();
+			return;
+		}
+		leftDistance = Integer.parseInt(exditText);
+		exditText = editTextLineDistance.getText().toString();
+		if (exditText == null || exditText.length() < 1) {
+			Toast.makeText(UsbPrinterActivity.this, getString(R.string.row_space) + getString(R.string.lengthNotEnougth), Toast.LENGTH_LONG).show();
+			return;
+		}
+		lineDistance = Integer.parseInt(exditText);
+		printContent = textToPrint;
+		exditText = editTextWordFont.getText().toString();
+		if (exditText == null || exditText.length() < 1) {
+			Toast.makeText(UsbPrinterActivity.this, getString(R.string.font_size) + getString(R.string.lengthNotEnougth), Toast.LENGTH_LONG).show();
+			return;
+		}
+		wordFont = Integer.parseInt(exditText);
+		exditText = editTextPrintGray.getText().toString();
+		if (exditText == null || exditText.length() < 1) {
+			Toast.makeText(UsbPrinterActivity.this, getString(R.string.gray_level) + getString(R.string.lengthNotEnougth), Toast.LENGTH_LONG).show();
+			return;
+		}
+		printGray = Integer.parseInt(exditText);
+		if (leftDistance > MAX_LEFT_DISTANCE) {
+			Toast.makeText(UsbPrinterActivity.this, getString(R.string.outOfLeft), Toast.LENGTH_LONG).show();
+			return;
+		}
+		if (lineDistance > 255) {
+			Toast.makeText(UsbPrinterActivity.this, getString(R.string.outOfLine), Toast.LENGTH_LONG).show();
+			return;
+		}
+		if (wordFont > 4 || wordFont < 1) {
+			Toast.makeText(UsbPrinterActivity.this, getString(R.string.outOfFont), Toast.LENGTH_LONG).show();
+			return;
+		}
+		if (printGray < 0 || printGray > 7) {
+			Toast.makeText(UsbPrinterActivity.this, getString(R.string.outOfGray), Toast.LENGTH_LONG).show();
+			return;
+		}
+		if (printContent == null || printContent.length() == 0) {
+			Toast.makeText(UsbPrinterActivity.this, getString(R.string.empty), Toast.LENGTH_LONG).show();
+			return;
+		}
+		if (LowBattery == true) {
+			handler.sendMessage(handler.obtainMessage(LOWBATTERY, 1, 0, null));
+		} else {
+			if (!nopaper) {
+				progressDialog = ProgressDialog.show(UsbPrinterActivity.this, getString(R.string.bl_dy), getString(R.string.printing_wait));
+				handler.sendMessage(handler.obtainMessage(PRINTCONTENT, 1, 0, null));
+			} else {
+				Toast.makeText(UsbPrinterActivity.this, getString(R.string.ptintInit), Toast.LENGTH_LONG).show();
+			}
+		}
+
+	}
+
+	public void printFirstPicture(String path) {
+		String exditText = editTextPrintGray.getText().toString();
+		if (exditText == null || exditText.length() < 1) {
+			Toast.makeText(UsbPrinterActivity.this, getString(R.string.gray_level) + getString(R.string.lengthNotEnougth), Toast.LENGTH_LONG).show();
+			return;
+		}
+		printGray = Integer.parseInt(exditText);
+		if (printGray < 0 || printGray > 7) {
+			Toast.makeText(UsbPrinterActivity.this, getString(R.string.outOfGray), Toast.LENGTH_LONG).show();
+			return;
+		}
+		if (LowBattery == true) {
+			handler.sendMessage(handler.obtainMessage(LOWBATTERY, 1, 0, null));
+		} else {
+			if (!nopaper) {
+				picturePath = path;
+				progressDialog = ProgressDialog.show(UsbPrinterActivity.this, getString(R.string.bl_dy), getString(R.string.printing_wait));
+				handler.sendMessage(handler.obtainMessage(PRINTPICTURE, 1, 0, null));
+			} else {
+				Toast.makeText(UsbPrinterActivity.this, getString(R.string.ptintInit), Toast.LENGTH_LONG).show();
 			}
 		}
 	}

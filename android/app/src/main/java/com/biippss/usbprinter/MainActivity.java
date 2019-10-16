@@ -62,7 +62,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Hashtable;
 
 @SuppressLint("SimpleDateFormat") 
 @SuppressWarnings("unused")
@@ -123,7 +125,7 @@ public class MainActivity extends ReactActivity{
 	private UsbReceiver mUsbReceiver;
 	// 20180706
 	String OneBarType = "1";
-	String iline = "4";
+	String iline = "15";
 	// 20180710设置区域国家和代码页
 	private EditText feedLineNum;
 	private Spinner mSpinnerCountry,mSpinnerCodePage;  // 区域国家列表控件
@@ -139,6 +141,9 @@ public class MainActivity extends ReactActivity{
 	private Button setBlackMark1,setBlackMark2;
 	private LinearLayout LL_first,LL_second,LL_ALL;
 //	private CheckBox isExtend,isSimplify,isSimplify2;
+	private String picturePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/111.bmp";
+	private String picturePath1 = Environment.getExternalStorageDirectory().getAbsolutePath() + "/112.bmp";
+	
 	@Override
 	@CallSuper
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -146,7 +151,17 @@ public class MainActivity extends ReactActivity{
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         mContext = this;
-        init();// 初始化
+		init();// 初始化
+		String whatToPrint = getIntent().getStringExtra("contentToPrint");
+
+		saveLogo();
+		saveGamint();
+		printImage();
+		PrintContent(whatToPrint);
+		picturePath = picturePath1;
+		printImage();
+		setFeedCut(cutter,Integer.valueOf(iline)); 
+		MainActivity.this.finish();
     }
     /**
      * 初始化
@@ -472,7 +487,7 @@ public class MainActivity extends ReactActivity{
 		if(!TextUtils.isEmpty(data)){
 			mUsbDriver.write(PrintCmd.SetAlignment(align));
 			mUsbDriver.write(PrintCmd.PrintString(data, 0));
-			setFeedCut(cutter,Integer.valueOf(iline));
+			// setFeedCut(cutter,Integer.valueOf(iline));
 		}else{
 			T.showShort(MainActivity.this, "对不起,输入框不能为空，请重试！");
 		}
@@ -2244,5 +2259,80 @@ public class MainActivity extends ReactActivity{
 					}
 
 				});
+	}
+
+	// my area
+	public void PrintContent(String content) {
+		printText(content);
+	}
+
+	private void saveLogo() {
+		File file = new File(picturePath);
+		if (!file.exists()) {
+			InputStream inputStream = null;
+			FileOutputStream fos = null;
+			byte[] tmp = new byte[1024];
+			try {
+				inputStream = getApplicationContext().getAssets().open("logo.png");
+				fos = new FileOutputStream(file);
+				int length = 0;
+				while((length = inputStream.read(tmp)) > 0){
+					fos.write(tmp, 0, length);
+				}
+				fos.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					inputStream.close();
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+
+	private void saveGamint() {
+		File file = new File(picturePath1);
+		if (!file.exists()) {
+			InputStream inputStream = null;
+			FileOutputStream fos = null;
+			byte[] tmp = new byte[1024];
+			try {
+				inputStream = getApplicationContext().getAssets().open("gamint.jpg");
+				fos = new FileOutputStream(file);
+				int length = 0;
+				while((length = inputStream.read(tmp)) > 0){
+					fos.write(tmp, 0, length);
+				}
+				fos.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					inputStream.close();
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	private void printImage(){
+		String imgPath = picturePath;
+		if("".endsWith(imgPath)){
+ 			showMessage(getString(R.string.The_path_cannot_be_empty));
+ 			return;
+ 		}
+		Bitmap inputBmp = Utils.getBitmapData(imgPath);
+		if(inputBmp == null)
+ 			return;
+		int[] data = Utils.getPixelsByBitmap(inputBmp);
+		mUsbDriver.write(PrintCmd.PrintDiskImagefile(data,inputBmp.getWidth(),inputBmp.getHeight()));
+		
+
 	}
 }

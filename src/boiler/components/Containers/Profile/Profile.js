@@ -6,7 +6,7 @@ import { Text, RoundedInput, RoundedButton } from '../../Reusables';
 
 import { Container, Tab, Tabs, TabHeading, ScrollableTab } from 'native-base';
 import { ProfileSection } from '../../Presenters/Profile/ProfileSection';
-import { LOGOTRANSPARENT, DOCUMENT } from '../../../style/images'
+import { LOGOTRANSPARENT, DOCUMENT, NOIMAGE } from '../../../style/images'
 import {toggleImageViewModal, profileUpdate} from './../../../redux/actions';
 import ImageViewModal from '../Modals/ImageViewModal';
 import _ from 'lodash';
@@ -40,7 +40,8 @@ class Profile extends Component {
                 >
                     <Image
                         source={{uri: item2.document}}
-                        style={{width: 200, height: 250}}
+                        style={{width: 130, height: 230}}
+                        resizeMode={'contain'}
                         
                     />
                 </TouchableOpacity>);
@@ -142,6 +143,19 @@ class Profile extends Component {
                                 style={{width: null, flex: 1}}
                                 resizeMode={'contain'}
                             >
+                            {user.passports ?
+                                <Image
+                                    source={{uri: user.passports.passport}}
+                                    style={{width: 100, height: 100, alignSelf: 'center', marginBottom: 20}}
+                                    resizeMode={'contain'}
+                                    
+                                />
+                                : <Image
+                                    source={NOIMAGE}
+                                    style={{width: 100, height: 100, alignSelf: 'center', marginBottom: 20}}
+                                    resizeMode={'contain'}
+                                    
+                                />}
                             
                                 <ProfileSection
                                     label={'BIPPIIS Number:'}
@@ -251,22 +265,29 @@ class Profile extends Component {
                                     style={{width: null, flex: 1}}
                                     resizeMode={'contain'}
                                 >
-                                <ProfileSection
-                                    label={'Ministry, Department Or Agency (MDA):'}
-                                    data={user.civil_servants.ministry}
-                                />
-                                <ProfileSection
-                                    label={'Local Government Posted To:'}
-                                    data={user.civil_servants.lga_posted_to}
-                                />
+                                {
+                                    user.civil_servants.constituency == 'SCS' && user.civil_servants.arm == 'Executive' ?
+                                    <ProfileSection
+                                        label={'Ministry, Department Or Agency (MDA):'}
+                                        data={user.civil_servants.ministry}
+                                    />
+                                : null
+                                }
+                                {
+                                    user.civil_servants.constituency == 'LGCS' ?
+                                    <ProfileSection
+                                        label={'Local Government Posted To:'}
+                                        data={user.civil_servants.lga_posted_to}
+                                    />: null
+                                }
                                 <ProfileSection
                                     label={'Work Station:'}
                                     data={user.civil_servants.work_station}
                                 />
-                                <ProfileSection
+                                {/* <ProfileSection
                                     label={'Employment Status:'}
                                     data={'Benue State Staff'}
-                                />
+                                /> */}
                                 <ProfileSection
                                     label={'Personnel Sub-head Number:'}
                                     data={user.civil_servants.subhead_number}

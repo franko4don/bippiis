@@ -52,7 +52,7 @@ class Camera extends Component {
       },
     },
     depth: 0,
-    type: 'back',
+    type: 'front',
     whiteBalance: 'auto',
     ratio: '16:9',
     recordOptions: {

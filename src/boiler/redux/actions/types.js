@@ -1,6 +1,7 @@
 
 // declare all constants related to boiler app
 export const LOGIN_UPDATE = 'LOGIN_UPDATE';
+export const LOGOUT_USER = 'LOGOUT_USER';
 
 export const TOGGLESHOWIMAGEMODAL = 'TOGGLESHOWIMAGEMODAL';
 export const TOGGLEIMAGEVIEWMODAL = 'TOGGLEIMAGEVIEWMODAL';
@@ -21,6 +22,7 @@ export const ID_LOADING = 'ID_LOADING';
 export const PASSPORT_LOADING = 'PASSPORT_LOADING';
 export const ATTENDANCE_LOADING = 'ATTENDANCE_LOADING';
 export const PROFILE_LOADING = 'PROFILE_LOADING';
+export const USER_DATA_LOADING = 'USER_DATA_LOADING';
 
 //errors
 export const GET_ERROR_MESSAGE = 'GET_ERROR_MESSAGE';

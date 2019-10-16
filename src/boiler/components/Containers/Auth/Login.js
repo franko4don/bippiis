@@ -6,7 +6,7 @@ import { LOGO, TRANSAPARENTBACKGROUND, EXTRATRANSAPARENTBACKGROUND } from '../..
 import { Text, RoundedInput, RoundedButton, UploadButton } from '../../Reusables';
 import { FONTFAMILYBOLD } from '../../../../fonts';
 import { FONTFAMILYREGULAR } from '../../../style/fonts';
-import {loginUpdate, authenticateUser} from './../../../redux/actions';
+import {loginUpdate, authenticateUser, logoutUser} from './../../../redux/actions';
 import { OverlayLoader } from '../../Reusables/Loaders/OverlayLoader';
 import { Actions } from 'react-native-router-flux';
 import Splashscreen from 'react-native-splash-screen';
@@ -17,6 +17,8 @@ import SuccessModal from '../Modals/SuccessModal';
 class Login extends Component {
 
     componentWillMount(){
+        this.props.loginUpdate({prop: 'bippiis_number', value: ''});
+        this.props.loginUpdate({prop: 'password', value: ''});
         setTimeout(() => {
             Splashscreen.hide();
         }, 10000)
@@ -26,6 +28,7 @@ class Login extends Component {
     login(){
         const {bippiis_number} = this.props;
         this.props.authenticateUser({bippiis_number});
+        
     }
 
     render() {
@@ -35,7 +38,7 @@ class Login extends Component {
             <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1}} style={{backgroundColor: BACKGROUND}}>
                 <StatusBar hidden={true}/>
                 <ErrorModal/>
-                <SuccessModal message="Awesome" />
+               
                 {this.props.loginLoading ? <OverlayLoader/> : null}
                 <ImageBackground
                     source={EXTRATRANSAPARENTBACKGROUND}
@@ -92,4 +95,4 @@ const mapStateToProps = (state) => {
     return {bippiis_number, loginLoading, errors}
 };
 
-export default connect(mapStateToProps, {loginUpdate, authenticateUser})(Login);
+export default connect(mapStateToProps, {loginUpdate, authenticateUser, logoutUser})(Login);
