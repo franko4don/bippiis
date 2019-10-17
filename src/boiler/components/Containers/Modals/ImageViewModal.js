@@ -58,11 +58,11 @@ class ImageViewModal extends Component {
 
 const styles = {
     cardStyle: {
-        // minHeight: 300,
-        // minWidth: 320,
+        minHeight: 420,
+        width: 320,
         borderRadius: 10,
         marginTop: 60,
-        // alignSelf: 'center',
+        alignSelf: 'center',
         marginLeft: 20,
         marginRight: 20,
         paddingRight: 15,

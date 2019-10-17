@@ -40,7 +40,7 @@ class ImageModal extends Component {
                         <View>
                             <Image
                                 source={{uri: this.props.image}}
-                                style={{width: 300, height: 300}}
+                                style={{width: 300, height: 350}}
                                 resizeMode={'contain'}
                             />
                         </View>
@@ -71,8 +71,8 @@ class ImageModal extends Component {
 
 const styles = {
     cardStyle: {
-        minHeight: 300,
-        minWidth: 320,
+        height: 400,
+        width: 200,
         borderRadius: 10,
         marginTop: 60,
         alignSelf: 'center',
