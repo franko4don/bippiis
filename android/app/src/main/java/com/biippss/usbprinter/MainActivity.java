@@ -2301,7 +2301,7 @@ public class MainActivity extends ReactActivity{
 			FileOutputStream fos = null;
 			byte[] tmp = new byte[1024];
 			try {
-				inputStream = getApplicationContext().getAssets().open("gamint.jpg");
+				inputStream = getApplicationContext().getAssets().open("gamint.png");
 				fos = new FileOutputStream(file);
 				int length = 0;
 				while((length = inputStream.read(tmp)) > 0){

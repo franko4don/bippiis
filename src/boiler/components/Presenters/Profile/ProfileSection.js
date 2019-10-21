@@ -4,7 +4,23 @@ import { ICONCHEVRON } from '../../../style/images';
 import { Card, Text } from '../../Reusables';
 import { WHITE, BLUE, SHADOWBLUE, SHADOWBLUEBORDER } from '../../../style/colors';
 import { FONTFAMILYREGULAR } from '../../../../fonts';
-import { calculateOpacity } from '../../../../Helper';
+import { calculateOpacity, isNumeric } from '../../../../Helper';
+
+const processData = (data) =>{
+    if(data){
+        if(isNumeric(data)){
+            return data;
+        }else{
+            if(data.length > 0){
+                return data;
+            }else{
+                return 'Nil';
+            }
+        }
+    }else{
+        return 'Nil'
+    }
+}
 
 const ProfileSection = (props) => {
     const { label, data } = props;
@@ -14,7 +30,9 @@ const ProfileSection = (props) => {
            
            <Text style={{color: '#333333'+calculateOpacity(75)}}>{label}</Text>
            <View style={{ marginTop: 5, justifyContent: 'center',borderBottomWidth: 2, borderColor: '#DCDCDC', paddingTop: 3, borderRadius: 3}}>
-                <Text style={{color: '#333333', padding: 5 }}>{data && data.length > 0 ? data : 'Nil'}</Text>
+                <Text style={{color: '#333333', padding: 5 }}>
+                    {processData(data)}
+                </Text>
             </View>         
         </View>
     );

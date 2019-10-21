@@ -17,8 +17,8 @@ import SuccessModal from '../Modals/SuccessModal';
 class Login extends Component {
 
     componentWillMount(){
-        this.props.loginUpdate({prop: 'bippiis_number', value: ''});
-        this.props.loginUpdate({prop: 'password', value: ''});
+        // this.props.loginUpdate({prop: 'bippiis_number', value: ''});
+        // this.props.loginUpdate({prop: 'password', value: ''});
         setTimeout(() => {
             Splashscreen.hide();
         }, 10000)

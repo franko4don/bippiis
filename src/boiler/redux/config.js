@@ -1,5 +1,5 @@
 
-const platform = 'production';
+const platform = 'local';
 
 let settings = {};
 

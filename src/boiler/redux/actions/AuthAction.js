@@ -90,7 +90,12 @@ export const loginUser = (data) => {
                     type: LOGIN_USER,
                     payload: res.data
                 });
-                Actions.reset('home');
+                if(res.data.data.category == 1){
+                    Actions.reset('home');
+                }else{
+                    Actions.reset('pensionHome');
+                }
+                
                 console.log(res, 'Response');
             })
             .catch(err => {
@@ -140,7 +145,11 @@ export const createPassword = (data) => {
                     type: LOGIN_USER,
                     payload: res.data
                 });
-                Actions.reset('home');
+                if(res.data.data.category == 1){
+                    Actions.reset('home');
+                }else{
+                    Actions.reset('pensionHome');
+                }
                 console.log(res, 'Response');
             })
             .catch(err => {

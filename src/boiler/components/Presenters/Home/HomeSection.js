@@ -7,10 +7,10 @@ import { FONTFAMILYREGULAR } from '../../../../fonts';
 import { calculateOpacity } from '../../../../Helper';
 
 const HomeSection = (props) => {
-    const { name, image, onPress } = props;
+    const { name, image, onPress, style, disabled } = props;
 
     return (
-        <TouchableOpacity style={styles.cardStyle} onPress={onPress} activeOpacity={0.8}>
+        <TouchableOpacity disabled={disabled} style={[styles.cardStyle, style]} onPress={onPress} activeOpacity={0.8}>
             <View style={{padding: 10}}>
                 {/* <Image
                     source={image}

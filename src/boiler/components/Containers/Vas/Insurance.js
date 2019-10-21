@@ -31,10 +31,19 @@ class Insurance extends Component {
         
     }
 
+    getName(){
+        const {user} = this.props;
+        if(user.category == 1){
+            return user.civil_servants.surname +' '+ user.civil_servants.first_name
+        }else{
+            return user.lga_pensioners.fullname
+        }
+    }
+
 
     render() {
         const {width, height} = Dimensions.get('screen');
-        const {civil_servants} = this.props.user;
+        const {user} = this.props;
 
         return (
              
@@ -46,9 +55,9 @@ class Insurance extends Component {
                     <SuccessModal 
                         print={true} 
                         time={moment().format('ddd Do MMM, YYYY - hh:ss A')} 
-                        staffName={civil_servants.surname +' '+ civil_servants.first_name} 
+                        staffName={this.getName()} 
                         operation={'Health Insurance Enrolment'} 
-                        bippiis_number={civil_servants.bippiis_number}                        
+                        bippiis_number={user.bippiis_number}                        
                         message={'You have successfully enrolled for health insurance'} 
                     />
                      <HealthIcon/>

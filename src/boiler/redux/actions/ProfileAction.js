@@ -263,3 +263,40 @@ export const updateDocument = (data) => {
 };
 
 
+
+export const updatePensionProfile = (data) => {
+    
+    return (dispatch) => {
+        dispatch({
+            type: PROFILE_LOADING,
+            payload: true
+        });
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
+        });
+        client.post('pension/updateProfile', data)
+            .then(res => {
+                dispatch({
+                    type: PROFILE_LOADING,
+                    payload: false
+                });
+                dispatch(toggleSuccessModal(true));
+                console.log(res, 'Response');
+            })
+            .catch(err => {
+                dispatch({
+                    type: PROFILE_LOADING,
+                    payload: false
+                });
+                if(err.response.status == 422){
+                    dispatch({
+                        type: GET_ERRORS,
+                        payload: err.response.data.errors
+                    })
+                }
+                console.log(err.response, 'Response error');
+            })
+      
+    }
+};

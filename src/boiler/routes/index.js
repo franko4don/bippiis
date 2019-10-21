@@ -16,6 +16,9 @@ import Insurance from '../components/Containers/Vas/Insurance';
 import StaffId from '../components/Containers/Vas/StaffId';
 import Attendance from '../components/Containers/Vas/Attendance';
 import UpdateProfile from '../components/Containers/Profile/UpdateProfile';
+import PensionHome from '../components/Containers/Dashboard/PensionHome';
+import PensionProfile from '../components/Containers/Profile/PensionProfile';
+import UpdatePensionProfile from '../components/Containers/Profile/UpdatePensionProfile';
 
 export default scenes = [
         <Scene 
@@ -52,6 +55,17 @@ export default scenes = [
             titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
             hideNavBar={false}
             component={Profile}
+        />,
+        <Scene 
+            name="pensionProfile"
+            key="pensionProfile"
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            navigationBarStyle={{elevation: 5}}
+            title={'Bio Data'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={PensionProfile}
         />,
         <Scene 
             name="Query"
@@ -134,9 +148,25 @@ export default scenes = [
             component={UpdateProfile}
         />,
         <Scene 
-            name="login"
+            name="updatePensionProfile"
+            key="updatePensionProfile"
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            navigationBarStyle={{elevation: 5}}
+            title={'Bio Data'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={UpdatePensionProfile}
+        />,
+        <Scene 
+            name="home"
             key="home"
             component={Home}
+        />,
+        <Scene 
+            name="pensionHome"
+            key="pensionHome"
+            component={PensionHome}
         />,
         
 

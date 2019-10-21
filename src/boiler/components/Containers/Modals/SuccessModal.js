@@ -81,8 +81,12 @@ class SuccessModal extends Component {
                                                 this.prepareContent(staffName, bippiis_number,  operation, time))
                                                 ;
                                         }
+                                        if(this.props.user.category == 1){
+                                            Actions.reset('home');
+                                        }else{
+                                            Actions.reset('pensionHome');
+                                        }
                                         
-                                        Actions.reset('home');
                                         
                                         }} >
                                     <Text style={{color: WHITE, textAlign: 'center', fontSize: 17}}>OK</Text>
@@ -133,8 +137,9 @@ const styles = {
 const mapStateToProps = (state) => {
     const {showSuccessModal} = state.boilerService.modal;
     const {image} = state.boilerService.capture;
+    const {user} = state.boilerService.auth;
     
-    return {showSuccessModal, image}
+    return {showSuccessModal, image, user}
 };
 
 export default connect(mapStateToProps, {toggleSuccessModal})(SuccessModal);
