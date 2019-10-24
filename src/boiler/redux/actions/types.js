@@ -27,3 +27,7 @@ export const USER_DATA_LOADING = 'USER_DATA_LOADING';
 //errors
 export const GET_ERROR_MESSAGE = 'GET_ERROR_MESSAGE';
 export const GET_ERRORS = 'GET_ERRORS';
+
+//payments
+export const PAYMENT_LOADING = 'PAYMENT_LOADING';
+export const GET_PAYMENT = 'GET_PAYMENT';

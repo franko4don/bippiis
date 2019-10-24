@@ -24,6 +24,7 @@ import VasIcon from '../../../assets/svgs/VasIcon';
 import {getUserData, logoutUser} from './../../../redux/actions';
 import ErrorModal from '../Modals/ErrorModal';
 import SuccessModal from '../Modals/SuccessModal';
+import Swiper from 'react-native-swiper'
 
 const AnimatedView = Animated.createAnimatedComponent(View)
 
@@ -39,7 +40,7 @@ class PensionHome extends Component {
                 quote: 'Don’t simply retire from something; have something to retire to.',
                 quoter: ' Harry Emerson Fosdick'
             },
-            opacity: new Animated.Value(0.25),
+            opacity: new Animated.Value(1),
             quotes: [
                 {
                     quote: 'An unexamined life is not worth living',
@@ -50,6 +51,10 @@ class PensionHome extends Component {
                     quote: 'The devil that slaughters the innocent is entirely suffering',
                     quoter: ' Wrath of Vajra (k29)'
                 },
+                {
+                    quote: 'Don’t simply retire from something; have something to retire to.',
+                    quoter: ' Harry Emerson Fosdick'
+                }
             ]
         }
     }
@@ -65,15 +70,15 @@ class PensionHome extends Component {
     }
     
     componentDidMount(){
-        this.timer = setInterval(() => {
-            this.count = this.count + 1;
-            if(this.count >= this.state.quotes.length){
-                this.count = 0;
-            }
+        // this.timer = setInterval(() => {
+        //     this.count = this.count + 1;
+        //     if(this.count >= this.state.quotes.length){
+        //         this.count = 0;
+        //     }
             
-            this.setState({activeQuote: this.state.quotes[this.count], opacity: new Animated.Value(0.35)});
-            this.animate();
-        }, 10500);
+        //     this.setState({activeQuote: this.state.quotes[this.count], opacity: new Animated.Value(0.35)});
+        //     this.animate();
+        // }, 10500);
     }
 
     componentWillUnmount(){
@@ -112,16 +117,25 @@ class PensionHome extends Component {
                 <View style={{}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <View style={{ flex: 4, justifyContent: 'center'}}>
-                            <AnimatedView style={{justifyContent: 'center', opacity: this.state.opacity}}>
-                                <Text style={{color: WHITE, fontSize: 25, paddingLeft: 15, paddingTop: 10, lineHeight: 26}}>
-                                    "
-                                    {this.state.activeQuote.quote}
-                                    "
-                                </Text>
-                                <Text style={{color: WHITE, fontSize: 12, paddingLeft: 15, paddingTop: 15}}>
-                                    – {this.state.activeQuote.quoter}
-                                </Text>
-                            </AnimatedView>
+                            <Swiper showsPagination={false} autoplayTimeout={10} autoplay={true} showsButtons={false}>
+                            {
+                                this.state.quotes.map((item, index) => {
+                                    return(
+                                        <AnimatedView key={index} style={{justifyContent: 'center', flex: 1, opacity: this.state.opacity}}>
+                                            <Text style={{color: WHITE, fontSize: 25, paddingLeft: 15, paddingTop: 10, lineHeight: 26}}>
+                                                "
+                                                {item.quote}
+                                                "
+                                            </Text>
+                                            <Text style={{color: WHITE, fontSize: 12, paddingLeft: 15, paddingTop: 15}}>
+                                                – {item.quoter}
+                                            </Text>
+                                        </AnimatedView>
+                                    )
+                                })
+                            }
+                            
+                            </Swiper>
                             
                         </View>
                         <View style={{paddingTop: 20, paddingBottom: 20, flex: 1, justifyContent: 'center'}}>
@@ -163,12 +177,12 @@ class PensionHome extends Component {
                     <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Biometric Capture" image={<BiometricCaptureIcon/>}/>
                     <HomeSection onPress={() => Actions.pensionProfile()} name="View Profile" image={<ViewProfileIcon/>}/>
                     <HomeSection onPress={() => Actions.updatePensionProfile()} name="Edit Profile" image={<UpdateProfileIcon/>}/>
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Quarterly Verification" image={<TakeAttendancIcon/>}/>
+                    <HomeSection onPress={() => Actions.verification()} name="Quarterly Verification" image={<TakeAttendancIcon/>}/>
                    
                 </View>
 
                 <View style={{flexDirection: 'row', marginLeft: 5, marginRight: 5, marginBottom: 20, marginTop: 20, justifyContent: 'space-between'}}>
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Financial Report" image={<FinancialReportIcon/>}/>
+                    <HomeSection onPress={() => Actions.pensionPayment()} name="Financial Report" image={<FinancialReportIcon/>}/>
                     <HomeSection onPress={() => Actions.insurance()} name="Health Insurance" image={<HealthInsuranceIcon/>}/>
                     <HomeSection onPress={() => Actions.staffid()} name="Staff Identity Card" image={<StaffIdIcon/>}/>
                     <HomeSection style={{opacity: 0}} disabled={true} onPress={() => Actions.insurance()} name="Health Insurance" image={<HealthInsuranceIcon/>}/>

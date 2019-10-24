@@ -113,7 +113,7 @@ class PensionProfile extends Component {
                                 />}
                                 <ProfileSection
                                     label={`Bippiis Number: `}
-                                    data={user.lga_pensioners.bippiis_number}
+                                    data={user.bippiis_number}
                                 />
                                 <ProfileSection
                                     label={`Full Name: `}

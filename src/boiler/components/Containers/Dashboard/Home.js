@@ -24,6 +24,7 @@ import VasIcon from '../../../assets/svgs/VasIcon';
 import {getUserData, logoutUser} from './../../../redux/actions';
 import ErrorModal from '../Modals/ErrorModal';
 import SuccessModal from '../Modals/SuccessModal';
+import Swiper from 'react-native-swiper'
 
 const AnimatedView = Animated.createAnimatedComponent(View)
 
@@ -39,7 +40,7 @@ class Home extends Component {
                 quote: 'Don’t simply retire from something; have something to retire to.',
                 quoter: ' Harry Emerson Fosdick'
             },
-            opacity: new Animated.Value(0.25),
+            opacity: new Animated.Value(1),
             quotes: [
                 {
                     quote: 'An unexamined life is not worth living',
@@ -50,6 +51,11 @@ class Home extends Component {
                     quote: 'The devil that slaughters the innocent is entirely suffering',
                     quoter: ' Wrath of Vajra (k29)'
                 },
+
+                {
+                    quote: 'Don’t simply retire from something; have something to retire to.',
+                    quoter: ' Harry Emerson Fosdick'
+                }
             ]
         }
     }
@@ -64,15 +70,15 @@ class Home extends Component {
     }
     
     componentDidMount(){
-        this.timer = setInterval(() => {
-            this.count = this.count + 1;
-            if(this.count >= this.state.quotes.length){
-                this.count = 0;
-            }
+        // this.timer = setInterval(() => {
+        //     this.count = this.count + 1;
+        //     if(this.count >= this.state.quotes.length){
+        //         this.count = 0;
+        //     }
             
-            this.setState({activeQuote: this.state.quotes[this.count], opacity: new Animated.Value(0.35)});
-            this.animate();
-        }, 10500);
+        //     this.setState({activeQuote: this.state.quotes[this.count], opacity: new Animated.Value(0.35)});
+        //     this.animate();
+        // }, 10500);
     }
 
     componentWillUnmount(){
@@ -111,17 +117,25 @@ class Home extends Component {
                 <View style={{}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <View style={{ flex: 4, justifyContent: 'center'}}>
-                            <AnimatedView style={{justifyContent: 'center', opacity: this.state.opacity}}>
-                                <Text style={{color: WHITE, fontSize: 25, paddingLeft: 15, paddingTop: 10, lineHeight: 26}}>
-                                    "
-                                    {this.state.activeQuote.quote}
-                                    "
-                                </Text>
-                                <Text style={{color: WHITE, fontSize: 12, paddingLeft: 15, paddingTop: 15}}>
-                                    – {this.state.activeQuote.quoter}
-                                </Text>
-                            </AnimatedView>
-                            
+                        <Swiper showsPagination={false} autoplayTimeout={10} autoplay={true} showsButtons={false}>
+                        {
+                            this.state.quotes.map((item, index) => {
+                                return(
+                                    <AnimatedView key={index} style={{justifyContent: 'center', flex: 1, opacity: this.state.opacity}}>
+                                        <Text style={{color: WHITE, fontSize: 25, paddingLeft: 15, paddingTop: 10, lineHeight: 26}}>
+                                            "
+                                            {item.quote}
+                                            "
+                                        </Text>
+                                        <Text style={{color: WHITE, fontSize: 12, paddingLeft: 15, paddingTop: 15}}>
+                                            – {item.quoter}
+                                        </Text>
+                                    </AnimatedView>
+                                )
+                            })
+                        }
+                         
+                        </Swiper>
                         </View>
                         <View style={{paddingTop: 20, paddingBottom: 20, flex: 1, justifyContent: 'center'}}>
                             <Image

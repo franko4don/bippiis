@@ -6,5 +6,9 @@
         "@babel/plugin-proposal-nullish-coalescing-operator"
       ]
     }
+    // ,
+    // "production": {
+    //   "plugins": ["transform-remove-console"]
+    // }
   }
 }

@@ -25,7 +25,7 @@ class CreatePassword extends Component {
              
             <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1}} style={{backgroundColor: BACKGROUND}}>
                 <StatusBar hidden={true}/>
-                {this.props.loginLoading ? <OverlayLoader/> : null}
+                
                 
                 <ImageBackground
                     source={EXTRATRANSAPARENTBACKGROUND}

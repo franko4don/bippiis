@@ -19,6 +19,8 @@ import UpdateProfile from '../components/Containers/Profile/UpdateProfile';
 import PensionHome from '../components/Containers/Dashboard/PensionHome';
 import PensionProfile from '../components/Containers/Profile/PensionProfile';
 import UpdatePensionProfile from '../components/Containers/Profile/UpdatePensionProfile';
+import Verification from '../components/Containers/Vas/Verification';
+import PensionPayment from '../components/Containers/Profile/PensionPayment';
 
 export default scenes = [
         <Scene 
@@ -137,6 +139,17 @@ export default scenes = [
             component={Attendance}
         />,
         <Scene 
+            name="verification"
+            key="verification"
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            navigationBarStyle={{elevation: 5}}
+            title={'Verify'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={Verification}
+        />,
+        <Scene 
             name="updateProfile"
             key="updateProfile"
             back={true}
@@ -146,6 +159,17 @@ export default scenes = [
             titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
             hideNavBar={false}
             component={UpdateProfile}
+        />,
+        <Scene 
+            name="pensionPayment"
+            key="pensionPayment"
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            navigationBarStyle={{elevation: 5}}
+            title={'Financial Record'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={PensionPayment}
         />,
         <Scene 
             name="updatePensionProfile"

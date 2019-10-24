@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {ScrollView, NativeModules, Image, View, ImageBackground, StatusBar} from 'react-native';
+import {ScrollView, NativeModules, Image, View, PermissionsAndroid, ImageBackground, StatusBar} from 'react-native';
 import { connect } from 'react-redux';
 import { BACKGROUND, GREEN, WHITE } from '../../../style/colors';
 import { LOGO, TRANSAPARENTBACKGROUND, EXTRATRANSAPARENTBACKGROUND } from '../../../style/images';
@@ -17,12 +17,11 @@ import SuccessModal from '../Modals/SuccessModal';
 class Login extends Component {
 
     componentWillMount(){
-        // this.props.loginUpdate({prop: 'bippiis_number', value: ''});
-        // this.props.loginUpdate({prop: 'password', value: ''});
+        // Splashscreen.hide();
         setTimeout(() => {
             Splashscreen.hide();
         }, 10000)
-        
+        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
     }
 
     login(){

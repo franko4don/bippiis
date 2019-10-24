@@ -1,9 +1,10 @@
 
-import {PROFILE_UPDATE} from './../actions/types'
+import {PROFILE_UPDATE, GET_PAYMENT} from './../actions/types'
 
 
 const INITIAL_STATE = {
-    activeImage: ''
+    activeImage: '',
+    payments: []
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -12,6 +13,9 @@ export default (state = INITIAL_STATE, action) => {
         
         case PROFILE_UPDATE:
             return { ...state,  [action.payload.prop]: action.payload.value};
+
+        case GET_PAYMENT:
+            return {...state, payments: action.payload}
 
         default: return state
     }

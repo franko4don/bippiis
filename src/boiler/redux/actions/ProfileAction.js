@@ -1,4 +1,4 @@
-import { PROFILE_UPDATE, PASSPORT_LOADING, GET_ERRORS, GET_ERROR_MESSAGE, PROFILE_LOADING, INSURANCE_LOADING, ATTENDANCE_LOADING, ID_LOADING } from './types'
+import { PROFILE_UPDATE, PASSPORT_LOADING, GET_PAYMENT, PAYMENT_LOADING, GET_ERRORS, GET_ERROR_MESSAGE, PROFILE_LOADING, INSURANCE_LOADING, ATTENDANCE_LOADING, ID_LOADING } from './types'
 import client from './../../rclient/client';
 import config from './../config';
 import axios from 'axios';
@@ -300,3 +300,77 @@ export const updatePensionProfile = (data) => {
       
     }
 };
+
+export const verify = () => {
+    
+    return (dispatch) => {
+        dispatch({
+            type: ATTENDANCE_LOADING,
+            payload: true
+        });
+        client.post('pension/verify', {author: config.author})
+            .then(res => {
+                dispatch({
+                    type: ATTENDANCE_LOADING,
+                    payload: false
+                });
+                dispatch(toggleSuccessModal(true));
+                console.log(res, 'Response');
+            })
+            .catch(err => {
+                dispatch({
+                    type: ATTENDANCE_LOADING,
+                    payload: false
+                });
+                if(err.response.status == 409){
+                    dispatch(toggleErrorModal(true));
+                    dispatch({
+                        type: GET_ERROR_MESSAGE,
+                        payload: err.response.data.message
+                    });
+                }
+                if(err.response.status == 404){
+                    dispatch(toggleErrorModal(true));
+                    dispatch({
+                        type: GET_ERROR_MESSAGE,
+                        payload: err.response.data.message
+                    });
+                }
+                console.log(err.response, 'Response error');
+            })
+      
+    }
+};
+
+
+export const getPayments = () => {
+    
+    return (dispatch) => {
+        dispatch({
+            type: PAYMENT_LOADING,
+            payload: true
+        });
+        client.post('pension/payments', {author: config.author})
+            .then(res => {
+                dispatch({
+                    type: PAYMENT_LOADING,
+                    payload: false
+                });
+
+                dispatch({
+                    type: GET_PAYMENT,
+                    payload: res.data.data
+                });
+                console.log(res, 'Response');
+            })
+            .catch(err => {
+                dispatch({
+                    type: PAYMENT_LOADING,
+                    payload: false
+                });
+               
+                console.log(err.response, 'Response error');
+            })
+      
+    }
+}

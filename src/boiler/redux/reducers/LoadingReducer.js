@@ -2,7 +2,8 @@
 import {
     LOGIN_LOADING, INSURANCE_LOADING, ID_LOADING, 
     USER_DATA_LOADING, PASSPORT_LOADING, ATTENDANCE_LOADING, 
-    PROFILE_LOADING
+    PROFILE_LOADING,
+    PAYMENT_LOADING
 } from './../actions/types'
 
 
@@ -13,7 +14,8 @@ const INITIAL_STATE = {
     passportLoading: false,
     attendanceLoading: false,
     profileLoading: false,
-    userDataLoading: false
+    userDataLoading: false,
+    paymentLoading: false
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -40,7 +42,10 @@ export default (state = INITIAL_STATE, action) => {
 
         case USER_DATA_LOADING:
             return {...state, userDataLoading: action.payload}
-            
+
+        case PAYMENT_LOADING:
+            return {...state, paymentLoading: action.payload}
+
         default: return state
     }
 }
