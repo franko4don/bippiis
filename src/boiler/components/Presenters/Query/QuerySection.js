@@ -7,17 +7,17 @@ import { FONTFAMILYREGULAR, FONTFAMILYSEMIBOLD } from '../../../../fonts';
 import { calculateOpacity, truncateText } from '../../../../Helper';
 
 const QuerySection = (props) => {
-    const { name, image, onPress } = props;
+    const { name, image, onPress, reason, bippiis_number, date } = props;
 
     return (
         <TouchableOpacity style={styles.cardStyle} onPress={onPress} activeOpacity={0.9}>
             <View style={{padding: 5, paddingLeft: 10, paddingRight: 30, justifyContent: 'center'}}>
-                <Text style={{color: '#333333'+calculateOpacity(80), paddingTop: 3, paddingBottom: 1, fontSize: 12}}>21st May, 2017</Text>
-                <Text style={{color: '#333333', fontWeight: 'bold', paddingBottom: 3,  fontSize: 18}}>Job Abscence</Text>
-                <Text style={{color: '#333333'+calculateOpacity(80), fontSize: 12}}>{truncateText(120, 'Absence from work without prior permission from authority')}</Text>
+                <Text style={{color: '#333333'+calculateOpacity(80), paddingTop: 3, paddingBottom: 1, fontSize: 12}}>{date}</Text>
+                <Text style={{color: '#333333', fontFamily: FONTFAMILYSEMIBOLD, paddingBottom: 3,  fontSize: 17}}>{reason}</Text>
+                <Text style={{color: '#333333'+calculateOpacity(80), fontSize: 12}}>{truncateText(120, bippiis_number)}</Text>
                  
             </View>
-            <View style={{justifyContent: 'center'}}>
+            <View style={{justifyContent: 'center' }}>
                 <Image
                     source={ICONCHEVRON}
                     style={{width: 15, height: 15, marginRight: 5}}
@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: '#000000'+calculateOpacity(12),
         borderWidth: 0.3,
-        elevation: 0.8,
+        elevation: 3,
         paddingTop: 5,
         paddingBottom: 10,
-        paddingRight: 10,
+        paddingRight: 20,
         justifyContent: 'space-between',
         flexDirection: 'row',
         margin: 3,

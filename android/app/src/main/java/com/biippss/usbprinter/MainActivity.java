@@ -40,6 +40,7 @@ import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.*;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -149,13 +150,14 @@ public class MainActivity extends ReactActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_main);
+        // setContentView(R.layout.activity_main);
         mContext = this;
 		init();// 初始化
-		String whatToPrint = getIntent().getStringExtra("contentToPrint");
+		final String whatToPrint = getIntent().getStringExtra("contentToPrint");
 
 		saveLogo();
 		saveGamint();
+		//Do something after 100ms
 		printImage();
 		PrintContent(whatToPrint);
 		picturePath = picturePath1;
@@ -169,16 +171,16 @@ public class MainActivity extends ReactActivity{
     private void init() {
     	findView();           // 控件绑定
     	getUsbDriverService();// 创建UsbManager ，权限，广播；usb驱动
-    	setListener();        // 监听
+    	// setListener();        // 监听
     	getMsgByLanguage();   // 常规设置
     	printConnStatus();    // 连接设备 Get UsbDriver(UsbManager) service
 	}
 	// 绑定控件
 	private void findView() {
 		
-		etWrite = (EditText) findViewById(R.id.InputContent_et);   // 小票二维码内容 / 输入打印框
+		// etWrite = (EditText) findViewById(R.id.InputContent_et);   // 小票二维码内容 / 输入打印框
 
-		mInputPrint_btn = (Button)findViewById(R.id.InputPrint_btn);
+		// mInputPrint_btn = (Button)findViewById(R.id.InputPrint_btn);
 	
 	}
 	
@@ -485,6 +487,7 @@ public class MainActivity extends ReactActivity{
 	 */
 	private void printText(String data) {
 		if(!TextUtils.isEmpty(data)){
+			mUsbDriver.write(PrintCmd.SetLeftmargin(0));
 			mUsbDriver.write(PrintCmd.SetAlignment(align));
 			mUsbDriver.write(PrintCmd.PrintString(data, 0));
 			// setFeedCut(cutter,Integer.valueOf(iline));
@@ -2273,7 +2276,7 @@ public class MainActivity extends ReactActivity{
 			FileOutputStream fos = null;
 			byte[] tmp = new byte[1024];
 			try {
-				inputStream = getApplicationContext().getAssets().open("logo.png");
+				inputStream = getApplicationContext().getAssets().open("logo.jpg");
 				fos = new FileOutputStream(file);
 				int length = 0;
 				while((length = inputStream.read(tmp)) > 0){
@@ -2301,7 +2304,7 @@ public class MainActivity extends ReactActivity{
 			FileOutputStream fos = null;
 			byte[] tmp = new byte[1024];
 			try {
-				inputStream = getApplicationContext().getAssets().open("gamint.png");
+				inputStream = getApplicationContext().getAssets().open("gamint.jpg");
 				fos = new FileOutputStream(file);
 				int length = 0;
 				while((length = inputStream.read(tmp)) > 0){
@@ -2331,6 +2334,7 @@ public class MainActivity extends ReactActivity{
 		if(inputBmp == null)
  			return;
 		int[] data = Utils.getPixelsByBitmap(inputBmp);
+		mUsbDriver.write(PrintCmd.SetLeftmargin(100));
 		mUsbDriver.write(PrintCmd.PrintDiskImagefile(data,inputBmp.getWidth(),inputBmp.getHeight()));
 		
 

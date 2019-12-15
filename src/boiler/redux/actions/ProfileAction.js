@@ -1,4 +1,4 @@
-import { PROFILE_UPDATE, PASSPORT_LOADING, GET_PAYMENT, PAYMENT_LOADING, GET_ERRORS, GET_ERROR_MESSAGE, PROFILE_LOADING, INSURANCE_LOADING, ATTENDANCE_LOADING, ID_LOADING } from './types'
+import { PROFILE_UPDATE, PASSPORT_LOADING, GET_SINGLE_QUERY, QUERY_LOADING, GET_PAYMENT, PAYMENT_LOADING, GET_ERRORS, GET_ERROR_MESSAGE, PROFILE_LOADING, INSURANCE_LOADING, ATTENDANCE_LOADING, ID_LOADING, TRANSFER_LOADING, GET_SINGLE_TRANSFER, GET_TRANSFER, GET_QUERY } from './types'
 import client from './../../rclient/client';
 import config from './../config';
 import axios from 'axios';
@@ -263,7 +263,6 @@ export const updateDocument = (data) => {
 };
 
 
-
 export const updatePensionProfile = (data) => {
     
     return (dispatch) => {
@@ -343,6 +342,105 @@ export const verify = () => {
 };
 
 
+export const getQueries = () => {
+    
+    return (dispatch) => {
+        dispatch({
+            type: QUERY_LOADING,
+            payload: true
+        });
+        client.get('user/queries')
+            .then(res => {
+                dispatch({
+                    type: QUERY_LOADING,
+                    payload: false
+                });
+
+                dispatch({
+                    type: GET_QUERY,
+                    payload: res.data.data
+                });
+                console.log(res, 'Response');
+            })
+            .catch(err => {
+                dispatch({
+                    type: QUERY_LOADING,
+                    payload: false
+                });
+               
+                console.log(err.response, 'Response error');
+            })
+      
+    }
+}
+
+export const getSingleQuery = (data) => {
+    
+    return (dispatch) => {
+        dispatch({
+            type: QUERY_LOADING,
+            payload: true
+        });
+        client.post('user/query', data)
+            .then(res => {
+                dispatch({
+                    type: QUERY_LOADING,
+                    payload: false
+                });
+
+                dispatch({
+                    type: GET_SINGLE_QUERY,
+                    payload: res.data.data
+                });
+                console.log(res, 'Response');
+            })
+            .catch(err => {
+                dispatch({
+                    type: QUERY_LOADING,
+                    payload: false
+                });
+               
+                console.log(err.response, 'Response error');
+            })
+      
+    }
+}
+
+export const replyQuery = (data) => {
+    
+    return (dispatch) => {
+        dispatch({
+            type: QUERY_LOADING,
+            payload: true
+        });
+        client.post('user/query/reply', data)
+            .then(res => {
+                dispatch({
+                    type: QUERY_LOADING,
+                    payload: false
+                });
+
+                dispatch(toggleSuccessModal(true));
+            })
+            .catch(err => {
+                dispatch({
+                    type: QUERY_LOADING,
+                    payload: false
+                });
+                if(err.response.status == 422){
+                    dispatch({
+                        type: GET_ERRORS,
+                        payload: err.response.data.errors
+                    })
+                }
+               
+                console.log(err.response, 'Response error');
+            })
+      
+    }
+}
+
+
 export const getPayments = () => {
     
     return (dispatch) => {
@@ -366,6 +464,71 @@ export const getPayments = () => {
             .catch(err => {
                 dispatch({
                     type: PAYMENT_LOADING,
+                    payload: false
+                });
+               
+                console.log(err.response, 'Response error');
+            })
+      
+    }
+}
+// transfers
+export const getTransfers = () => {
+    
+    return (dispatch) => {
+        dispatch({
+            type: TRANSFER_LOADING,
+            payload: true
+        });
+        client.get('user/transfers')
+            .then(res => {
+                dispatch({
+                    type: TRANSFER_LOADING,
+                    payload: false
+                });
+
+                dispatch({
+                    type: GET_TRANSFER,
+                    payload: res.data.data
+                });
+                console.log(res, 'Response');
+            })
+            .catch(err => {
+                dispatch({
+                    type: TRANSFER_LOADING,
+                    payload: false
+                });
+               
+                console.log(err.response, 'Response error');
+            })
+    }
+}
+
+export const getSingleTransfer = (data) => {
+    console.log(data);
+    return (dispatch) => {
+        dispatch({
+            type: TRANSFER_LOADING,
+            payload: true
+        });
+        client.post('user/transfer', data)
+            .then(res => {
+                console.log(res, 'Response');
+
+                dispatch({
+                    type: TRANSFER_LOADING,
+                    payload: false
+                });
+
+                dispatch({
+                    type: GET_SINGLE_TRANSFER,
+                    payload: res.data.data
+                });
+                
+            })
+            .catch(err => {
+                dispatch({
+                    type: TRANSFER_LOADING,
                     payload: false
                 });
                

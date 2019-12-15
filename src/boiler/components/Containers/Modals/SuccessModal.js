@@ -16,7 +16,33 @@ class SuccessModal extends Component {
     }
 
     prepareContent(staffName, bippiis_number, operation, time){
-        let result = 
+        const {civil_servants} = this.props.user;
+        
+        if(civil_servants){
+            if(civil_servants.constituency == 'LGCS'){
+                let result = `
+                Staff Name:   ${staffName}
+       
+                BIPPIIS NO:    ${bippiis_number}
+       
+                Operation:     ${operation}
+
+                LGA Posted:    ${lga_posted_to}
+       
+                Status:        Successful
+       
+               ${time}
+       
+               Powered By Gamint Corporate Ltd. 
+       
+       
+               `
+               ;
+               return result;
+            }
+        }
+        let result =
+
         `
          Staff Name:   ${staffName}
 
@@ -26,21 +52,19 @@ class SuccessModal extends Component {
 
          Status:        Successful
 
-
         ${time}
 
         Powered By Gamint Corporate Ltd. 
 
 
-        `;
-        console.log(result);
+        `
+        ;
         return result;
     }
     
     render() {
-        const {width} = Dimensions.get('screen');
         const {staffName, bippiis_number,  operation, time} = this.props;
-        console.log(this.props);
+        
         return (
              
             <Modal

@@ -19,6 +19,10 @@ class LoginWithPassword extends Component {
         });
     }
 
+    componentWillMount(){
+        this.props.loginUpdate({prop: 'password', value: ''});
+    }
+
     render() {
      
         return (

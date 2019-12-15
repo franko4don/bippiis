@@ -230,37 +230,37 @@ class UpdateProfile extends Component {
                                 error={this.props.errors.hasOwnProperty('residential_address') ? this.props.errors.residential_address[0] : ''}
                             />
                             <SquareInput
-                                label={'Next of Kin Surname'}
+                                label={"Next of Kin' Surname"}
                                 value={this.state.nok_surname}
                                 onChangeText={(value) => this.setState({'nok_surname': value})}
                                 error={this.props.errors.hasOwnProperty('nok_surname') ? this.props.errors.nok_surname[0] : ''}
                             />
                             <SquareInput
-                                label={'Next of Kin Firstname'}
+                                label={"Next of Kin's Firstname"}
                                 value={this.state.nok_firstname}
                                 onChangeText={(value) => this.setState({'nok_firstname': value})}
                                 error={this.props.errors.hasOwnProperty('nok_firstname') ? this.props.errors.nok_firstname[0] : ''}
                             />
                             <SquareInput
-                                label={'Next of kin middlename'}
+                                label={"Next of Kin's middlename"}
                                 value={this.state.nok_middlename}
                                 onChangeText={(value) => this.setState({'nok_middlename': value})}
                                 error={this.props.errors.hasOwnProperty('nok_middlename') ? this.props.errors.nok_middlename[0] : ''}
                             />
                             <SquareInput
-                                label={'Next of kin phone number'}
+                                label={"Next of Kin's phone number"}
                                 value={this.state.nok_phone}
                                 onChangeText={(value) => this.setState({'nok_phone': value})}
                                 error={this.props.errors.hasOwnProperty('nok_phone') ? this.props.errors.nok_phone[0] : ''}
                             />
                             <SquareInput
-                                label={'Relation with next of kin'}
+                                label={"Relation with next of Kin's"}
                                 value={this.state.nok_rel}
                                 onChangeText={(value) => this.setState({'nok_rel': value})}
                                 error={this.props.errors.hasOwnProperty('nok_rel') ? this.props.errors.nok_rel[0] : ''}
                             />
                             <SquareInput
-                                label={'Next of Kin Address'}
+                                label={"Next of Kin's Address"}
                                 value={this.state.nok_address}
                                 onChangeText={(value) => this.setState({'nok_address': value})}
                                 error={this.props.errors.hasOwnProperty('nok_address') ? this.props.errors.nok_address[0] : ''}

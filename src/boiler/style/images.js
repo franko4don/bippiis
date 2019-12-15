@@ -17,7 +17,9 @@ const DOCUMENT = require('./../assets/images/document.jpeg');
 const HIS = require('./../assets/images/his.png');
 const SUCCESS = require('./../assets/images/icons/success.png');
 const ERROR = require('./../assets/images/icons/error.png');
+const PROMOTION = require('./../assets/images/icons/promotion.png');
 const NOIMAGE = require('./../assets/images/noimage.png');
+
 
 export {
     GOVERNOR, ICONBIOMETRICS, ICONFACECAPTURE,
@@ -27,5 +29,5 @@ export {
     ICONATTENDANCE, ICONHEALTH, ICONIDCARD,
     LOGOTRANSPARENT, ICONVERIFICATION,
     ICONCHEVRON, DOCUMENT, HIS,
-    SUCCESS, ERROR, NOIMAGE
+    SUCCESS, ERROR, NOIMAGE, PROMOTION
 }

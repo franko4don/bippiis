@@ -10,6 +10,7 @@ import { LOGOTRANSPARENT, DOCUMENT, NOIMAGE } from '../../../style/images'
 import {toggleImageViewModal, profileUpdate} from './../../../redux/actions';
 import ImageViewModal from '../Modals/ImageViewModal';
 import _ from 'lodash';
+import moment from 'moment';
 
 class Profile extends Component {
 
@@ -176,7 +177,7 @@ class Profile extends Component {
                                 />
                                 <ProfileSection
                                     label={'Date Of Birth:'}
-                                    data={user.civil_servants.dob}
+                                    data={moment(user.civil_servants.dob, 'DD/MM/YYYY').format('Do MMMM, YYYY')}
                                 />
                                 <ProfileSection
                                     label={'Place Of Birth:'}
@@ -280,6 +281,7 @@ class Profile extends Component {
                                         data={user.civil_servants.lga_posted_to}
                                     />: null
                                 }
+                                
                                 <ProfileSection
                                     label={'Work Station:'}
                                     data={user.civil_servants.work_station}
@@ -294,7 +296,7 @@ class Profile extends Component {
                                 />
                                 <ProfileSection
                                     label={'Date Of First Appointment:'}
-                                    data={user.civil_servants.first_appointment_date}
+                                    data={moment(user.civil_servants.first_appointment_date, 'DD/MM/YYYY').format('Do MMMM, YYYY')}
                                 />
                                 <ProfileSection
                                     label={'Job Title/Responsibility:'}
@@ -302,11 +304,11 @@ class Profile extends Component {
                                 />
                                 <ProfileSection
                                     label={'Date Of Last Promotion:'}
-                                    data={user.civil_servants.last_promotion_date}
+                                    data={moment(user.civil_servants.last_promotion_date, 'DD/MM/YYYY').format('Do MMMM, YYYY')}
                                 />
                                 <ProfileSection
                                     label={'Grade Level/Step:'}
-                                    data={user.civil_servants.grade_level}
+                                    data={`Grade ${user.civil_servants.grade.grade_level} / Step ${user.civil_servants.grade.step}`}
                                 />
                                 <ProfileSection
                                     label={'Rank:'}

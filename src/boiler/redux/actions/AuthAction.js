@@ -1,4 +1,7 @@
-import { LOGIN_UPDATE, LOGIN_LOADING, LOGIN_USER, GET_USER, GET_ERRORS, GET_ERROR_MESSAGE, USER_DATA_LOADING, LOGOUT_USER } from './types'
+import { 
+    LOGIN_UPDATE, LOGIN_LOADING, LOGIN_USER, GET_USER, GET_ERRORS, 
+    GET_ERROR_MESSAGE, USER_DATA_LOADING, LOGOUT_USER 
+} from './types'
 import client from './../../rclient/client';
 import config from './../config';
 import axios from 'axios';

@@ -10,6 +10,8 @@ import { LOGOTRANSPARENT, DOCUMENT, NOIMAGE } from '../../../style/images'
 import {toggleImageViewModal, profileUpdate} from './../../../redux/actions';
 import ImageViewModal from '../Modals/ImageViewModal';
 import _ from 'lodash';
+import moment from 'moment';
+import { formatMoney } from '../../../../Helper';
 
 class PensionProfile extends Component {
 
@@ -121,7 +123,7 @@ class PensionProfile extends Component {
                                 />
                                 <ProfileSection
                                     label={`Date of Birth: `}
-                                    data={user.lga_pensioners.date_of_birth}
+                                    data={moment(user.lga_pensioners.date_of_birth, 'YYYY-MM-DD').format('Do MMMM, YYYY')}
                                 />
                                 <ProfileSection
                                     label={`Gender: `}
@@ -133,7 +135,7 @@ class PensionProfile extends Component {
                                 />
                                 <ProfileSection
                                     label={`Category: `}
-                                    data={user.lga_pensioners.category}
+                                    data={user.lga_pensioners.category+ ' Pensioner'}
                                 />
                                 <ProfileSection
                                     label={`Permanent House Address: `}
@@ -174,20 +176,17 @@ class PensionProfile extends Component {
                                 >
                                 <ProfileSection
                                     label={`Date of First Appointment: `}
-                                    data={user.lga_pensioners.f_a_d}
+                                    data={moment(user.lga_pensioners.f_a_d, 'YYYY-MM-DD').format('Do MMMM, YYYY')}
                                 />
                                 <ProfileSection
                                     label={`Retirement Date: `}
-                                    data={user.lga_pensioners.d_o_r}
+                                    data={moment(user.lga_pensioners.d_o_r, 'YYYY-MM-DD').format('Do MMMM, YYYY')}
                                 />
                                 <ProfileSection
                                     label={`Years Served: `}
-                                    data={user.lga_pensioners.years_served}
+                                    data={`${user.lga_pensioners.years_served} Year(s) ${user.lga_pensioners.month_served == null || user.lga_pensioners.month_served == 0 ? '' : user.lga_pensioners.month_served + ' Months'}`}
                                 />
-                                <ProfileSection
-                                    label={`Months Served: `}
-                                    data={user.lga_pensioners.month_served}
-                                />
+                                
                                 <ProfileSection
                                     label={`Classification: `}
                                     data={user.lga_pensioners.classification}
@@ -197,16 +196,13 @@ class PensionProfile extends Component {
                                     data={user.lga_pensioners.rank}
                                 />
                                 <ProfileSection
-                                    label={`Grade Level: `}
-                                    data={user.lga_pensioners.grade_level}
+                                    label={`Grade Level/Step: `}
+                                    data={`Grade ${user.lga_pensioners.grade_level} / Step ${user.lga_pensioners.step}`}
                                 />
-                                <ProfileSection
-                                    label={`Step: `}
-                                    data={user.lga_pensioners.step}
-                                />
+                               
                                 <ProfileSection
                                     label={`Date Of Last Promotion: `}
-                                    data={user.lga_pensioners.d_o_p}
+                                    data={moment(user.lga_pensioners.d_o_p, 'YYYY-MM-DD').format('Do MMMM, YYYY')}
                                 />
                                 <ProfileSection
                                     label={`Local Government of Retirement: `}
@@ -232,15 +228,15 @@ class PensionProfile extends Component {
                                 >
                                 <ProfileSection
                                     label={`Pension Per Annum: `}
-                                    data={user.lga_pensioners.p_p_a}
+                                    data={'₦ '+formatMoney(user.lga_pensioners.p_p_a, '.', '.')}
                                 />
                                 <ProfileSection
                                     label={`Initial Monthly Pension: `}
-                                    data={user.lga_pensioners.i_m_p}
+                                    data={'₦ '+formatMoney(user.lga_pensioners.i_m_p, '.', '.')}
                                 />
                                 <ProfileSection
                                     label={`Current Monthly Pension: `}
-                                    data={user.lga_pensioners.c_m_p}
+                                    data={'₦ '+formatMoney(user.lga_pensioners.c_m_p, '.', '.')}
                                 />
                                 <ProfileSection
                                     label={`Bank: `}
@@ -256,7 +252,7 @@ class PensionProfile extends Component {
                                 />
                                 <ProfileSection
                                     label={`Payroll Status: `}
-                                    data={user.lga_pensioners.payroll_status}
+                                    data={user.lga_pensioners.payroll_status == 1 ? 'On Payroll' : 'Not On Payroll'}
                                 />
                                 </ImageBackground>
                             </ScrollView>
@@ -274,39 +270,39 @@ class PensionProfile extends Component {
                                 >
                                 <ProfileSection
                                     label={`Total Amount Of Gratuity: `}
-                                    data={user.lga_pensioners.t_a_g}
+                                    data={'₦ '+formatMoney(user.lga_pensioners.t_a_g, '.', '.')}
                                 />
                                 <ProfileSection
                                     label={`5 Years Death Pension Arrears: `}
-                                    data={user.lga_pensioners.y_5_d}
+                                    data={'₦ '+formatMoney(user.lga_pensioners.y_5_d, '.', '.')}         
                                 />
                                 <ProfileSection
                                     label={`Pension Arrears If Any: `}
-                                    data={user.lga_pensioners.p_a}
+                                    data={'₦ '+formatMoney(user.lga_pensioners.p_a, '.', '.')}
                                 />
                                 <ProfileSection
                                     label={`Total 150% Pension Arrears `}
-                                    data={user.lga_pensioners.p_150_a}
+                                    data={'₦ '+formatMoney(user.lga_pensioners.p_150_a, '.', '.')}                                 
                                 />
                                 <ProfileSection
                                     label={`Total 30% Pension Arrears: `}
-                                    data={user.lga_pensioners.p_30_a}
+                                    data={'₦ '+formatMoney(user.lga_pensioners.p_30_a, '.', '.')}
                                 />
                                 <ProfileSection
                                     label={`Federal Share If Any: `}
-                                    data={user.lga_pensioners.fed_share}
+                                    data={'₦ '+formatMoney(user.lga_pensioners.fed_share, '.', '.')}
                                 />
                                 <ProfileSection
                                     label={`Total 142% Pension Arrears: `}
-                                    data={user.lga_pensioners.p_142_a}
+                                    data={'₦ '+formatMoney(user.lga_pensioners.p_142_a, '.', '.')}
                                 />
                                 <ProfileSection
                                     label={`Total Of Any Other Increment Arrears: `}
-                                    data={user.lga_pensioners.other_areas}
+                                    data={'₦ '+formatMoney(user.lga_pensioners.other_areas, '.', '.')}
                                 />
                                 <ProfileSection
                                     label={`Grand Total: `}
-                                    data={user.lga_pensioners.grand_total}
+                                    data={'₦ '+formatMoney(user.lga_pensioners.grand_total, '.', '.')}
                                 />
                                 
                                 </ImageBackground>

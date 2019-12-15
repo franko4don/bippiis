@@ -10,7 +10,7 @@ import { LOGOTRANSPARENT, DOCUMENT } from '../../../style/images'
 import {getPayments} from './../../../redux/actions';
 import { OverlayLoader } from '../../Reusables/Loaders/OverlayLoader';
 import moment from 'moment';
-import { formatMoney } from '../../../../Helper';
+import { formatMoney, calculateOpacity } from '../../../../Helper';
 import { FONTFAMILYSEMIBOLD, FONTFAMILYBLACK } from '../../../style/fonts';
 
 class PensionPayment extends Component {
@@ -48,10 +48,10 @@ class PensionPayment extends Component {
                 <View style={[styles.rowStyle, {flex: 7}]}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <View style={[{flex: 1}, styles.viewStyle]}>
-                            <Text style={styles.textStyle}>{item.description == 'Gratuity' ? 'yes': ''}</Text>
+                            <Text style={styles.textStyle}>{item.description == 'Gratuity' ? '✔': ''}</Text>
                         </View>
                         <View style={[{flex: 1}, styles.viewStyle]}>
-                            <Text style={styles.textStyle}>{item.description == 'Pension' ? 'yes': ''}</Text>
+                            <Text style={styles.textStyle}>{item.description == 'Pension' ? '✔': ''}</Text>
                         </View>
 
                     </View>
@@ -61,10 +61,10 @@ class PensionPayment extends Component {
                 <View style={[styles.rowStyle, {flex: 8}]}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <View style={[{flex: 1}, styles.viewStyle]}>
-                            <Text style={[styles.textStyle, {textAlign: 'left', paddingLeft: 20}]}>{item.description == 'Gratuity' ? '₦ '+formatMoney(item.amount, '.', '.'): '₦ '+formatMoney(0, '.', '.')}</Text>
+                            <Text style={[styles.textStyle, {textAlign: 'left', paddingLeft: 5}]}>{item.description == 'Gratuity' ? '₦ '+formatMoney(item.amount, '.', '.'): '₦ '+formatMoney(0, '.', '.')}</Text>
                         </View>
                         <View style={[{flex: 1}, styles.viewStyle]}>
-                            <Text style={[styles.textStyle, {textAlign: 'left', paddingLeft: 20}]}>{item.description == 'Pension' ? '₦ '+formatMoney(item.amount, '.', '.'): '₦ '+formatMoney(0, '.', '.')}</Text>
+                            <Text style={[styles.textStyle, {textAlign: 'left', paddingLeft: 5}]}>{item.description == 'Pension' ? '₦ '+formatMoney(item.amount, '.', '.'): '₦ '+formatMoney(0, '.', '.')}</Text>
                         </View>
 
                     </View>
@@ -94,10 +94,10 @@ class PensionPayment extends Component {
                 <View style={[styles.rowStyle, {flex: 8}]}>
                     <View style={{flexDirection: 'row', borderBottomWidth: 1, borderColor: GRAY, justifyContent: 'space-between'}}>
                         <View style={[{flex: 1}, styles.viewStyle]}>
-                            <Text style={[styles.textStyle, {textAlign: 'left', paddingLeft: 20}]}>{'₦ '+formatMoney(gratuity, '.', '.')}</Text>
+                            <Text style={[styles.textStyle, {textAlign: 'left', paddingLeft: 5}]}>{'₦ '+formatMoney(gratuity, '.', '.')}</Text>
                         </View>
                         <View style={[{flex: 1}, styles.viewStyle]}>
-                            <Text style={[styles.textStyle, {textAlign: 'left', paddingLeft: 20}]}>{'₦ '+formatMoney(pension, '.', '.')}</Text>
+                            <Text style={[styles.textStyle, {textAlign: 'left', paddingLeft: 5}]}>{'₦ '+formatMoney(pension, '.', '.')}</Text>
                         </View>
 
                     </View>
@@ -123,6 +123,31 @@ class PensionPayment extends Component {
                     style={{width: null, flex: 1}}
                     resizeMode={'contain'}
                 >
+                    <View style={{marginTop: 20, marginBottom: 30}}>
+                        
+                            <Text style={{color: GREEN, fontSize: 16, marginBottom: 10}}>
+                                Total Gratuity Owed: 
+                                <Text style={{color: '#000000'+calculateOpacity(80)}}>{' ₦ '+formatMoney(lga_pensioners.t_g_o, '.', '.')}</Text>
+                            </Text>
+                            <Text style={{color: GREEN, fontSize: 16, marginBottom: 10}}>
+                                Total Pension Arrears Owed: 
+                                <Text style={{color: '#000000'+calculateOpacity(80)}}>{' ₦ '+formatMoney(lga_pensioners.t_p_a, '.', '.')}</Text>
+                            </Text>
+
+                            <Text style={{color: GREEN, fontSize: 16, marginBottom: 10}}>
+                                Total Amount Owed: 
+                                <Text style={{color: '#000000'+calculateOpacity(80)}}>{' ₦ '+formatMoney(lga_pensioners.t_a_o, '.', '.')}</Text>
+                            </Text>
+
+                            <Text style={{color: GREEN, fontSize: 16, marginBottom: 10}}>
+                                Amount Collected After Retirement: 
+                                <Text style={{color: '#000000'+calculateOpacity(80)}}>{' ₦ '+formatMoney(lga_pensioners.a_c_r, '.', '.')}</Text>
+                            </Text>
+                           
+                        
+                  
+                    </View>
+
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <View style={[styles.rowStyle,{flex: 2}]}>
                             <Text style={[styles.textStyle, {fontFamily: FONTFAMILYBLACK}]}>S/N</Text>
@@ -179,7 +204,7 @@ class PensionPayment extends Component {
 const styles = {
     
     rowStyle: {
-        flex: 5,
+        flex: 4,
         borderTopWidth: 1,
         borderLeftWidth: 1,
         borderRightWidth: 1,
@@ -193,7 +218,7 @@ const styles = {
     },
 
     textStyle: {
-        fontSize: 16, 
+        fontSize: 14, 
         textAlign: 'center',
         paddingTop: 10,
         paddingBottom: 10

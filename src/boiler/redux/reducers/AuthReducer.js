@@ -25,7 +25,8 @@ export default (state = INITIAL_STATE, action) => {
                 ...state, auth: true,
                  token: action.payload.token, 
                  user: action.payload.data,
-                 
+                 bippiis_number: '',
+                 password: ''
                 };
 
         case LOGOUT_USER:

@@ -21,6 +21,10 @@ import PensionProfile from '../components/Containers/Profile/PensionProfile';
 import UpdatePensionProfile from '../components/Containers/Profile/UpdatePensionProfile';
 import Verification from '../components/Containers/Vas/Verification';
 import PensionPayment from '../components/Containers/Profile/PensionPayment';
+import SingleQuery from '../components/Containers/Query/SingleQuery';
+import Transfer from '../components/Containers/Transfer/Transfer';
+import SingleTransfer from '../components/Containers/Transfer/SingleTransfer';
+import Pencom from '../components/Containers/Pencom/Pencom';
 
 export default scenes = [
         <Scene 
@@ -79,6 +83,17 @@ export default scenes = [
             titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
             hideNavBar={false}
             component={Query}
+        />,
+        <Scene 
+            name="Transfer"
+            key="transfer"
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            navigationBarStyle={{elevation: 5}}
+            title={'Transfer'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={Transfer}
         />,
         <Scene 
             name="Leave"
@@ -181,6 +196,39 @@ export default scenes = [
             titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
             hideNavBar={false}
             component={UpdatePensionProfile}
+        />,
+        <Scene 
+            name="pencom"
+            key="pencom"
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            navigationBarStyle={{elevation: 5}}
+            title={'Pencom Status'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={Pencom}
+        />,
+        <Scene 
+            name="singleQuery"
+            key="singleQuery"
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            navigationBarStyle={{elevation: 5}}
+            title={'Query Detail'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={SingleQuery}
+        />,
+        <Scene 
+            name="singleTransfer"
+            key="singleTransfer"
+            back={true}
+            backButtonTintColor={'#7B7B7B'}
+            navigationBarStyle={{elevation: 5}}
+            title={'Transfer Detail'}
+            titleStyle={{color: '#7B7B7B', fontFamily: FONTFAMILYREGULAR, fontWeight: 'normal'}}
+            hideNavBar={false}
+            component={SingleTransfer}
         />,
         <Scene 
             name="home"

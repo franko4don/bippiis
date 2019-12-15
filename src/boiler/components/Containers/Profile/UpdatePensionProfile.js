@@ -112,26 +112,26 @@ class UpdatePensionProfile extends Component {
                             />
                             
                             <SquareInput
-                                label={'Next of Name'}
+                                label={"Next of Kin's Name"}
                                 value={this.state.nok_name}
                                 onChangeText={(value) => this.setState({'nok_name': value})}
                                 error={this.props.errors.hasOwnProperty('nok_name') ? this.props.errors.nok_name[0] : ''}
                             />
                            
                             <SquareInput
-                                label={'Next of kin phone number'}
+                                label={"Next of Kin's phone number"}
                                 value={this.state.nok_phone}
                                 onChangeText={(value) => this.setState({'nok_phone': value})}
                                 error={this.props.errors.hasOwnProperty('nok_phone') ? this.props.errors.nok_phone[0] : ''}
                             />
                             <SquareInput
-                                label={'Relationship with next of kin'}
+                                label={'Relationship with next of Kin'}
                                 value={this.state.nok_relationship}
                                 onChangeText={(value) => this.setState({'nok_relationship': value})}
                                 error={this.props.errors.hasOwnProperty('nok_relationship') ? this.props.errors.nok_relationship[0] : ''}
                             />
                             <SquareInput
-                                label={'Next of Kin Address'}
+                                label={"Next of Kin's Address"}
                                 value={this.state.nok_address}
                                 onChangeText={(value) => this.setState({'nok_address': value})}
                                 error={this.props.errors.hasOwnProperty('nok_address') ? this.props.errors.nok_address[0] : ''}

@@ -21,10 +21,13 @@ import FinancialReportIcon from '../../../assets/svgs/FinancialReportIcon';
 import HealthInsuranceIcon from '../../../assets/svgs/HealthInsuranceIcon';
 import StaffIdIcon from '../../../assets/svgs/StaffIdIcon';
 import VasIcon from '../../../assets/svgs/VasIcon';
-import {getUserData, logoutUser} from './../../../redux/actions';
+import {getUserData, logoutUser, togglePencomModal} from './../../../redux/actions';
 import ErrorModal from '../Modals/ErrorModal';
 import SuccessModal from '../Modals/SuccessModal';
 import Swiper from 'react-native-swiper'
+import QueryIcon from '../../../assets/svgs/QueryIcon';
+import PencomModal from '../Modals/PencomModal';
+import TransferIcon from '../../../assets/svgs/TransferIcon';
 
 const AnimatedView = Animated.createAnimatedComponent(View)
 
@@ -106,6 +109,7 @@ class Home extends Component {
             <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1}} style={{backgroundColor: BACKGROUND}}>
               
                 <ErrorModal/>
+                <PencomModal/>
                 <StatusBar translucent={true} backgroundColor={'transparent'}/>
                 {this.props.userDataLoading ? <OverlayLoader/> : null}
                 
@@ -172,7 +176,7 @@ class Home extends Component {
                         }}
                         name="Face Capture" 
                     image={<FaceCaptureIcon/>}/>
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Biometric Capture" image={<BiometricCaptureIcon/>}/>
+                    <HomeSection onPress={() => Actions.transfer()} name="Transfers" image={<TransferIcon/>}/>
                     <HomeSection onPress={() => Actions.attendance()} name="Take Attendance" image={<TakeAttendancIcon/>}/>
                     <HomeSection onPress={() => Actions.profile()} name="View Profile" image={<ViewProfileIcon/>}/>
                     <HomeSection onPress={() => Actions.updateProfile()} name="Update Profile" image={<UpdateProfileIcon/>}/>
@@ -182,8 +186,16 @@ class Home extends Component {
                     <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Financial Report" image={<FinancialReportIcon/>}/>
                     <HomeSection onPress={() => Actions.insurance()} name="Health Insurance" image={<HealthInsuranceIcon/>}/>
                     <HomeSection onPress={() => Actions.staffid()} name="Staff Identity Card" image={<StaffIdIcon/>}/>
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Pencom Status" image={<StaffIdIcon/>}/>
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Value Added Services" image={<VasIcon/>}/>
+                    <HomeSection onPress={() => {
+                        if(this.props.user.civil_servants.pencom_status){
+                            Actions.pencom();
+                        }else{
+                            this.props.togglePencomModal(true);
+                        }
+                        
+                        }} name="Pencom Status" image={<StaffIdIcon/>}/>
+                    {/* <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Value Added Services" image={<VasIcon/>}/> */}
+                    <HomeSection onPress={() => Actions.query()} name="Queries" image={<QueryIcon/>}/>
                    
                 </View>
       
@@ -204,4 +216,4 @@ const mapStateToProps = (state) => {
     return {user, userDataLoading}
 };
 
-export default connect(mapStateToProps, {getUserData, logoutUser})(Home);
+export default connect(mapStateToProps, {getUserData, togglePencomModal, logoutUser})(Home);
