@@ -122,14 +122,13 @@ android {
 //                arguments "-DANDROID_STL=gnustl_shared"
 //            }
             ndk {
-                abiFilters 'armeabi-v7a','armeabi', 'arm64-v8a'
+                abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
                 ldLibs "log"
             }
             // end GREENBIT ADDS
         }
         ndk {
-            abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a',
-                   'arm64-v8a'
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }
     }
 
@@ -161,7 +160,7 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk true  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86", "armeabi", "arm64-v8a"
+            include "armeabi-v7a", "x86", "armeabi"
         }
     }
     buildTypes {
@@ -176,7 +175,7 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2, "armeabi":3, "arm64-v8a": 4]
+            def versionCodes = ["armeabi-v7a":1, "x86":2, "armeabi":3]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride = defaultConfig.versionCode
