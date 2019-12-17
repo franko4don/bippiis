@@ -74,6 +74,64 @@
             android:launchMode="singleTask" >
         </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+
+      <!-- Finger Print start -->
+            <activity
+                android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.MainActivity"
+                android:label="@string/app_name"
+                >
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+            </activity>
+            <activity
+                android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.DeviceFeaturesActivity"
+                android:label="@string/title_activity_device_features"
+                 />
+            <activity
+                android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.FlatSingleFingerAcquisitionOptions"
+                android:label="@string/title_activity_flat_acquisition_options"
+                 />
+            <activity
+                android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.SlapAcquisitionOptions"
+                android:label="@string/title_activity_slap_acquisition_options"
+                 />
+            <activity
+                android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.RollAcquisitonOptions"
+                android:label="@string/title_activity_roll_acquisiton_options"
+                 />
+            <activity
+                android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.FrameRateSettings"
+                android:label="@string/title_activity_frame_rate_settings"
+                 />
+            <activity
+                android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.DactyMatchSettings"
+                android:label="@string/title_activity_dacty_match_settings"
+                 />
+            <activity
+                android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.WsqWindow"
+                android:label="@string/title_activity_wsq_window"
+                 />
+            <activity
+                android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.Jp2Window"
+                android:label="@string/title_activity_jp2_window"
+                 />
+            <activity
+                android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.GbfinimgWindow"
+                android:label="@string/title_activity_gbfinimg_window"
+                 />
+            <activity
+                android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.SegmentsInfoWindow"
+                android:label="@string/title_activity_segments_info_window"
+                 />
+            <activity
+                android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.LogWindow"
+                android:label="@string/title_activity_log_window"
+                ></activity>
+
+      <!-- Fingerprint end -->
       <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_name"
                 android:value="PredictPal"/>
         <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description"

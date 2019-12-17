@@ -42,6 +42,7 @@ import org.pgsqlite.SQLitePluginPackage;
 // import com.facebook.FacebookSdk;
 import com.biippss.KillAppPackage;
 import com.biippss.PrinterPackage;
+import com.biippss.BiometricPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -108,7 +109,8 @@ public class MainApplication extends Application implements ReactApplication {
             new VectorIconsPackage(),
             new KillAppPackage(),
             new SQLitePluginPackage(),
-            new PrinterPackage()
+            new PrinterPackage(),
+            new BiometricPackage()
       );
     }
 

@@ -111,13 +111,35 @@ android {
         applicationId "com.biippss"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 6
+        versionCode 7
         multiDexEnabled true
-        versionName "1.0.3"
+        versionName "1.0.4"
         missingDimensionStrategy 'react-native-camera', 'general'
+         externalNativeBuild {
+            // GREENBIT ADDS
+//            cmake {
+//                cppFlags "-std=c++11 -frtti -fexceptions"
+//                arguments "-DANDROID_STL=gnustl_shared"
+//            }
+            ndk {
+                abiFilters 'armeabi-v7a','armeabi', 'arm64-v8a'
+                ldLibs "log"
+            }
+            // end GREENBIT ADDS
+        }
         ndk {
             abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a',
                    'arm64-v8a'
+        }
+    }
+
+     // GREENBIT ADDS
+    sourceSets {
+        main {
+            // let gradle pack the shared library into apk
+            jniLibs.srcDirs = ['/RUN_ANDROID_ARM']
+            java.srcDirs += '/LIBS_SOURCE/ANDROID_JNI/java'
+            jniLibs.srcDirs = ['src/main/jniLibs']
         }
     }
     signingConfigs {
@@ -139,7 +161,7 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk true  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86", "armeabi"
+            include "armeabi-v7a", "x86", "armeabi", "arm64-v8a"
         }
     }
     buildTypes {
@@ -154,11 +176,11 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2, "armeabi":3]
+            def versionCodes = ["armeabi-v7a":1, "x86":2, "armeabi":3, "arm64-v8a": 4]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
-                output.versionCodeOverride =
-                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
+                output.versionCodeOverride = defaultConfig.versionCode
+                        // versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
             }
         }
     }
@@ -204,10 +226,16 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.2'
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:23.0.1"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:design:23.1.0'
+    implementation 'com.android.support:cardview-v7:23.1.0'
+    implementation 'com.android.support:appcompat-v7:23.1.0'
+    implementation 'com.android.support:design:23.1.0'
+
     implementation "com.google.zxing:core:3.3.3"
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation fileTree(dir: 'jniLibs', include: ['*.so'])
-    
+    implementation files('libs/multiscan.jar')
 }
 
 // Run this once to be able to run the application with BUCK

@@ -25,7 +25,7 @@ import {getUserData, logoutUser} from './../../../redux/actions';
 import ErrorModal from '../Modals/ErrorModal';
 import SuccessModal from '../Modals/SuccessModal';
 import Swiper from 'react-native-swiper'
-
+const { Biometrics } = NativeModules;
 const AnimatedView = Animated.createAnimatedComponent(View)
 
 class PensionHome extends Component {
@@ -174,7 +174,7 @@ class PensionHome extends Component {
                         name="Face Capture" 
                     image={<FaceCaptureIcon/>}/>
 
-                    <HomeSection onPress={() => ToastAndroid.show('Feature is Coming Soon', ToastAndroid.SHORT)} name="Biometric Capture" image={<BiometricCaptureIcon/>}/>
+                    <HomeSection onPress={() => Biometrics.startBiometrics("Nothing")} name="Biometric Capture" image={<BiometricCaptureIcon/>}/>
                     <HomeSection onPress={() => Actions.pensionProfile()} name="View Profile" image={<ViewProfileIcon/>}/>
                     <HomeSection onPress={() => Actions.updatePensionProfile()} name="Edit Profile" image={<UpdateProfileIcon/>}/>
                     <HomeSection onPress={() => Actions.verification()} name="Quarterly Verification" image={<TakeAttendancIcon/>}/>

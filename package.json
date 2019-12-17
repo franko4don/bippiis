@@ -16,7 +16,7 @@
     "ios": "react-native run-ios",
     "eject": "react-native eject",
     "test": "jest",
-    "release": "react-native run-android --variant=release",
+    "release": "rm -rf node_modules/react-native-*/node_modules/.bin/react-native && react-native run-android --variant=release",
     "link": "react-native link react-native-twitter-signin",
     "unlink": "react-native unlink react-native-twitter-signin",
     "postinstall": "rm -rf node_modules/react-native-twitter-signin/node_modules/react-native && npm run googlenullable && npm run googlenonnull && npm run spinkitnonnull && npm run spinkitnullable && npm run sendintentreplacefile && npm run locationserviceupdate",
@@ -26,7 +26,7 @@
     "googlenonnull": "find node_modules/react-native-google-* -type f -exec sed -i '' -e 's/import android.support.annotation.NonNull;/import androidx.annotation.NonNull;/' {} \\;",
     "spinkitnullable": "find node_modules/react-native-spinkit -type f -exec sed -i '' -e 's/import android.support.annotation.Nullable;/import androidx.annotation.Nullable;/' {} \\;",
     "spinkitnonnull": "find node_modules/react-native-spinkit -type f -exec sed -i '' -e 's/import android.support.annotation.NonNull;/import androidx.annotation.NonNull;/' {} \\;",
-    "locationserviceupdate": "find node_modules/react-native-geolocation-service -type f -exec sed -i '' -e 's/import android.support.v4.app.ActivityCompat;/import androidx.core.app.ActivityCompat;/' {} \\;",
+    "locationserviceupdate": "find node_modules/react-native-geolocation-service -type f -exec sed -i '' -e 's/import androidx.core.app.ActivityCompat;/import androidx.core.app.ActivityCompat;/' {} \\;",
     "sendintentreplacefile": "find node_modules/react-native-send-intent -type f -exec sed -i '' -e 's/import android.support.v4.content.FileProvider;/import androidx.core.content.FileProvider;/' {} \\;"
   },
   "jest": {
