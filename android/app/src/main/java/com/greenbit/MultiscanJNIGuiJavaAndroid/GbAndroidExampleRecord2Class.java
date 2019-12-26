@@ -8,6 +8,7 @@ import com.greenbit.ansinistitl.Gban2000JavaWrapperLibrary;
 import com.greenbit.utils.GBJavaWrapperUtilIntForJavaToCExchange;
 import com.greenbit.utils.GBJavaWrapperUtilStringArrayForJavaToCExchange;
 import com.greenbit.utils.GBJavaWrapperUtilStringForJavaToCExchange;
+import com.biippss.R;
 
 public class GbAndroidExampleRecord2Class extends GBANJavaWrapperDefinesRecordStruct
 {

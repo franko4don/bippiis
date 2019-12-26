@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.widget.TextView;
 import com.biippss.R;
+
 public class LogWindow extends AppCompatActivity
 {
 	private TextView tvLog;

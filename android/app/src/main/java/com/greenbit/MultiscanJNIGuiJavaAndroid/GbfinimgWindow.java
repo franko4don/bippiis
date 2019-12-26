@@ -1,4 +1,5 @@
 package com.greenbit.MultiscanJNIGuiJavaAndroid;
+import com.biippss.R;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,7 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import com.biippss.R;
+
 import com.greenbit.MultiscanJNIGuiJavaAndroid.utils.Tools;
 import com.greenbit.ansinistitl.GBAN2011JavaWrapperDefinesApplicationProfileStruct;
 import com.greenbit.ansinistitl.GBAN2011JavaWrapperDefinesCharacterEncoding;

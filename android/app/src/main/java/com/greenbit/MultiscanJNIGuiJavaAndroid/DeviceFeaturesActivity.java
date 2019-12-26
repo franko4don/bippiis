@@ -8,10 +8,11 @@ import android.widget.Spinner;
 
 import com.greenbit.gbmsapi.*;
 import com.greenbit.utils.GBJavaWrapperUtilIntForJavaToCExchange;
+import com.biippss.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.biippss.R;
+
 public class DeviceFeaturesActivity extends AppCompatActivity {
     private Spinner comboScannableObjects, comboDeviceFeatures, comboSupportedScanAreas,
     comboSupportedScanOptions, comboOptionalExternalEquipment;

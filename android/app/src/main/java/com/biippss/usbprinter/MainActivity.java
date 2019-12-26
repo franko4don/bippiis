@@ -361,18 +361,18 @@ public class MainActivity extends ReactActivity{
 		@Override
 		public void onClick(View view) {
 			// setFeedLineNum();// 判断换行数及是否输入为空
-			try {
-				switch (view.getId()) {
-				case R.id.InputPrint_btn:    // 输入内容打印
-					printText(etWrite.getText().toString().trim());    // 1.常规热敏非黑标纸案例
-					break;
+			// try {
+			// 	switch (view.getId()) {
+			// 	case R.id.InputPrint_btn:    // 输入内容打印
+			// 		printText(etWrite.getText().toString().trim());    // 1.常规热敏非黑标纸案例
+			// 		break;
 			
-				default:
-					break;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			// 	default:
+			// 		break;
+			// 	}
+			// } catch (Exception e) {
+			// 	e.printStackTrace();
+			// }
 		}
 	}
 	

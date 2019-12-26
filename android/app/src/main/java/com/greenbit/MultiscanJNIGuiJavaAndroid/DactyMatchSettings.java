@@ -4,10 +4,10 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
-import com.biippss.R;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import com.biippss.R;
 
 import com.greenbit.gbfrsw.GbfrswJavaWrapperDefinesRanges;
 import com.greenbit.gbfrsw.GbfrswJavaWrapperDefinesSpeedPrecisionTradeoff;

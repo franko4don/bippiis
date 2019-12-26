@@ -17,6 +17,7 @@ import com.greenbit.gbnfiq2.GbNfiq2JavaWrapperLibrary;
 import com.greenbit.jpeg.GbjpegJavaWrapperLibrary;
 import com.greenbit.lfs.LfsJavaWrapperLibrary;
 import com.greenbit.wsq.WsqJavaWrapperLibrary;
+import com.biippss.R;
 
 public class GB_AcquisitionOptionsGlobals {
     /////////////////////////////////////

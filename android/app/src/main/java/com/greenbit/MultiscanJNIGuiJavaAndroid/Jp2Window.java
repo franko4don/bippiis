@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import com.biippss.R;
+
+
 import com.greenbit.usbPermission.IGreenbitLogger;
 
 import java.util.ArrayList;
