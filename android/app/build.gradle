@@ -238,7 +238,7 @@ dependencies {
     implementation 'com.android.support:design:23.1.0'
 
     implementation "com.google.zxing:core:3.3.3"
-    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation ("com.facebook.react:react-native:+"){ force = true }   // From node_modules
     implementation fileTree(dir: 'jniLibs', include: ['*.so'])
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/multiscan.jar')
