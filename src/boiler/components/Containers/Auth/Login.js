@@ -17,10 +17,10 @@ import SuccessModal from '../Modals/SuccessModal';
 class Login extends Component {
 
     componentWillMount(){
-        // Splashscreen.hide();
+        Splashscreen.hide();
         setTimeout(() => {
             Splashscreen.hide();
-        }, 10000)
+        }, 1000)
         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
     }
 

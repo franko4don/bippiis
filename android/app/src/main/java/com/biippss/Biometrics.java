@@ -11,6 +11,7 @@ import android.content.Intent;
 import java.util.Map;
 import java.util.HashMap;
 import com.greenbit.MultiscanJNIGuiJavaAndroid.MainActivity;
+import com.greenbit.MultiscanJNIGuiJavaAndroid.LoginWithFingerprint;
 
 public class Biometrics extends ReactContextBaseJavaModule {
 
@@ -33,6 +34,15 @@ public class Biometrics extends ReactContextBaseJavaModule {
         ReactApplicationContext context = getReactApplicationContext();
         Intent intent = new Intent(context, MainActivity.class);
         // intent.putExtra("contentToBiometrics", content);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+  }
+  
+  @ReactMethod
+    public void startLoginBiometrics(String content) {
+        ReactApplicationContext context = getReactApplicationContext();
+        Intent intent = new Intent(context, LoginWithFingerprint.class);
+        intent.putExtra("bippiis_number", content);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
 	}

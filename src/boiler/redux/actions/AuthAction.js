@@ -36,7 +36,7 @@ export const authenticateUser = (data) => {
                     payload: false
                 });
                 let detail = res.data.data;
-                if(detail.verification_type == 0){
+                if(detail.verification_type == 1){
                     if(detail.has_password){
                         Actions.loginWithPassword();
                     }else{

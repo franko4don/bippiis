@@ -61,8 +61,8 @@
         <activity android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.LogWindow" android:label="@string/title_activity_log_window"></activity>
 
         <activity android:name=".PrinterActivity" />
-        <activity android:name=".QuarterlyVerificationWithFingerprint" android:screenOrientation="landscape" />
-        <activity android:name=".LoginWithFingerprint" android:screenOrientation="landscape" />
+        <activity android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.QuarterlyVerificationWithFingerprint" android:screenOrientation="portrait" />
+        <activity android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.LoginWithFingerprint" android:screenOrientation="portrait" />
 
 
 

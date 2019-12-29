@@ -25,6 +25,7 @@ import SingleQuery from '../components/Containers/Query/SingleQuery';
 import Transfer from '../components/Containers/Transfer/Transfer';
 import SingleTransfer from '../components/Containers/Transfer/SingleTransfer';
 import Pencom from '../components/Containers/Pencom/Pencom';
+import LoginWithBiometrics from '../components/Containers/Auth/LoginWithBiometrics';
 
 export default scenes = [
         <Scene 
@@ -44,6 +45,12 @@ export default scenes = [
             key="loginWithPassword"
             // initial
             component={LoginWithPassword}
+        />,
+        <Scene 
+            name="loginWithBiometrics"
+            key="loginWithBiometrics"
+            // initial
+            component={LoginWithBiometrics}
         />,
         <Scene 
             name="camera"

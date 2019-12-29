@@ -5,9 +5,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 
 const INITIAL_STATE = {
-    password: '',
+    password: 'tomcat',
     password_confirmation: '',
-    bippiis_number: '',
+    bippiis_number: 'A/S 504',
     user: {},
     auth: false,
     token: ''
