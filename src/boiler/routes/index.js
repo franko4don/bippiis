@@ -26,6 +26,7 @@ import Transfer from '../components/Containers/Transfer/Transfer';
 import SingleTransfer from '../components/Containers/Transfer/SingleTransfer';
 import Pencom from '../components/Containers/Pencom/Pencom';
 import LoginWithBiometrics from '../components/Containers/Auth/LoginWithBiometrics';
+import EnrollBiometrics from '../components/Containers/Auth/EnrollBiometrics';
 
 export default scenes = [
         <Scene 
@@ -51,6 +52,12 @@ export default scenes = [
             key="loginWithBiometrics"
             // initial
             component={LoginWithBiometrics}
+        />,
+        <Scene 
+            name="enrolBiometrics"
+            key="enrolBiometrics"
+            // initial
+            component={EnrollBiometrics}
         />,
         <Scene 
             name="camera"

@@ -13,6 +13,7 @@ import Splashscreen from 'react-native-splash-screen';
 import { UploadedFile } from '../../Reusables/Other/UploadedFile';
 import ErrorModal from '../Modals/ErrorModal';
 import SuccessModal from '../Modals/SuccessModal';
+import { FINGER_PRINT_PATH } from '../../../redux/actions/types';
 
 class Login extends Component {
 
@@ -22,6 +23,7 @@ class Login extends Component {
             Splashscreen.hide();
         }, 1000)
         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+        console.log(FINGER_PRINT_PATH, " finger");
     }
 
     login(){

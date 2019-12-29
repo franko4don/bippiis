@@ -1,4 +1,6 @@
 
+import RNFS from 'react-native-fs';
+
 // declare all constants related to boiler app
 export const LOGIN_UPDATE = 'LOGIN_UPDATE';
 export const LOGOUT_USER = 'LOGOUT_USER';
@@ -42,3 +44,6 @@ export const GET_ERRORS = 'GET_ERRORS';
 //payments
 export const PAYMENT_LOADING = 'PAYMENT_LOADING';
 export const GET_PAYMENT = 'GET_PAYMENT';
+
+//constants
+export const FINGER_PRINT_PATH = RNFS.ExternalStorageDirectoryPath+'/Greenbit';

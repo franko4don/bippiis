@@ -74,6 +74,11 @@ import com.greenbit.usbPermission.UsbPermission;
 import com.greenbit.utils.GBJavaWrapperUtilIntForJavaToCExchange;
 import com.greenbit.wsq.WsqJavaWrapperDefinesReturnCodes;
 import com.greenbit.wsq.WsqJavaWrapperLibrary;
+//
+import com.facebook.react.ReactActivity;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+//
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,7 +86,7 @@ import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class LoginWithFingerprint extends AppCompatActivity implements IGreenbitLogger, IGbmsapiAcquisitionManagerCallback {
+public class LoginWithFingerprint extends ReactActivity implements IGreenbitLogger, IGbmsapiAcquisitionManagerCallback {
     private int[] OpenedFD = new int[10];
     private int[] DeviceBus = new int[10];
     private int[] DeviceAddress = new int[10];
@@ -872,6 +877,10 @@ public class LoginWithFingerprint extends AppCompatActivity implements IGreenbit
                             this);
                     if (ret) {
                         report.setText("Login Successful");
+                        // emit event to react native
+                        getReactInstanceManager().getCurrentReactContext()
+                            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("onFingerPrintVerified", "true");
                         gifImageView.setBackgroundResource(R.drawable.success);
                         new Handler().postDelayed(() -> {
                             // 5ran6: VERIFICATION SUCCESSFUL! Loading screen animation begins

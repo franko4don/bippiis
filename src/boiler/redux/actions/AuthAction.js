@@ -29,22 +29,29 @@ export const authenticateUser = (data) => {
         });
         
         client.post('auth',data)
-            .then(res => {
+            .then(async (res) => {
                 console.log(res);
-                dispatch({
-                    type: LOGIN_LOADING,
-                    payload: false
-                });
+                
                 let detail = res.data.data;
-                if(detail.verification_type == 1){
+                if(detail.verification_type == 0){
                     if(detail.has_password){
                         Actions.loginWithPassword();
                     }else{
                         Actions.createPassword();
                     }
                 }else{
-                    Actions.loginWithBiometrics();
+                    if(detail.has_enrolled){
+                        // call function that processes fingerprint file
+                        Actions.loginWithBiometrics();
+                    }else{
+                        Actions.enrolBiometrics();
+                    }
+                    
                 }
+                dispatch({
+                    type: LOGIN_LOADING,
+                    payload: false
+                });
                 console.log(res, 'Response');
             })
             .catch(err => {
@@ -83,6 +90,62 @@ export const loginUser = (data) => {
             payload: {}
         });
         client.post('loginUser',data)
+            .then(res => {
+                dispatch({
+                    type: LOGIN_LOADING,
+                    payload: false
+                });
+
+                dispatch({
+                    type: LOGIN_USER,
+                    payload: res.data
+                });
+                if(res.data.data.category == 1){
+                    Actions.reset('home');
+                }else{
+                    Actions.reset('pensionHome');
+                }
+                
+                console.log(res, 'Response');
+            })
+            .catch(err => {
+                dispatch({
+                    type: LOGIN_LOADING,
+                    payload: false
+                });
+
+                if(err.response.status == 409 || err.response.status == 404 || err.response.status == 401){
+                    dispatch(toggleErrorModal(true));
+                    dispatch({
+                        type: GET_ERROR_MESSAGE,
+                        payload: err.response.data.message
+                    });
+                }
+
+                if(err.response.status == 422){
+                    dispatch({
+                        type: GET_ERRORS,
+                        payload: err.response.data.errors
+                    })
+                }
+                console.log(err.response, 'Response error');
+            })
+      
+    }
+};
+
+export const loginWithBiometrics = (data) => {
+    
+    return (dispatch) => {
+        dispatch({
+            type: LOGIN_LOADING,
+            payload: true
+        });
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
+        });
+        client.post('loginUserWithFingerPrint',data)
             .then(res => {
                 dispatch({
                     type: LOGIN_LOADING,
@@ -203,6 +266,44 @@ export const getUserData = () => {
     }
 };
 
+export const enrollUserBiometrics = (data) => {
+    
+    return (dispatch) => {
+        dispatch({
+            type: LOGIN_LOADING,
+            payload: true
+        });
+        client.post('enroll', data)
+            .then(res => {
+
+                dispatch({
+                    type: LOGIN_USER,
+                    payload: res.data
+                });
+
+                if(res.data.data.category == 1){
+                    Actions.reset('home');
+                }else{
+                    Actions.reset('pensionHome');
+                }
+            
+                dispatch({
+                    type: LOGIN_LOADING,
+                    payload: false
+                });
+                console.log(res, 'Response');
+            })
+            .catch(err => {
+                dispatch({
+                    type: LOGIN_LOADING,
+                    payload: false
+                });
+                console.log(err.response, 'Response error');
+            })
+      
+    }
+};
+
 export const logoutUser = () => {
     
     return (dispatch) => {
@@ -215,6 +316,7 @@ export const logoutUser = () => {
       
     }
 };
+
 
 
 export const boilerAuthenticate = () => {

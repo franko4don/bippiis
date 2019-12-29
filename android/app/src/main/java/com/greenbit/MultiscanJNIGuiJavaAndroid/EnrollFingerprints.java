@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Environment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -68,14 +69,18 @@ import com.greenbit.usbPermission.UsbPermission;
 import com.greenbit.utils.GBJavaWrapperUtilIntForJavaToCExchange;
 import com.greenbit.wsq.WsqJavaWrapperDefinesReturnCodes;
 import com.greenbit.wsq.WsqJavaWrapperLibrary;
-
+//
+import com.facebook.react.ReactActivity;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+//
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class EnrollFingerprints extends AppCompatActivity implements IGreenbitLogger, IGbmsapiAcquisitionManagerCallback {
+public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger, IGbmsapiAcquisitionManagerCallback {
     private int[] OpenedFD = new int[10];
     private int[] DeviceBus = new int[10];
     private int[] DeviceAddress = new int[10];
@@ -337,7 +342,8 @@ public class EnrollFingerprints extends AppCompatActivity implements IGreenbitLo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //   bippiis_number = getIntent().getStringExtra("bippiis_number");
+          bippiis_number = getIntent().getStringExtra("bippiis_number");
+          
         //  tbName.setText(bippiis_number);
         setContentView(R.layout.activity_enroll_fingerprints);
         if (ContextCompat.checkSelfPermission(this,
@@ -527,6 +533,12 @@ public class EnrollFingerprints extends AppCompatActivity implements IGreenbitLo
                     sequence_count = 3;
 
                     report.setText("All Done.");
+                    
+                    // take action here
+                    getReactInstanceManager().getCurrentReactContext()
+                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("onEnrollmentComplete", "true");
+
                 }
             }
         }

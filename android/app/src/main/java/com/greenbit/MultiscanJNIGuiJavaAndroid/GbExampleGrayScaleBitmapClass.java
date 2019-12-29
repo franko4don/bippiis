@@ -38,7 +38,11 @@ import com.greenbit.utils.GBJavaWrapperUtilByteArrayForJavaToCExchange;
 import com.greenbit.utils.GBJavaWrapperUtilDoubleForJavaToCExchange;
 import com.greenbit.utils.GBJavaWrapperUtilIntForJavaToCExchange;
 import com.greenbit.wsq.WsqJavaWrapperDefinesReturnCodes;
-
+//
+import com.facebook.react.ReactActivity;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+//
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -54,7 +58,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class GbExampleGrayScaleBitmapClass {
+public class GbExampleGrayScaleBitmapClass extends ReactActivity {
 
     //-------------------------------------------------------------
     // FIELDS
@@ -1181,6 +1185,12 @@ public class GbExampleGrayScaleBitmapClass {
             OutputStream fOut = null;
             fOut = new FileOutputStream(file);
             fOut.write(FMRIsoBuffer);
+            
+            // send the file path to React Native
+            getReactInstanceManager().getCurrentReactContext()
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("onFingerPrintSaveComplete", GetGreenbitDirectoryName() + fileName + ".ansi378");
+
             fOut.close(); // do not forget to close the stream
         } catch (Exception e) {
             e.printStackTrace();
