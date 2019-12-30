@@ -835,14 +835,14 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
                             GB_AcquisitionOptionsGlobals.acquiredFrame = GbBmp;
                             GB_AcquisitionOptionsGlobals.acquiredFrameValid = true;
                             // END OF BEEP: then proceed
-                            if (not_first_time) {
+//                            if (not_first_time) {
 
-                                report.setText("Processing! Please Remove your hand. ");
+                             report.setText("Processing! Please Remove your hand. ");
 
-                            } else {
-                                report.setText("Preparing! ");
-                                not_first_time = true;
-                            }
+                            // } else {
+                            //     report.setText("Preparing! ");
+                            //     not_first_time = true;
+                            // }
                             proceed = true;
                             ended = true;
                             // Toast.makeText(getApplicationContext(), "success",
