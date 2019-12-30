@@ -60,18 +60,18 @@ import java.util.Arrays;
 
 public class GbExampleGrayScaleBitmapClass extends ReactActivity {
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // FIELDS
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     public byte[] bytes;
     public int sx;
     public int sy;
     public boolean hasToBeSaved;
     public boolean isAcquisitionResult;
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // CONSTRUCTORS
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     public GbExampleGrayScaleBitmapClass() {
         bytes = null;
         sx = sy = 0;
@@ -79,14 +79,18 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         hasToBeSaved = false;
     }
 
-    public GbExampleGrayScaleBitmapClass(byte[] B, int width, int height, boolean save, boolean isAcqRes, IGreenbitLogger act) {
+    public GbExampleGrayScaleBitmapClass(byte[] B, int width, int height, boolean save, boolean isAcqRes,
+            IGreenbitLogger act) {
         this.Build(B, width, height, save, isAcqRes, act);
     }
 
     public void Build(byte[] B, int width, int height, boolean save, boolean isAcqRes, IGreenbitLogger act) {
-        //act.LogAcquisitionPhaseOnScreen("Build: B.length = " + B.length + ", width = " + width + ", height = " + height);
+        // act.LogAcquisitionPhaseOnScreen("Build: B.length = " + B.length + ", width =
+        // " + width + ", height = " + height);
         if (B.length < (width * height)) {
-            //act.LogAcquisitionPhaseOnScreen("Build: B.length = " + B.length + ", less than width * height = :" + width + " * " + height + " = " + (width * height));
+            // act.LogAcquisitionPhaseOnScreen("Build: B.length = " + B.length + ", less
+            // than width * height = :" + width + " * " + height + " = " + (width *
+            // height));
             return;
         }
         bytes = new byte[width * height];
@@ -101,18 +105,16 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         this.Build(B, width, height, false, false, null);
     }
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // UTILITIES
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     public Bitmap GetBmp() {
         if (bytes != null && sx > 0 && sy > 0) {
             Bitmap ValToRet;
             byte[] pixels = new byte[sx * sy * 4];
 
             for (int i = 0; i < bytes.length; i++) {
-                pixels[i * 4] =
-                        pixels[i * 4 + 1] =
-                                pixels[i * 4 + 2] = (byte) (bytes[i]); //Invert the source bits
+                pixels[i * 4] = pixels[i * 4 + 1] = pixels[i * 4 + 2] = (byte) (bytes[i]); // Invert the source bits
                 pixels[i * 4 + 3] = (byte) 0xff; // the alpha.
             }
             ValToRet = Bitmap.createBitmap(sx, sy, Bitmap.Config.ARGB_8888);
@@ -124,11 +126,16 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
     }
 
     public void ClipImage(int ClipOrigX, int ClipOrigY, int ClipSx, int ClipSy) {
-        if (ClipOrigX >= this.sx) return;
-        if (ClipOrigY >= this.sy) return;
-        if (ClipOrigX < 0 || ClipOrigY < 0 || ClipSx < 0 || ClipSy < 0) return;
-        if (ClipSx > (this.sx - ClipOrigX)) ClipSx = (this.sx - ClipOrigX);
-        if (ClipSy > (this.sy - ClipOrigY)) ClipSy = (this.sy - ClipOrigY);
+        if (ClipOrigX >= this.sx)
+            return;
+        if (ClipOrigY >= this.sy)
+            return;
+        if (ClipOrigX < 0 || ClipOrigY < 0 || ClipSx < 0 || ClipSy < 0)
+            return;
+        if (ClipSx > (this.sx - ClipOrigX))
+            ClipSx = (this.sx - ClipOrigX);
+        if (ClipSy > (this.sy - ClipOrigY))
+            ClipSy = (this.sy - ClipOrigY);
         byte[] Clipped = new byte[ClipSx * ClipSy];
         int offsetSource = ClipOrigX + (ClipOrigY * this.sx);
         int offsetDestination = 0;
@@ -158,29 +165,35 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         String[] paths = file.list();
         ArrayList<String> ValToRet = new ArrayList<String>();
 
-        for (String fname :
-                paths) {
+        for (String fname : paths) {
             String filenameArray[] = fname.split("\\.");
             String extension = filenameArray[filenameArray.length - 1];
             if (extension.equals(extensionVal)) {
-                if (includeExtensionInName) ValToRet.add(fname);
-                else ValToRet.add(filenameArray[filenameArray.length - 2]);
+                if (includeExtensionInName)
+                    ValToRet.add(fname);
+                else
+                    ValToRet.add(filenameArray[filenameArray.length - 2]);
             }
         }
 
         return ValToRet;
     }
 
-
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // RAW
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
 
     public void SaveToRaw(String fileName, IGreenbitLogger act) {
         try {
             // Assume block needs to be inside a Try/Catch block.
-            File file = new File(GetGreenbitDirectoryName(),
-                    fileName + "_" + sx + "_" + sy + ".raw"); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
+            File file = new File(GetGreenbitDirectoryName(), fileName + "_" + sx + "_" + sy + ".raw"); // the File to
+                                                                                                       // save , append
+                                                                                                       // increasing
+                                                                                                       // numeric
+                                                                                                       // counter to
+                                                                                                       // prevent files
+                                                                                                       // from getting
+                                                                                                       // overwritten.
             OutputStream fOut = null;
             fOut = new FileOutputStream(file);
             fOut.write(bytes);
@@ -209,10 +222,10 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
     }
 
     public static ArrayList<String> GbBmpLoadListOfRawImagesWithSize() {
-        ArrayList<String> DummyList = GbBmpLoadListOfImages("raw", false),
-                ValToRet = new ArrayList<String>();
+        ArrayList<String> DummyList = GbBmpLoadListOfImages("raw", false), ValToRet = new ArrayList<String>();
         for (String item : DummyList) {
-            if (GbBmpGetSizeFromRawFileName(item) != null) ValToRet.add(item);
+            if (GbBmpGetSizeFromRawFileName(item) != null)
+                ValToRet.add(item);
         }
         return ValToRet;
     }
@@ -225,8 +238,7 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             int[] imgSize = GbBmpGetSizeFromRawFileName(rawFName);
             if (imgSize == null)
                 throw new Exception("GbBmpFromRawFileWithSize: file name does not contain size");
-            File file = new File(GetGreenbitDirectoryName(),
-                    rawFName + ".raw");
+            File file = new File(GetGreenbitDirectoryName(), rawFName + ".raw");
             InputStream fIn = null;
             fIn = new FileInputStream(file);
             byte[] rawStream = new byte[fIn.available()];
@@ -235,38 +247,39 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             this.Build(rawStream, imgSize[0], imgSize[1]);
             return true;
         } catch (Exception e) {
-            byte[] whiteImage = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
+            byte[] whiteImage = { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };
             this.Build(whiteImage, 2, 2, false, false, act);
             e.printStackTrace();
-            if (act != null) act.LogAsDialog(e.getMessage());
+            if (act != null)
+                act.LogAsDialog(e.getMessage());
             return false;
         }
     }
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // WSQ
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
 
     public void SaveToWsq(String fileName, IGreenbitLogger act) {
         try {
             // Assume block needs to be inside a Try/Catch block.
             GBJavaWrapperUtilIntForJavaToCExchange compressedFileSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             int RetVal;
-            RetVal = GB_AcquisitionOptionsGlobals.WSQ_Jw.GetCompressedFileSize(
-                    0.75, bytes, sx, sy, 8, 500, "MyComment", compressedFileSize
-            );
+            RetVal = GB_AcquisitionOptionsGlobals.WSQ_Jw.GetCompressedFileSize(0.75, bytes, sx, sy, 8, 500, "MyComment",
+                    compressedFileSize);
             if (RetVal == WsqJavaWrapperDefinesReturnCodes.WSQPACK_FAIL) {
-                throw new Exception("SaveToWsq WsqlibError: " + GB_AcquisitionOptionsGlobals.WSQ_Jw.GetLastErrorString());
+                throw new Exception(
+                        "SaveToWsq WsqlibError: " + GB_AcquisitionOptionsGlobals.WSQ_Jw.GetLastErrorString());
             }
             byte[] WsqStream = new byte[compressedFileSize.Get()];
             RetVal = GB_AcquisitionOptionsGlobals.WSQ_Jw.Compress(WsqStream, 0.75, bytes, sx, sy, 8, 500, "MyComment");
             if (RetVal == WsqJavaWrapperDefinesReturnCodes.WSQPACK_FAIL) {
-                throw new Exception("SaveToWsq WsqlibError: " + GB_AcquisitionOptionsGlobals.WSQ_Jw.GetLastErrorString());
+                throw new Exception(
+                        "SaveToWsq WsqlibError: " + GB_AcquisitionOptionsGlobals.WSQ_Jw.GetLastErrorString());
             }
-            File file = new File(GetGreenbitDirectoryName(),
-                    fileName + ".wsq");
-            act.LogOnScreen("Saving image as wsq; Storage dir: " + GetGreenbitDirectoryName() +
-                    ", len = " + bytes.length);
+            File file = new File(GetGreenbitDirectoryName(), fileName + ".wsq");
+            act.LogOnScreen(
+                    "Saving image as wsq; Storage dir: " + GetGreenbitDirectoryName() + ", len = " + bytes.length);
             OutputStream fOut = null;
             fOut = new FileOutputStream(file);
             fOut.write(WsqStream);
@@ -277,7 +290,8 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         }
     }
 
-    public boolean GBBmpFromWsqBuffer(byte[] wsqSource, boolean save, boolean isAcqRes, IGreenbitLogger act) throws Exception {
+    public boolean GBBmpFromWsqBuffer(byte[] wsqSource, boolean save, boolean isAcqRes, IGreenbitLogger act)
+            throws Exception {
         try {
             ///////////////////////////////
             // convert from wsq to binary
@@ -287,23 +301,23 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
                     bitsPerPixel = new GBJavaWrapperUtilIntForJavaToCExchange(),
                     ppi = new GBJavaWrapperUtilIntForJavaToCExchange(),
                     lossy = new GBJavaWrapperUtilIntForJavaToCExchange();
-            int RetVal = GB_AcquisitionOptionsGlobals.WSQ_Jw.GetUncompressedOutputParameters(
-                    width, height, bitsPerPixel, ppi, lossy, wsqSource);
+            int RetVal = GB_AcquisitionOptionsGlobals.WSQ_Jw.GetUncompressedOutputParameters(width, height,
+                    bitsPerPixel, ppi, lossy, wsqSource);
             if (RetVal == WsqJavaWrapperDefinesReturnCodes.WSQPACK_FAIL) {
-                throw new Exception("GBBmpFromWsqBuffer " +
-                        ", WsqlibError: " + GB_AcquisitionOptionsGlobals.WSQ_Jw.GetLastErrorString());
+                throw new Exception("GBBmpFromWsqBuffer " + ", WsqlibError: "
+                        + GB_AcquisitionOptionsGlobals.WSQ_Jw.GetLastErrorString());
             }
             byte[] destination = new byte[width.Get() * height.Get() * (bitsPerPixel.Get() / 8)];
-            RetVal = GB_AcquisitionOptionsGlobals.WSQ_Jw.Uncompress(destination,
-                    width, height, bitsPerPixel, ppi, lossy, wsqSource);
+            RetVal = GB_AcquisitionOptionsGlobals.WSQ_Jw.Uncompress(destination, width, height, bitsPerPixel, ppi,
+                    lossy, wsqSource);
             if (RetVal == WsqJavaWrapperDefinesReturnCodes.WSQPACK_FAIL) {
-                throw new Exception("GBBmpFromWsqBuffer " +
-                        ", WsqlibError: " + GB_AcquisitionOptionsGlobals.WSQ_Jw.GetLastErrorString());
+                throw new Exception("GBBmpFromWsqBuffer " + ", WsqlibError: "
+                        + GB_AcquisitionOptionsGlobals.WSQ_Jw.GetLastErrorString());
             }
             this.Build(destination, width.Get(), height.Get(), save, isAcqRes, act);
             return true;
         } catch (Exception e) {
-            byte[] whiteImage = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
+            byte[] whiteImage = { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };
             this.Build(whiteImage, 2, 2, false, false, act);
             e.printStackTrace();
             act.LogAsDialog(e.getMessage());
@@ -311,27 +325,29 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         }
     }
 
-    public boolean GbBmpFromWsqFile(String wsqFileName, boolean save, boolean isAcqRes, IGreenbitLogger act) throws Exception {
+    public boolean GbBmpFromWsqFile(String wsqFileName, boolean save, boolean isAcqRes, IGreenbitLogger act)
+            throws Exception {
         try {
             ////////////////////////////
             // Load file
             ////////////////////////////
-            if (act != null) act.LogOnScreen("Storage dir: " + GetGreenbitDirectoryName());
-            File file = new File(GetGreenbitDirectoryName(),
-                    wsqFileName + ".wsq");
+            if (act != null)
+                act.LogOnScreen("Storage dir: " + GetGreenbitDirectoryName());
+            File file = new File(GetGreenbitDirectoryName(), wsqFileName + ".wsq");
             InputStream fIn = null;
             fIn = new FileInputStream(file);
             byte[] wsqStream = new byte[fIn.available()];
             fIn.read(wsqStream);
             fIn.close(); // do not forget to close the stream
             String fInfo = GetGreenbitDirectoryName() + "/" + wsqFileName + " size: " + wsqStream.length;
-            if (act != null) act.LogOnScreen(fInfo);
+            if (act != null)
+                act.LogOnScreen(fInfo);
             ///////////////////////////////
             // convert from wsq to binary
             ///////////////////////////////
             return GBBmpFromWsqBuffer(wsqStream, save, isAcqRes, act);
         } catch (Exception e) {
-            byte[] whiteImage = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
+            byte[] whiteImage = { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };
             this.Build(whiteImage, 2, 2, false, false, act);
             e.printStackTrace();
             act.LogAsDialog(e.getMessage());
@@ -343,30 +359,29 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         return GbBmpLoadListOfImages("wsq", withExtension);
     }
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // JPEG
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     public void SaveToJpeg(String fileName, IGreenbitLogger act) {
         try {
             // Assume block needs to be inside a Try/Catch block.
             GBJavaWrapperUtilIntForJavaToCExchange compressedFileSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             int RetVal;
-            RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.JpegGetParamsOfEncodedBuffer(
-                    bytes, sx, sy, 8, 500, 100, compressedFileSize
-            );
+            RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.JpegGetParamsOfEncodedBuffer(bytes, sx, sy, 8, 500, 100,
+                    compressedFileSize);
             if (RetVal != GbjpegJavaWrapperDefinesReturnCodes.GBJPEG_OK) {
-                throw new Exception("SaveToJpeg JpeglibError: " + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
+                throw new Exception(
+                        "SaveToJpeg JpeglibError: " + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
             }
             byte[] JpegStream = new byte[compressedFileSize.Get()];
             RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.JpegEncode(bytes, sx, sy, 8, 500, 100, JpegStream);
             if (RetVal != GbjpegJavaWrapperDefinesReturnCodes.GBJPEG_OK) {
-                throw new Exception("SaveToJpeg " +
-                        ", JpeglibError: " + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
+                throw new Exception(
+                        "SaveToJpeg " + ", JpeglibError: " + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
             }
-            File file = new File(GetGreenbitDirectoryName(),
-                    fileName + ".jpeg");
-            act.LogOnScreen("Saving image as jpeg; Storage dir: " + GetGreenbitDirectoryName() +
-                    ", len = " + bytes.length);
+            File file = new File(GetGreenbitDirectoryName(), fileName + ".jpeg");
+            act.LogOnScreen(
+                    "Saving image as jpeg; Storage dir: " + GetGreenbitDirectoryName() + ", len = " + bytes.length);
             OutputStream fOut = null;
             fOut = new FileOutputStream(file);
             fOut.write(JpegStream);
@@ -377,7 +392,8 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         }
     }
 
-    public boolean GBBmpFromJpegBuffer(byte[] jpegSource, boolean save, boolean isAcqRes, IGreenbitLogger act) throws Exception {
+    public boolean GBBmpFromJpegBuffer(byte[] jpegSource, boolean save, boolean isAcqRes, IGreenbitLogger act)
+            throws Exception {
         try {
             ///////////////////////////////
             // convert from wsq to binary
@@ -385,26 +401,23 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             GBJavaWrapperUtilIntForJavaToCExchange width = new GBJavaWrapperUtilIntForJavaToCExchange(),
                     height = new GBJavaWrapperUtilIntForJavaToCExchange(),
                     bitsPerPixel = new GBJavaWrapperUtilIntForJavaToCExchange();
-            int RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.JpegGetParametersOfDecodedBuffer(
-                    jpegSource,
-                    width, height, bitsPerPixel);
+            int RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.JpegGetParametersOfDecodedBuffer(jpegSource, width,
+                    height, bitsPerPixel);
             if (RetVal != GbjpegJavaWrapperDefinesReturnCodes.GBJPEG_OK) {
-                throw new Exception("GBBmpFromJpegBuffer " +
-                        ", JpeglibError: " + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
+                throw new Exception("GBBmpFromJpegBuffer " + ", JpeglibError: "
+                        + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
             }
             byte[] destination = new byte[width.Get() * height.Get() * (bitsPerPixel.Get() / 8)];
-            RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.JpegDecode(
-                    jpegSource,
-                    destination,
-                    width, height, bitsPerPixel);
+            RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.JpegDecode(jpegSource, destination, width, height,
+                    bitsPerPixel);
             if (RetVal != GbjpegJavaWrapperDefinesReturnCodes.GBJPEG_OK) {
-                throw new Exception("GBBmpFromJpegBuffer " +
-                        ", JpeglibError: " + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
+                throw new Exception("GBBmpFromJpegBuffer " + ", JpeglibError: "
+                        + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
             }
             this.Build(destination, width.Get(), height.Get(), save, isAcqRes, act);
             return true;
         } catch (Exception e) {
-            byte[] whiteImage = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
+            byte[] whiteImage = { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };
             this.Build(whiteImage, 2, 2, false, false, act);
             e.printStackTrace();
             act.LogAsDialog(e.getMessage());
@@ -412,14 +425,14 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         }
     }
 
-    public boolean GbBmpFromJpegFile(String jpegFileName, boolean save, boolean isAcqRes, IGreenbitLogger act) throws Exception {
+    public boolean GbBmpFromJpegFile(String jpegFileName, boolean save, boolean isAcqRes, IGreenbitLogger act)
+            throws Exception {
         try {
             ////////////////////////////
             // Load file
             ////////////////////////////
             act.LogOnScreen("Storage dir: " + GetGreenbitDirectoryName());
-            File file = new File(GetGreenbitDirectoryName(),
-                    jpegFileName + ".jpeg");
+            File file = new File(GetGreenbitDirectoryName(), jpegFileName + ".jpeg");
             InputStream fIn = null;
             fIn = new FileInputStream(file);
             byte[] stream = new byte[fIn.available()];
@@ -432,7 +445,7 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             ///////////////////////////////
             return GBBmpFromJpegBuffer(stream, save, isAcqRes, act);
         } catch (Exception e) {
-            byte[] whiteImage = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
+            byte[] whiteImage = { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };
             this.Build(whiteImage, 2, 2, false, false, act);
             e.printStackTrace();
             act.LogAsDialog(e.getMessage());
@@ -440,30 +453,29 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         }
     }
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // JPEG2
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     public void SaveToJpeg2(String fileName, IGreenbitLogger act) {
         try {
             // Assume block needs to be inside a Try/Catch block.
             GBJavaWrapperUtilIntForJavaToCExchange compressedFileSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             int RetVal;
-            RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.Jp2GetParamsOfEncodedBuffer(
-                    bytes, sx, sy, 8, 1, compressedFileSize
-            );
+            RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.Jp2GetParamsOfEncodedBuffer(bytes, sx, sy, 8, 1,
+                    compressedFileSize);
             if (RetVal != GbjpegJavaWrapperDefinesReturnCodes.GBJPEG_OK) {
-                throw new Exception("SaveToJpeg2 JpeglibError: " + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
+                throw new Exception(
+                        "SaveToJpeg2 JpeglibError: " + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
             }
             byte[] Jp2Stream = new byte[compressedFileSize.Get()];
             RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.Jp2Encode(bytes, sx, sy, 8, 1, Jp2Stream);
             if (RetVal != GbjpegJavaWrapperDefinesReturnCodes.GBJPEG_OK) {
-                throw new Exception("SaveToJpeg2 " +
-                        ", JpeglibError: " + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
+                throw new Exception("SaveToJpeg2 " + ", JpeglibError: "
+                        + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
             }
-            File file = new File(GetGreenbitDirectoryName(),
-                    fileName + ".jp2");
-            act.LogOnScreen("Saving image as jp2; Storage dir: " + GetGreenbitDirectoryName() +
-                    ", len = " + bytes.length);
+            File file = new File(GetGreenbitDirectoryName(), fileName + ".jp2");
+            act.LogOnScreen(
+                    "Saving image as jp2; Storage dir: " + GetGreenbitDirectoryName() + ", len = " + bytes.length);
             OutputStream fOut = null;
             fOut = new FileOutputStream(file);
             fOut.write(Jp2Stream);
@@ -474,7 +486,8 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         }
     }
 
-    public boolean GBBmpFromJpeg2Buffer(byte[] jpeg2Source, boolean save, boolean isAcqRes, IGreenbitLogger act) throws Exception {
+    public boolean GBBmpFromJpeg2Buffer(byte[] jpeg2Source, boolean save, boolean isAcqRes, IGreenbitLogger act)
+            throws Exception {
         try {
             ///////////////////////////////
             // convert from wsq to binary
@@ -482,26 +495,23 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             GBJavaWrapperUtilIntForJavaToCExchange width = new GBJavaWrapperUtilIntForJavaToCExchange(),
                     height = new GBJavaWrapperUtilIntForJavaToCExchange(),
                     bitsPerPixel = new GBJavaWrapperUtilIntForJavaToCExchange();
-            int RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.JpegGetParametersOfDecodedBuffer(
-                    jpeg2Source,
-                    width, height, bitsPerPixel);
+            int RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.JpegGetParametersOfDecodedBuffer(jpeg2Source, width,
+                    height, bitsPerPixel);
             if (RetVal != GbjpegJavaWrapperDefinesReturnCodes.GBJPEG_OK) {
-                throw new Exception("GBBmpFromJpegBuffer " +
-                        ", JpeglibError: " + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
+                throw new Exception("GBBmpFromJpegBuffer " + ", JpeglibError: "
+                        + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
             }
             byte[] destination = new byte[width.Get() * height.Get() * (bitsPerPixel.Get() / 8)];
-            RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.JpegDecode(
-                    jpeg2Source,
-                    destination,
-                    width, height, bitsPerPixel);
+            RetVal = GB_AcquisitionOptionsGlobals.Jpeg_Jw.JpegDecode(jpeg2Source, destination, width, height,
+                    bitsPerPixel);
             if (RetVal != GbjpegJavaWrapperDefinesReturnCodes.GBJPEG_OK) {
-                throw new Exception("GBBmpFromJpegBuffer " +
-                        ", JpeglibError: " + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
+                throw new Exception("GBBmpFromJpegBuffer " + ", JpeglibError: "
+                        + GB_AcquisitionOptionsGlobals.Jpeg_Jw.GetLastErrorString());
             }
             this.Build(destination, width.Get(), height.Get(), save, isAcqRes, act);
             return true;
         } catch (Exception e) {
-            byte[] whiteImage = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
+            byte[] whiteImage = { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };
             this.Build(whiteImage, 2, 2, false, false, act);
             e.printStackTrace();
             act.LogAsDialog(e.getMessage());
@@ -509,14 +519,14 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         }
     }
 
-    public boolean GbBmpFromJpeg2File(String jpeg2FileName, boolean save, boolean isAcqRes, IGreenbitLogger act) throws Exception {
+    public boolean GbBmpFromJpeg2File(String jpeg2FileName, boolean save, boolean isAcqRes, IGreenbitLogger act)
+            throws Exception {
         try {
             ////////////////////////////
             // Load file
             ////////////////////////////
             act.LogOnScreen("Storage dir: " + GetGreenbitDirectoryName());
-            File file = new File(GetGreenbitDirectoryName(),
-                    jpeg2FileName + ".jp2");
+            File file = new File(GetGreenbitDirectoryName(), jpeg2FileName + ".jp2");
             InputStream fIn = null;
             fIn = new FileInputStream(file);
             byte[] stream = new byte[fIn.available()];
@@ -529,7 +539,7 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             ///////////////////////////////
             return GBBmpFromJpegBuffer(stream, save, isAcqRes, act);
         } catch (Exception e) {
-            byte[] whiteImage = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
+            byte[] whiteImage = { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };
             this.Build(whiteImage, 2, 2, false, false, act);
             e.printStackTrace();
             act.LogAsDialog(e.getMessage());
@@ -541,16 +551,13 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         return GbBmpLoadListOfImages("jp2", withExtension);
     }
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // DACTYMATCH
-    //-------------------------------------------------------------
-    private boolean InitGbfrswLibraryAndGetCodeSizeForCurrentBmp(
-            GBJavaWrapperUtilIntForJavaToCExchange SampleCodeSize,
+    // -------------------------------------------------------------
+    private boolean InitGbfrswLibraryAndGetCodeSizeForCurrentBmp(GBJavaWrapperUtilIntForJavaToCExchange SampleCodeSize,
             GBJavaWrapperUtilIntForJavaToCExchange PackedSampleCodeSize,
             GBJavaWrapperUtilIntForJavaToCExchange TemplateCodeSize,
-            GBJavaWrapperUtilIntForJavaToCExchange CompactTemplateCodeSize,
-            IGreenbitLogger act
-    ) {
+            GBJavaWrapperUtilIntForJavaToCExchange CompactTemplateCodeSize, IGreenbitLogger act) {
         int RetVal;
         try {
             GBJavaWrapperUtilIntForJavaToCExchange VersionField1 = new GBJavaWrapperUtilIntForJavaToCExchange();
@@ -563,34 +570,38 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             GBJavaWrapperUtilIntForJavaToCExchange MinImageSizeY = new GBJavaWrapperUtilIntForJavaToCExchange();
             GBJavaWrapperUtilIntForJavaToCExchange MemoryBufferSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetVersionInfo(
-                    GbfrswJavaWrapperDefinesRequestedOperations.GBFRSW_MEMORY_REQUEST_ALL,
-                    VersionField1, VersionField2, VersionField3, VersionField4,
-                    MaxImageSizeX, MaxImageSizeY, MinImageSizeX, MinImageSizeY,
-                    MemoryBufferSize
-            );
-            System.out.println("InitGbfrsw: Mx = " + MaxImageSizeX.Get() +
-                    ", My = " + MaxImageSizeY.Get() + ", mx = " + MinImageSizeX.Get() + ", my = " + MinImageSizeY.Get());
+                    GbfrswJavaWrapperDefinesRequestedOperations.GBFRSW_MEMORY_REQUEST_ALL, VersionField1, VersionField2,
+                    VersionField3, VersionField4, MaxImageSizeX, MaxImageSizeY, MinImageSizeX, MinImageSizeY,
+                    MemoryBufferSize);
+            System.out.println("InitGbfrsw: Mx = " + MaxImageSizeX.Get() + ", My = " + MaxImageSizeY.Get() + ", mx = "
+                    + MinImageSizeX.Get() + ", my = " + MinImageSizeY.Get());
             if (RetVal == GbfrswJavaWrapperDefinesReturnCodes.GBFRSW_ERROR) {
-                throw new Exception("Gbfrswlib GetVersionInfo Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
+                throw new Exception("Gbfrswlib GetVersionInfo Error : "
+                        + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
             }
             // check image size
             if (this.sx > MaxImageSizeX.Get()) {
-                throw new Exception("GbfrswlibError: current image size x is more than allowed, that is " + MaxImageSizeX.Get());
+                throw new Exception(
+                        "GbfrswlibError: current image size x is more than allowed, that is " + MaxImageSizeX.Get());
             }
             if (this.sy > MaxImageSizeY.Get()) {
-                throw new Exception("GbfrswlibError: current image size y is more than allowed, that is " + MaxImageSizeY.Get());
+                throw new Exception(
+                        "GbfrswlibError: current image size y is more than allowed, that is " + MaxImageSizeY.Get());
             }
             if (this.sx < MinImageSizeX.Get()) {
-                throw new Exception("GbfrswlibError: current image size x is less than minimum allowed, that is " + MinImageSizeX.Get());
+                throw new Exception("GbfrswlibError: current image size x is less than minimum allowed, that is "
+                        + MinImageSizeX.Get());
             }
             if (this.sy < MinImageSizeY.Get()) {
-                throw new Exception("GbfrswlibError: current image size y is less than minimum allowed, that is " + MinImageSizeY.Get());
+                throw new Exception("GbfrswlibError: current image size y is less than minimum allowed, that is "
+                        + MinImageSizeY.Get());
             }
             // now get code max size
-            RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetCodeMaxSize(this.sx, this.sy,
-                    SampleCodeSize, PackedSampleCodeSize, TemplateCodeSize, CompactTemplateCodeSize);
+            RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetCodeMaxSize(this.sx, this.sy, SampleCodeSize,
+                    PackedSampleCodeSize, TemplateCodeSize, CompactTemplateCodeSize);
             if (RetVal == GbfrswJavaWrapperDefinesReturnCodes.GBFRSW_ERROR) {
-                throw new Exception("Gbfrswlib GetCodeMaxSize Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
+                throw new Exception("Gbfrswlib GetCodeMaxSize Error : "
+                        + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -604,46 +615,50 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
     public void EncodeToTemplate(String fileName, int ImageFlags, IGreenbitLogger act) {
         try {
             /******************
-             Get Code max size
+             * Get Code max size
              *****************/
             GBJavaWrapperUtilIntForJavaToCExchange SampleCodeSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             GBJavaWrapperUtilIntForJavaToCExchange PackedSampleCodeSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             GBJavaWrapperUtilIntForJavaToCExchange TemplateCodeSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             GBJavaWrapperUtilIntForJavaToCExchange CompactTemplateCodeSize = new GBJavaWrapperUtilIntForJavaToCExchange();
-            if (!InitGbfrswLibraryAndGetCodeSizeForCurrentBmp(SampleCodeSize, PackedSampleCodeSize, TemplateCodeSize, CompactTemplateCodeSize, act)) {
-                throw new Exception("EncodeToTemplate Error: InitGbfrswLibraryAndGetCodeSizeForCurrentBmp returned false");
+            if (!InitGbfrswLibraryAndGetCodeSizeForCurrentBmp(SampleCodeSize, PackedSampleCodeSize, TemplateCodeSize,
+                    CompactTemplateCodeSize, act)) {
+                throw new Exception(
+                        "EncodeToTemplate Error: InitGbfrswLibraryAndGetCodeSizeForCurrentBmp returned false");
             }
             /******************
-             Encode
+             * Encode
              *****************/
             byte[] SampleCode = new byte[SampleCodeSize.Get()];
-            int RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.Coding(
-                    this.sx, this.sy, bytes, ImageFlags,
-                    GbfrswJavaWrapperDefinesCodingOptions.GBFRSW_OPTION_FINGERPRINT_PATTERN_CHECK,
-                    SampleCode
-            );
+            int RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.Coding(this.sx, this.sy, bytes, ImageFlags,
+                    GbfrswJavaWrapperDefinesCodingOptions.GBFRSW_OPTION_FINGERPRINT_PATTERN_CHECK, SampleCode);
             if (RetVal == GbfrswJavaWrapperDefinesReturnCodes.GBFRSW_ERROR) {
-                throw new Exception("Gbfrswlib Coding Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
+                throw new Exception(
+                        "Gbfrswlib Coding Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
             }
             /***********************
              * Enroll
              **********************/
             byte[] TemplateCode = new byte[TemplateCodeSize.Get()];
-            RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.Enroll(this.sx, this.sy,
-                    SampleCode, TemplateCode);
+            RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.Enroll(this.sx, this.sy, SampleCode, TemplateCode);
             if (RetVal == GbfrswJavaWrapperDefinesReturnCodes.GBFRSW_ERROR) {
-                throw new Exception("Gbfrswlib Enroll Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
+                throw new Exception(
+                        "Gbfrswlib Enroll Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
             }
             /*******************
              * Save To File
              ******************/
-            act.LogOnScreen("Saving image as gbfrsw template; Storage dir: " + GetGreenbitDirectoryName() +
-                    ", len = " + bytes.length);
-            File file = new File(GetGreenbitDirectoryName(),
-                    fileName + ".gbfrsw");
+            act.LogOnScreen("Saving image as gbfrsw template; Storage dir: " + GetGreenbitDirectoryName() + ", len = "
+                    + bytes.length);
+            File file = new File(GetGreenbitDirectoryName(), fileName + ".gbfrsw");
             OutputStream fOut = null;
             fOut = new FileOutputStream(file);
             fOut.write(TemplateCode);
+            // send the file path to React Native
+            getReactInstanceManager().getCurrentReactContext()
+                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("onFingerPrintSaveComplete", GetGreenbitDirectoryName() + fileName + ".gbfrsw");
+
             fOut.close(); // do not forget to close the stream
         } catch (Exception e) {
             e.printStackTrace();
@@ -651,17 +666,16 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         }
     }
 
-    public boolean MatchWithTemplate(String TemplateFName, int ImageFlagsForCoding,
-                                     int UnmatchedDataFactor,
-                                     boolean AddExtension, IGreenbitLogger act) {
+    public boolean MatchWithTemplate(String TemplateFName, int ImageFlagsForCoding, int UnmatchedDataFactor,
+            boolean AddExtension, IGreenbitLogger act) {
         try {
             ////////////////////////////
             // Load file
             ////////////////////////////
-            if (AddExtension) TemplateFName += ".gbfrsw";
+            if (AddExtension)
+                TemplateFName += ".gbfrsw";
             act.LogOnScreen("Storage dir: " + GetGreenbitDirectoryName());
-            File file = new File(GetGreenbitDirectoryName(),
-                    TemplateFName);
+            File file = new File(GetGreenbitDirectoryName(), TemplateFName);
             InputStream fIn = null;
             fIn = new FileInputStream(file);
             byte[] templateStream = new byte[fIn.available()];
@@ -671,40 +685,41 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             // ENCODE THIS
             /////////////////////////////
             /******************
-             Get Code max size
+             * Get Code max size
              *****************/
             GBJavaWrapperUtilIntForJavaToCExchange SampleCodeSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             GBJavaWrapperUtilIntForJavaToCExchange PackedSampleCodeSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             GBJavaWrapperUtilIntForJavaToCExchange TemplateCodeSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             GBJavaWrapperUtilIntForJavaToCExchange CompactTemplateCodeSize = new GBJavaWrapperUtilIntForJavaToCExchange();
-            if (!InitGbfrswLibraryAndGetCodeSizeForCurrentBmp(SampleCodeSize, PackedSampleCodeSize, TemplateCodeSize, CompactTemplateCodeSize, act)) {
-                throw new Exception("EncodeToTemplate Error: InitGbfrswLibraryAndGetCodeSizeForCurrentBmp returned false");
+            if (!InitGbfrswLibraryAndGetCodeSizeForCurrentBmp(SampleCodeSize, PackedSampleCodeSize, TemplateCodeSize,
+                    CompactTemplateCodeSize, act)) {
+                throw new Exception(
+                        "EncodeToTemplate Error: InitGbfrswLibraryAndGetCodeSizeForCurrentBmp returned false");
             }
             /******************
-             Encode
+             * Encode
              *****************/
             byte[] SampleCode = new byte[SampleCodeSize.Get()];
-            int RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.Coding(
-                    this.sx, this.sy, bytes, ImageFlagsForCoding,
-                    GbfrswJavaWrapperDefinesCodingOptions.GBFRSW_OPTION_FINGERPRINT_PATTERN_CHECK,
-                    SampleCode
-            );
+            int RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.Coding(this.sx, this.sy, bytes, ImageFlagsForCoding,
+                    GbfrswJavaWrapperDefinesCodingOptions.GBFRSW_OPTION_FINGERPRINT_PATTERN_CHECK, SampleCode);
             if (RetVal == GbfrswJavaWrapperDefinesReturnCodes.GBFRSW_ERROR) {
-                throw new Exception("Gbfrswlib Coding Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
+                throw new Exception(
+                        "Gbfrswlib Coding Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
             }
             ///////////////////////////////////
             // MATCH
             ///////////////////////////////////
             GBJavaWrapperUtilDoubleForJavaToCExchange MatchingScore = new GBJavaWrapperUtilDoubleForJavaToCExchange();
             RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.Match(SampleCode, templateStream,
-                    GB_AcquisitionOptionsGlobals.SpeedVsPrecisionTradeoff,
-                    UnmatchedDataFactor,
-                    0, GB_AcquisitionOptionsGlobals.MatchRotationAngle, MatchingScore);
+                    GB_AcquisitionOptionsGlobals.SpeedVsPrecisionTradeoff, UnmatchedDataFactor, 0,
+                    GB_AcquisitionOptionsGlobals.MatchRotationAngle, MatchingScore);
 
             if (RetVal == GbfrswJavaWrapperDefinesReturnCodes.GBFRSW_ERROR) {
-                throw new Exception("Gbfrswlib Match Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
+                throw new Exception(
+                        "Gbfrswlib Match Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
             }
-            if (MatchingScore.Get() < GB_AcquisitionOptionsGlobals.MatchingThreshold) return false;
+            if (MatchingScore.Get() < GB_AcquisitionOptionsGlobals.MatchingThreshold)
+                return false;
         } catch (Exception e) {
             e.printStackTrace();
             act.LogAsDialog("SaveBinaryData exception: " + e.getMessage());
@@ -713,12 +728,10 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         return true;
     }
 
-
     public boolean Identify(int ImageFlagsForCoding, IGreenbitLogger act) {
         File file = new File(GetGreenbitDirectoryName());
         String[] paths = file.list();
-        for (String fname :
-                paths) {
+        for (String fname : paths) {
             String filenameArray[] = fname.split("\\.");
             String extension = filenameArray[filenameArray.length - 1];
             if (extension.equals("gbfrsw")) {
@@ -735,10 +748,9 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         return false;
     }
 
-
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // PNG
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
 
     /**
      * @param fileName with no extension
@@ -747,13 +759,15 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         try {
             // Assume block needs to be inside a Try/Catch block.
             act.LogOnScreen("Storage dir: " + GetGreenbitDirectoryName());
-            File file = new File(GetGreenbitDirectoryName(),
-                    fileName + ".png"); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
+            File file = new File(GetGreenbitDirectoryName(), fileName + ".png"); // the File to save , append increasing
+                                                                                 // numeric counter to prevent files
+                                                                                 // from getting overwritten.
             OutputStream fOut = null;
             fOut = new FileOutputStream(file);
 
             Bitmap pictureBitmap = this.GetBmp(); // obtaining the Bitmap
-            pictureBitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+            pictureBitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut); // saving the Bitmap to a file compressed as a
+                                                                         // JPEG with 85% compression rate
             fOut.flush(); // Not really required
             fOut.close(); // do not forget to close the stream
         } catch (Exception e) {
@@ -770,18 +784,9 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             /*****************************
              * create ansi nist struct
              */
-            RetVal = GB_AcquisitionOptionsGlobals.AN2000_Jw.CreateAnsiNist(
-                    AnsiNistStruct,
-                    GBANJavaWrapperDefinesAnsinistVersions.VERSION_0300,
-                    "TransType",
-                    1,
-                    "DestAgency",
-                    "OrigAgency",
-                    "TransContID0001",
-                    "TransContRef0001",
-                    90, 90,
-                    "GreenbitDomain"
-            );
+            RetVal = GB_AcquisitionOptionsGlobals.AN2000_Jw.CreateAnsiNist(AnsiNistStruct,
+                    GBANJavaWrapperDefinesAnsinistVersions.VERSION_0300, "TransType", 1, "DestAgency", "OrigAgency",
+                    "TransContID0001", "TransContRef0001", 90, 90, "GreenbitDomain");
             if (RetVal != GBANJavaWrapperDefinesReturnCodes.AN2K_DLL_NO_ERROR) {
                 throw new Exception("CreateAnsiNist: " + GB_AcquisitionOptionsGlobals.AN2000_Jw.GetLastErrorString());
             }
@@ -789,19 +794,14 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
              * create type-14 record
              */
             GBANJavaWrapperDefinesRecordStruct Record = new GBANJavaWrapperDefinesRecordStruct();
-            RetVal = GB_AcquisitionOptionsGlobals.AN2000_Jw.ImageToType14Record(
-                    Record,
-                    bytes, sx, sy,
-                    19.5,
+            RetVal = GB_AcquisitionOptionsGlobals.AN2000_Jw.ImageToType14Record(Record, bytes, sx, sy, 19.5,
                     GBANJavaWrapperDefinesCompressionAlgorithmsStrings.COMP_NONE,
-                    GBANJavaWrapperDefinesImpressionCodes.EFTS_14_LIVE_SCAN_PLAN,
-                    "GreenBit Scanner", "No comment",
-                    GBANJavaWrapperDefinesFingerPositions.EFTS_14_FGP_LEFT_INDEX,
-                    null, null, null, null, null
-            );
+                    GBANJavaWrapperDefinesImpressionCodes.EFTS_14_LIVE_SCAN_PLAN, "GreenBit Scanner", "No comment",
+                    GBANJavaWrapperDefinesFingerPositions.EFTS_14_FGP_LEFT_INDEX, null, null, null, null, null);
             if (RetVal != GBANJavaWrapperDefinesReturnCodes.AN2K_DLL_NO_ERROR) {
                 GB_AcquisitionOptionsGlobals.AN2000_Jw.FreeAnsiNistAllocatedMemory(AnsiNistStruct);
-                throw new Exception("ImageToType14Record: " + GB_AcquisitionOptionsGlobals.AN2000_Jw.GetLastErrorString());
+                throw new Exception(
+                        "ImageToType14Record: " + GB_AcquisitionOptionsGlobals.AN2000_Jw.GetLastErrorString());
             }
             /******************************************
              * insert record into struct
@@ -809,34 +809,32 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             RetVal = GB_AcquisitionOptionsGlobals.AN2000_Jw.InsertRecordIntoAnsiNistStruct(AnsiNistStruct, Record, 1);
             if (RetVal != GBANJavaWrapperDefinesReturnCodes.AN2K_DLL_NO_ERROR) {
                 GB_AcquisitionOptionsGlobals.AN2000_Jw.FreeAnsiNistAllocatedMemory(AnsiNistStruct);
-                throw new Exception("InsertRecordIntoAnsiNistStruct: " + GB_AcquisitionOptionsGlobals.AN2000_Jw.GetLastErrorString());
+                throw new Exception("InsertRecordIntoAnsiNistStruct: "
+                        + GB_AcquisitionOptionsGlobals.AN2000_Jw.GetLastErrorString());
             }
             /***********************************
              * Save into file
              */
             GBJavaWrapperUtilByteArrayForJavaToCExchange OutBuffer = new GBJavaWrapperUtilByteArrayForJavaToCExchange();
-            RetVal = GB_AcquisitionOptionsGlobals.AN2000_Jw.WriteAnsiNistToBuffer(
-                    AnsiNistStruct,
-                    OutBuffer
-            );
+            RetVal = GB_AcquisitionOptionsGlobals.AN2000_Jw.WriteAnsiNistToBuffer(AnsiNistStruct, OutBuffer);
             GB_AcquisitionOptionsGlobals.AN2000_Jw.FreeAnsiNistAllocatedMemory(AnsiNistStruct);
             if (RetVal != GBANJavaWrapperDefinesReturnCodes.AN2K_DLL_NO_ERROR) {
-                throw new Exception("WriteAnsiNistToBuffer: " + GB_AcquisitionOptionsGlobals.AN2000_Jw.GetLastErrorString());
+                throw new Exception(
+                        "WriteAnsiNistToBuffer: " + GB_AcquisitionOptionsGlobals.AN2000_Jw.GetLastErrorString());
             }
-            GbExampleGrayScaleBitmapClass.SaveGenericBinaryFile(fileName,
-                    act, "An2000", OutBuffer.Get());
+            GbExampleGrayScaleBitmapClass.SaveGenericBinaryFile(fileName, act, "An2000", OutBuffer.Get());
         } catch (Exception e) {
             e.printStackTrace();
             act.LogAsDialog("SaveIntoAnsiNistFile" + e.getMessage());
         }
     }
 
-    public static void SaveGenericBinaryFile(String fileName, IGreenbitLogger act, String extension, byte[] BufferToSave) {
+    public static void SaveGenericBinaryFile(String fileName, IGreenbitLogger act, String extension,
+            byte[] BufferToSave) {
         try {
             // Assume block needs to be inside a Try/Catch block.
             act.LogOnScreen("Storage dir: " + GetGreenbitDirectoryName());
-            File file = new File(GetGreenbitDirectoryName(),
-                    fileName + "." + extension);
+            File file = new File(GetGreenbitDirectoryName(), fileName + "." + extension);
             OutputStream fOut = null;
             fOut = new FileOutputStream(file);
             fOut.write(BufferToSave);
@@ -847,9 +845,9 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         }
     }
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // FIR
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     public void SaveToFIR(String fileName, IGreenbitLogger act) {
         int RetVal;
 
@@ -858,23 +856,20 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
 
             // Create FIR record
             RetVal = GB_AcquisitionOptionsGlobals.GBFIR_Jw.CreateFIR(GbfirJavaWrapperDefinesFirFormats.GBFIR_FORMAT_ISO,
-                    31,
-                    null,    // CBEFF Product ID
-                    0,        // Capture Device ID
-                    GbfirJavaWrapperDefinesScaleUnits.GBFIR_SU_PIXEL_PER_INCH,
-                    500,    // ScanResolutionH
-                    500,    // ScanResolutionV
-                    500,    // ImageResolutionH
-                    500,    // ImageResolutionV
-                    8,        // PixelDepth
+                    31, null, // CBEFF Product ID
+                    0, // Capture Device ID
+                    GbfirJavaWrapperDefinesScaleUnits.GBFIR_SU_PIXEL_PER_INCH, 500, // ScanResolutionH
+                    500, // ScanResolutionV
+                    500, // ImageResolutionH
+                    500, // ImageResolutionV
+                    8, // PixelDepth
                     GbfirJavaWrapperDefinesCompressionAlgorithm.GBFIR_CA_UNCOMPRESSED_NO_BIT_PACKING);
             if (RetVal != GbfirJavaWrapperDefinesReturnCodes.GBFIR_RET_SUCCESS) {
                 throw new Exception("SaveToFIR: " + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString());
             }
 
             // add Image to record
-            RetVal = GB_AcquisitionOptionsGlobals.GBFIR_Jw.AddImageToFIR(bytes, bytes.length, sx, sy,
-                    1, 1, 100,
+            RetVal = GB_AcquisitionOptionsGlobals.GBFIR_Jw.AddImageToFIR(bytes, bytes.length, sx, sy, 1, 1, 100,
                     GbfirJavaWrapperDefinesFingerPositions.GBFIR_FP_UNKNOWN,
                     GbfirJavaWrapperDefinesImpressionTypes.GBFIR_IT_LIVE_SCAN_PLAIN);
             if (RetVal != GbfirJavaWrapperDefinesReturnCodes.GBFIR_RET_SUCCESS) {
@@ -900,16 +895,17 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         }
     }
 
-    public boolean GBBmpFromFIRBuffer(byte[] firBuffer, boolean save, boolean isAcqRes, IGreenbitLogger act) throws Exception {
+    public boolean GBBmpFromFIRBuffer(byte[] firBuffer, boolean save, boolean isAcqRes, IGreenbitLogger act)
+            throws Exception {
         try {
             ///////////////////////////////
             // read FIR buffer
             ///////////////////////////////
-            int RetVal = GB_AcquisitionOptionsGlobals.GBFIR_Jw.ReadFIRFromBuffer(
-                    firBuffer, firBuffer.length, GbfirJavaWrapperDefinesFirFormats.GBFIR_FORMAT_ISO);
+            int RetVal = GB_AcquisitionOptionsGlobals.GBFIR_Jw.ReadFIRFromBuffer(firBuffer, firBuffer.length,
+                    GbfirJavaWrapperDefinesFirFormats.GBFIR_FORMAT_ISO);
             if (RetVal != GbfirJavaWrapperDefinesReturnCodes.GBFIR_RET_SUCCESS) {
-                throw new Exception("GBBmpFromFIRBuffer " +
-                        ", ReadFIRFromBuffer: " + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString());
+                throw new Exception("GBBmpFromFIRBuffer " + ", ReadFIRFromBuffer: "
+                        + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString());
             }
 
             ///////////////////////////////
@@ -926,15 +922,12 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             GBJavaWrapperUtilIntForJavaToCExchange PixelDepth = new GBJavaWrapperUtilIntForJavaToCExchange();
             GBJavaWrapperUtilIntForJavaToCExchange ImageCompressionAlgorithm = new GBJavaWrapperUtilIntForJavaToCExchange();
 
-            RetVal = GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetFIRHeaderFields(ImageAcquisitionLevel,
-                    CBEFFProductId, CaptureDeviceID,
-                    ScaleUnits, ScanResolutionH,
-                    ScanResolutionV, ImageResolutionH,
-                    ImageResolutionV, PixelDepth,
-                    ImageCompressionAlgorithm);
+            RetVal = GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetFIRHeaderFields(ImageAcquisitionLevel, CBEFFProductId,
+                    CaptureDeviceID, ScaleUnits, ScanResolutionH, ScanResolutionV, ImageResolutionH, ImageResolutionV,
+                    PixelDepth, ImageCompressionAlgorithm);
             if (RetVal != GbfirJavaWrapperDefinesReturnCodes.GBFIR_RET_SUCCESS) {
-                throw new Exception("GBBmpFromFIRBuffer " +
-                        ", GetFIRHeaderFields: " + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString());
+                throw new Exception("GBBmpFromFIRBuffer " + ", GetFIRHeaderFields: "
+                        + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString());
             }
 
             ///////////////////////////////
@@ -950,19 +943,19 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
                 GBJavaWrapperUtilIntForJavaToCExchange ImageQuality = new GBJavaWrapperUtilIntForJavaToCExchange();
                 GBJavaWrapperUtilIntForJavaToCExchange FingerPosition = new GBJavaWrapperUtilIntForJavaToCExchange();
                 GBJavaWrapperUtilIntForJavaToCExchange ImpressionType = new GBJavaWrapperUtilIntForJavaToCExchange();
-                RetVal = GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetFingerRecordHeaderFields(Index, CountView,
-                        ViewNumber, ImageQuality, FingerPosition, ImpressionType);
+                RetVal = GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetFingerRecordHeaderFields(Index, CountView, ViewNumber,
+                        ImageQuality, FingerPosition, ImpressionType);
                 if (RetVal != GbfirJavaWrapperDefinesReturnCodes.GBFIR_RET_SUCCESS) {
-                    throw new Exception("GBBmpFromFIRBuffer " +
-                            ", GetFingerRecordHeaderFields: " + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString());
+                    throw new Exception("GBBmpFromFIRBuffer " + ", GetFingerRecordHeaderFields: "
+                            + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString());
                 }
 
                 // get image size
                 GBJavaWrapperUtilIntForJavaToCExchange ImageBufferSize = new GBJavaWrapperUtilIntForJavaToCExchange();
                 RetVal = GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetFingerImageSize(Index, ImageBufferSize);
                 if (RetVal != GbfirJavaWrapperDefinesReturnCodes.GBFIR_RET_SUCCESS) {
-                    throw new Exception("GBBmpFromFIRBuffer " +
-                            ", GetFingerImageSize: " + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString());
+                    throw new Exception("GBBmpFromFIRBuffer " + ", GetFingerImageSize: "
+                            + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString());
                 }
 
                 // allocate image buffer
@@ -971,11 +964,11 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
                 // get image buffer
                 GBJavaWrapperUtilIntForJavaToCExchange ImageWidth = new GBJavaWrapperUtilIntForJavaToCExchange();
                 GBJavaWrapperUtilIntForJavaToCExchange ImageHeight = new GBJavaWrapperUtilIntForJavaToCExchange();
-                RetVal = GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetFingerImage(Index, ImageBuffer,
-                        ImageWidth, ImageHeight);
+                RetVal = GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetFingerImage(Index, ImageBuffer, ImageWidth,
+                        ImageHeight);
                 if (RetVal != GbfirJavaWrapperDefinesReturnCodes.GBFIR_RET_SUCCESS) {
-                    throw new Exception("GBBmpFromFIRBuffer " +
-                            ", GetFingerImage: " + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString());
+                    throw new Exception("GBBmpFromFIRBuffer " + ", GetFingerImage: "
+                            + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString());
                 }
 
                 // build the bitmap
@@ -987,7 +980,7 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
 
             return true;
         } catch (Exception e) {
-            byte[] whiteImage = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
+            byte[] whiteImage = { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };
             this.Build(whiteImage, 2, 2, false, false, act);
             e.printStackTrace();
             act.LogAsDialog(e.getMessage());
@@ -995,27 +988,29 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         }
     }
 
-    public boolean GbBmpFromFIRFile(String FIRFileName, boolean save, boolean isAcqRes, IGreenbitLogger act) throws Exception {
+    public boolean GbBmpFromFIRFile(String FIRFileName, boolean save, boolean isAcqRes, IGreenbitLogger act)
+            throws Exception {
         try {
             ////////////////////////////
             // Load file
             ////////////////////////////
-            if (act != null) act.LogOnScreen("Storage dir: " + GetGreenbitDirectoryName());
-            File file = new File(GetGreenbitDirectoryName(),
-                    FIRFileName + ".fir");
+            if (act != null)
+                act.LogOnScreen("Storage dir: " + GetGreenbitDirectoryName());
+            File file = new File(GetGreenbitDirectoryName(), FIRFileName + ".fir");
             InputStream fIn = null;
             fIn = new FileInputStream(file);
             byte[] firStream = new byte[fIn.available()];
             fIn.read(firStream);
             fIn.close(); // do not forget to close the stream
             String fInfo = GetGreenbitDirectoryName() + "/" + FIRFileName + " size: " + firStream.length;
-            if (act != null) act.LogOnScreen(fInfo);
+            if (act != null)
+                act.LogOnScreen(fInfo);
             ///////////////////////////////
             // convert from wsq to binary
             ///////////////////////////////
             return GBBmpFromFIRBuffer(firStream, save, isAcqRes, act);
         } catch (Exception e) {
-            byte[] whiteImage = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
+            byte[] whiteImage = { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };
             this.Build(whiteImage, 2, 2, false, false, act);
             e.printStackTrace();
             act.LogAsDialog(e.getMessage());
@@ -1041,13 +1036,14 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             for (int i = 0; i < GbNfiqJavaWrapperLibrary.GBNFIQ_MAX_MINUTIAE; i++)
                 MinutiaeList[i] = new GbNfiqJavaWrapperDefineMinutiaeDescriptor();
 
-            RetVal = GB_AcquisitionOptionsGlobals.GBNFIQ_Jw.GetImageQuality(bytes, sx, sy, NFIQQuality, MinutiaeNumber, MinutiaeList);
+            RetVal = GB_AcquisitionOptionsGlobals.GBNFIQ_Jw.GetImageQuality(bytes, sx, sy, NFIQQuality, MinutiaeNumber,
+                    MinutiaeList);
 
             if (RetVal != GbNfiqJavaWrapperDefineReturnCodes.GBNFIQ_NO_ERROR) {
-                throw new Exception("GetNFIQQuality " +
-                        ", GetImageQuality: " + GB_AcquisitionOptionsGlobals.GBNFIQ_Jw.GetLastErrorString());
+                throw new Exception("GetNFIQQuality " + ", GetImageQuality: "
+                        + GB_AcquisitionOptionsGlobals.GBNFIQ_Jw.GetLastErrorString());
             }
-            //act.LogOnScreen("NFIQ RetVal: " + RetVal );
+            // act.LogOnScreen("NFIQ RetVal: " + RetVal );
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1060,16 +1056,16 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             int RetVal;
             Log.d("NFIQ2", "Inside GetNFIQ2Quality");
 
-
             GBJavaWrapperUtilIntForJavaToCExchange NFIQ2Quality = new GBJavaWrapperUtilIntForJavaToCExchange();
 
             RetVal = GB_AcquisitionOptionsGlobals.GBNFIQ2_Jw.GetImageQuality(bytes, sx, sy, NFIQ2Quality);
 
             if (RetVal != GbNfiq2JavaWrapperDefineReturnCodes.GBNFIQ2_NO_ERROR) {
-                throw new Exception("GetNFIQ2Quality " +
-                        ", GetImagefQuality: " + GB_AcquisitionOptionsGlobals.GBNFIQ2_Jw.GetLastErrorString());
+                throw new Exception("GetNFIQ2Quality " + ", GetImagefQuality: "
+                        + GB_AcquisitionOptionsGlobals.GBNFIQ2_Jw.GetLastErrorString());
             }
-            //act.LogOnScreen("NFIQ2: " + NFIQ2Quality.Value + " fine->RetVal: " + RetVal );
+            // act.LogOnScreen("NFIQ2: " + NFIQ2Quality.Value + " fine->RetVal: " + RetVal
+            // );
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1091,17 +1087,18 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             RetVal = GB_AcquisitionOptionsGlobals.LFS_Jw.GetMinutiae(bytes, sx, sy, 8, 19.68, Probe, MinutiaeNum);
 
             if (RetVal != LfsJavaWrapperLibrary.LFS_SUCCESS) {
-                throw new Exception("TestLfs" +
-                        ", TestLfsBozorth: " + GB_AcquisitionOptionsGlobals.LFS_Jw.GetLastErrorString());
+                throw new Exception(
+                        "TestLfs" + ", TestLfsBozorth: " + GB_AcquisitionOptionsGlobals.LFS_Jw.GetLastErrorString());
             }
 
             GBJavaWrapperUtilIntForJavaToCExchange score = new GBJavaWrapperUtilIntForJavaToCExchange();
 
-            RetVal = GB_AcquisitionOptionsGlobals.BOZORTH_Jw.bozDirectCall(200, Probe, MinutiaeNum.Value, Probe, MinutiaeNum.Value, score);
+            RetVal = GB_AcquisitionOptionsGlobals.BOZORTH_Jw.bozDirectCall(200, Probe, MinutiaeNum.Value, Probe,
+                    MinutiaeNum.Value, score);
 
             if (RetVal != BozorthJavaWrapperLibrary.BOZORTH_NO_ERROR) {
-                throw new Exception("TestBozorth" +
-                        ", TestLfsBozorth: " + GB_AcquisitionOptionsGlobals.BOZORTH_Jw.GetLastErrorString());
+                throw new Exception("TestBozorth" + ", TestLfsBozorth: "
+                        + GB_AcquisitionOptionsGlobals.BOZORTH_Jw.GetLastErrorString());
             }
 
             act.LogOnScreen("TestLfsBozorth: " + score.Value + " fine->RetVal: " + RetVal);
@@ -1110,86 +1107,79 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         }
     }
 
-
-
-
     public void EncodeToAnsi378Template(String fileName, int ImageFlags, IGreenbitLogger act) {
         try {
             /******************
-             Get Code max size
+             * Get Code max size
              *****************/
             GBJavaWrapperUtilIntForJavaToCExchange SampleCodeSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             GBJavaWrapperUtilIntForJavaToCExchange PackedSampleCodeSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             GBJavaWrapperUtilIntForJavaToCExchange TemplateCodeSize = new GBJavaWrapperUtilIntForJavaToCExchange();
             GBJavaWrapperUtilIntForJavaToCExchange CompactTemplateCodeSize = new GBJavaWrapperUtilIntForJavaToCExchange();
-            if (!InitGbfrswLibraryAndGetCodeSizeForCurrentBmp(SampleCodeSize, PackedSampleCodeSize, TemplateCodeSize, CompactTemplateCodeSize, act)) {
-                throw new Exception("EncodeToTemplate Error: InitGbfrswLibraryAndGetCodeSizeForCurrentBmp returned false");
+            if (!InitGbfrswLibraryAndGetCodeSizeForCurrentBmp(SampleCodeSize, PackedSampleCodeSize, TemplateCodeSize,
+                    CompactTemplateCodeSize, act)) {
+                throw new Exception(
+                        "EncodeToTemplate Error: InitGbfrswLibraryAndGetCodeSizeForCurrentBmp returned false");
             }
             /******************
-             Encode
+             * Encode
              *****************/
             byte[] SampleCode = new byte[SampleCodeSize.Get()];
-            int RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.Coding(
-                    this.sx, this.sy, bytes, ImageFlags,
-                    GbfrswJavaWrapperDefinesCodingOptions.GBFRSW_OPTION_FINGERPRINT_PATTERN_CHECK,
-                    SampleCode
-            );
+            int RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.Coding(this.sx, this.sy, bytes, ImageFlags,
+                    GbfrswJavaWrapperDefinesCodingOptions.GBFRSW_OPTION_FINGERPRINT_PATTERN_CHECK, SampleCode);
             if (RetVal == GbfrswJavaWrapperDefinesReturnCodes.GBFRSW_ERROR) {
-                throw new Exception("Gbfrswlib Coding Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
+                throw new Exception(
+                        "Gbfrswlib Coding Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
             }
             /***********************
              * Enroll
              **********************/
             byte[] TemplateCode = new byte[TemplateCodeSize.Get()];
-            RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.Enroll(this.sx, this.sy,
-                    SampleCode, TemplateCode);
+            RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.Enroll(this.sx, this.sy, SampleCode, TemplateCode);
             if (RetVal == GbfrswJavaWrapperDefinesReturnCodes.GBFRSW_ERROR) {
-                throw new Exception("Gbfrswlib Enroll Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
+                throw new Exception(
+                        "Gbfrswlib Enroll Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
             }
             /***********************
              * Convert
              **********************/
             GBJavaWrapperUtilIntForJavaToCExchange MaxFRMLength = new GBJavaWrapperUtilIntForJavaToCExchange();
-            RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.ISOGetMaxFMRLength(
-                    this.sx, this.sy,
+            RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.ISOGetMaxFMRLength(this.sx, this.sy,
                     GbfrswJavaWrapperDefinesISOFMRFormat.GBFRSW_ISO_FMR_FORMAT_INCITS,
-                    GbfrswJavaWrapperDefinesISOFMRGBProprietaryData.GBFRSW_ISO_FMR_GB_PROPR_DATA_NONE,
-                    MaxFRMLength);
+                    GbfrswJavaWrapperDefinesISOFMRGBProprietaryData.GBFRSW_ISO_FMR_GB_PROPR_DATA_NONE, MaxFRMLength);
             if (RetVal == GbfrswJavaWrapperDefinesReturnCodes.GBFRSW_ERROR) {
-                throw new Exception("Gbfrswlib ISOGetMaxFMRLength Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
+                throw new Exception("Gbfrswlib ISOGetMaxFMRLength Error : "
+                        + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
             }
 
             byte[] FMRIsoBuffer = new byte[(MaxFRMLength.Get())];
             GBJavaWrapperUtilIntForJavaToCExchange FMRBufferLen = new GBJavaWrapperUtilIntForJavaToCExchange();
             RetVal = GB_AcquisitionOptionsGlobals.GBFRSW_Jw.ISOGBTemplateToFMR(
                     // INPUT
-                    TemplateCode,
-                    this.sx, this.sy,
+                    TemplateCode, this.sx, this.sy,
                     GbfrswJavaWrapperDefinesISOFMRFingerPositions.GBFRSW_ISO_FMR_FINGER_POS_UNKNOWN,
                     GbfrswJavaWrapperDefinesISOFMRFormat.GBFRSW_ISO_FMR_FORMAT_INCITS,
                     GbfrswJavaWrapperDefinesISOFMRGBProprietaryData.GBFRSW_ISO_FMR_GB_PROPR_DATA_NONE,
                     // OUTPUT
-                    FMRIsoBuffer,
-                    FMRBufferLen
-            );
+                    FMRIsoBuffer, FMRBufferLen);
             if (RetVal == GbfrswJavaWrapperDefinesReturnCodes.GBFRSW_ERROR) {
-                throw new Exception("Gbfrswlib ISOGBTemplateToFMR Error : " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
+                throw new Exception("Gbfrswlib ISOGBTemplateToFMR Error : "
+                        + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString());
             }
             /*******************
              * Save To File
              ******************/
-            act.LogOnScreen("Saving image as ANSI 378 template; Storage dir: " + GetGreenbitDirectoryName() +
-                    ", len = " + bytes.length);
-            File file = new File(GetGreenbitDirectoryName(),
-                    fileName + ".ansi378");
+            act.LogOnScreen("Saving image as ANSI 378 template; Storage dir: " + GetGreenbitDirectoryName() + ", len = "
+                    + bytes.length);
+            File file = new File(GetGreenbitDirectoryName(), fileName + ".ansi378");
             OutputStream fOut = null;
             fOut = new FileOutputStream(file);
             fOut.write(FMRIsoBuffer);
-            
+
             // send the file path to React Native
             getReactInstanceManager().getCurrentReactContext()
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("onFingerPrintSaveComplete", GetGreenbitDirectoryName() + fileName + ".ansi378");
+                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("onFingerPrintSaveComplete", GetGreenbitDirectoryName() + fileName + ".ansi378");
 
             fOut.close(); // do not forget to close the stream
         } catch (Exception e) {
@@ -1203,7 +1193,7 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             int RetVal;
 
             /******************
-             Get minutiae
+             * Get minutiae
              *****************/
             LfsJavaWrapperDefinesMinutia[] Probe = new LfsJavaWrapperDefinesMinutia[BozorthJavaWrapperLibrary.BOZORTH_MAX_MINUTIAE];
 
@@ -1215,18 +1205,16 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
             RetVal = GB_AcquisitionOptionsGlobals.LFS_Jw.GetMinutiae(bytes, sx, sy, 8, 19.68, Probe, MinutiaeNum);
 
             if (RetVal != LfsJavaWrapperLibrary.LFS_SUCCESS) {
-                throw new Exception("EncodeToLfsMinutiae" +
-                        ", EncodeToLfsMinutiae: " + GB_AcquisitionOptionsGlobals.LFS_Jw.GetLastErrorString());
+                throw new Exception("EncodeToLfsMinutiae" + ", EncodeToLfsMinutiae: "
+                        + GB_AcquisitionOptionsGlobals.LFS_Jw.GetLastErrorString());
             }
-
 
             /*******************
              * Save To File
              ******************/
-            act.LogOnScreen("Saving image as ANSI 378 template; Storage dir: " + GetGreenbitDirectoryName() +
-                    ", len = " + bytes.length);
-            File file = new File(GetGreenbitDirectoryName(),
-                    fileName + ".lfs");
+            act.LogOnScreen("Saving image as ANSI 378 template; Storage dir: " + GetGreenbitDirectoryName() + ", len = "
+                    + bytes.length);
+            File file = new File(GetGreenbitDirectoryName(), fileName + ".lfs");
             OutputStream fOut = new FileOutputStream(file);
             Log.d("Fingerprint", "Probe size = " + String.valueOf(Probe.length));
             fOut.write(SerializeMinutiaeBuffer(Probe)); // check this line out
@@ -1241,7 +1229,6 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
 
     private byte[] serializeMinutiaeBuffer(LfsJavaWrapperDefinesMinutia[] MinutiaeArrayToSerialize) {
 
-
         byte[] serializedMBuffer = new byte[0];
         byte[] deSerializedMBuffer = new byte[0];
         ObjectOutputStream out = null;
@@ -1252,11 +1239,12 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
 
                 out.writeObject(lfsJavaWrapperDefinesMinutia);
             }
-            //out.flush();
+            // out.flush();
             serializedMBuffer = bos.toByteArray();
 
-            //deserialize
-            //LfsJavaWrapperDefinesMinutia lfsJavaWrapperDefinesMinutia = new LfsJavaWrapperDefinesMinutia();
+            // deserialize
+            // LfsJavaWrapperDefinesMinutia lfsJavaWrapperDefinesMinutia = new
+            // LfsJavaWrapperDefinesMinutia();
             Object obj;
             // Reading the object from a file
             FileInputStream file = new FileInputStream("Template_a0_0.lfs");
@@ -1284,16 +1272,16 @@ public class GbExampleGrayScaleBitmapClass extends ReactActivity {
         return serializedMBuffer;
     }
 
-
     private byte[] SerializeMinutiaeBuffer(LfsJavaWrapperDefinesMinutia[] MinutiaeArrayToSerialize) {
 
-//        //deserialize
+        // //deserialize
         Log.d("Fingerprint", "Starts here");
 
-        LfsJavaWrapperDefinesMinutia[] minutiaeArrayToSerialize = SerializationUtils.deserialize(SerializationUtils.serialize(MinutiaeArrayToSerialize));
+        LfsJavaWrapperDefinesMinutia[] minutiaeArrayToSerialize = SerializationUtils
+                .deserialize(SerializationUtils.serialize(MinutiaeArrayToSerialize));
         Log.d("Fingerprint", "Reached here");
-//
-//        // compare
+        //
+        // // compare
         if (Arrays.equals(minutiaeArrayToSerialize, MinutiaeArrayToSerialize)) {
             Log.d("Fingerprint", "It is the same");
         } else {

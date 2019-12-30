@@ -79,7 +79,8 @@ import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class QuarterlyVerificationWithFingerprint extends AppCompatActivity implements IGreenbitLogger, IGbmsapiAcquisitionManagerCallback {
+public class QuarterlyVerificationWithFingerprint extends AppCompatActivity
+        implements IGreenbitLogger, IGbmsapiAcquisitionManagerCallback {
     private int[] OpenedFD = new int[10];
     private int[] DeviceBus = new int[10];
     private int[] DeviceAddress = new int[10];
@@ -113,8 +114,7 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
     private TextView report;
 
     public static GbfinimgJavaWrapperDefineSegmentImageDescriptor[] segments;
-    private GbExampleGrayScaleBitmapClass gbExampleGrayScaleBitmapClass =
-            new GbExampleGrayScaleBitmapClass();
+    private GbExampleGrayScaleBitmapClass gbExampleGrayScaleBitmapClass = new GbExampleGrayScaleBitmapClass();
 
     private void StartChronometer() {
         ChronometerStarted = true;
@@ -127,7 +127,8 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
     }
 
     private long ChronoGetTimeMillisecs() {
-        if (ChronometerStarted == false) return -1;
+        if (ChronometerStarted == false)
+            return -1;
         return (System.currentTimeMillis() - ChronometerMillisecs);
     }
 
@@ -135,10 +136,10 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
         LogAcquisitionInfoOnScreen(strToLog);
     }
 
-
     public void CreatePopup(String popupText) {
-//        Toast popup = Toast.makeText(getBaseContext(), popupText, Toast.LENGTH_SHORT);
-//        popup.show();
+        // Toast popup = Toast.makeText(getBaseContext(), popupText,
+        // Toast.LENGTH_SHORT);
+        // popup.show();
     }
 
     public void LogPopup(String text) {
@@ -152,7 +153,7 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
     }
 
     public void LogAsDialog(String logStr) {
-        //   GB_AcquisitionOptionsGlobals.CreateDialogNeutral(logStr, this);
+        // GB_AcquisitionOptionsGlobals.CreateDialogNeutral(logStr, this);
 
         // Log.e("finger", "CRASHED HERE");
 
@@ -195,20 +196,21 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
 
                         float scaleWidth = metrics.scaledDensity / 8;
 
-                        //set image in imageView
+                        // set image in imageView
                         LoggerView.setImageBitmap(bmp);
 
-                        //set imageView dynamic width and height
-//                        LoggerView.setMaxWidth((int) scaleWidth);
-//                        LoggerView.setMaxHeight((int) scaleWidth);
-//                        LoggerView.setMinimumWidth((int) scaleWidth);
-//                        LoggerView.setMinimumHeight((int) scaleWidth);
+                        // set imageView dynamic width and height
+                        // LoggerView.setMaxWidth((int) scaleWidth);
+                        // LoggerView.setMaxHeight((int) scaleWidth);
+                        // LoggerView.setMinimumWidth((int) scaleWidth);
+                        // LoggerView.setMinimumHeight((int) scaleWidth);
 
                         if (GbBmp.hasToBeSaved) {
-                            //----------------------------------------
+                            // ----------------------------------------
                             // save image
-                            //----------------------------------------
-                            // 5ran6: I am saving all these format just for testing sha.... We sha eventually only save one format (e.g ANSI_Nist)
+                            // ----------------------------------------
+                            // 5ran6: I am saving all these format just for testing sha.... We sha
+                            // eventually only save one format (e.g ANSI_Nist)
 
                             GbBmp.SaveIntoAnsiNistFile("Image_" + LoggerBitmapFileSaveCounter, this, 0);
                             GbBmp.SaveToGallery("Image_" + LoggerBitmapFileSaveCounter, this);
@@ -220,11 +222,11 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
                             GbBmp.GetNFIQQuality(this);
                             GbBmp.GetNFIQ2Quality(this);
 
-//                            try {
-//                                GbBmp.TestLfsBozorth(this);
-//                            }catch (Exception e){
-//                                e.printStackTrace();
-//                            }
+                            // try {
+                            // GbBmp.TestLfsBozorth(this);
+                            // }catch (Exception e){
+                            // e.printStackTrace();
+                            // }
 
                             LoggerBitmapFileSaveCounter++;
 
@@ -232,15 +234,15 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
                         if (GbBmp.isAcquisitionResult) {
                             GB_AcquisitionOptionsGlobals.acquiredFrame = GbBmp;
                             GB_AcquisitionOptionsGlobals.acquiredFrameValid = true;
-                            //END OF BEEP: then proceed
+                            // END OF BEEP: then proceed
                             report.setText("Processing! Please Remove your hands. ");
-                            //               Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(getApplicationContext(), "success",
+                            // Toast.LENGTH_SHORT).show();
 
                             new Handler().postDelayed(() -> {
                                 Log.d("fingerprint", "acquisition ended bro");
                                 Identify();
                             }, 2500);
-
 
                         }
                     } else {
@@ -254,7 +256,8 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
             LoggerBitmapChanged = false;
         }
         if (LoggerAcqinfoListChanged) {
-            while (LoggerAcqInfoList.size() > 1) LoggerAcqInfoList.remove(0);
+            while (LoggerAcqInfoList.size() > 1)
+                LoggerAcqInfoList.remove(0);
 
             String bigLog = "";
             for (String item : LoggerAcqInfoList) {
@@ -264,7 +267,8 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
             LoggerAcqinfoListChanged = false;
         }
         if (LoggerImageInfoListChanged) {
-            while (LoggerImageInfoList.size() > 1) LoggerImageInfoList.remove(0);
+            while (LoggerImageInfoList.size() > 1)
+                LoggerImageInfoList.remove(0);
 
             String bigLog = "";
             for (String item : LoggerImageInfoList) {
@@ -301,38 +305,47 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
 
     private void ManageGbmsapiErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_NO_ERROR) {
-            String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.GetLastErrorString() + "; RetVal = " + RetVal;
+            String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.GetLastErrorString()
+                    + "; RetVal = " + RetVal;
             if (RetVal == GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_USB_DRIVER) {
                 GBJavaWrapperUtilIntForJavaToCExchange usbError = new GBJavaWrapperUtilIntForJavaToCExchange();
                 GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.GetUSBErrorCode(usbError);
                 errorToLog += "; USB CODE: " + usbError.Get();
             }
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageGbfrswErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GbfrswJavaWrapperDefinesReturnCodes.GBFRSW_SUCCESS) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageGbfinimgErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GbfinimgJavaWrapperDefinesReturnCodes.GBFINIMG_NO_ERROR) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBFINIMG_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageAn2000Errors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GBANJavaWrapperDefinesReturnCodes.AN2K_DLL_NO_ERROR) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.AN2000_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
             LogPopup(errorToLog);
         }
     }
@@ -340,45 +353,56 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
     private void ManageGbfirErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GbfirJavaWrapperDefinesReturnCodes.GBFIR_RET_SUCCESS) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageGbNfiqErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GbNfiqJavaWrapperDefineReturnCodes.GBNFIQ_NO_ERROR) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBNFIQ_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageGbNfiq2Errors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GbNfiq2JavaWrapperDefineReturnCodes.GBNFIQ2_NO_ERROR) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBNFIQ2_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageLfsErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != LfsJavaWrapperLibrary.LFS_SUCCESS) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.LFS_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageBozorthErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != BozorthJavaWrapperLibrary.BOZORTH_NO_ERROR) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.BOZORTH_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void LogSizeAndContrast() {
-        if (!GBMSAPIJavaWrapperDefinesScannableBiometricType.ObjToAcquireIsRoll(GB_AcquisitionOptionsGlobals.ObjTypeToAcquire)) {
+        if (!GBMSAPIJavaWrapperDefinesScannableBiometricType
+                .ObjToAcquireIsRoll(GB_AcquisitionOptionsGlobals.ObjTypeToAcquire)) {
             String LogImageInfoStr = "";
             GBJavaWrapperUtilIntForJavaToCExchange fpSize = new GBJavaWrapperUtilIntForJavaToCExchange(),
                     fpContrast = new GBJavaWrapperUtilIntForJavaToCExchange();
@@ -390,14 +414,9 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
     }
 
     @Override
-    public boolean AcquisitionEventsManagerCallback(
-            int OccurredEventCode, int GetFrameErrorCode, int EventInfo,
-            byte[] FramePtr,
-            int FrameSizeX, int FrameSizeY,
-            double CurrentFrameRate, double NominalFrameRate,
-            int GB_Diagnostic,
-            Object UserDefinedParameters
-    ) {
+    public boolean AcquisitionEventsManagerCallback(int OccurredEventCode, int GetFrameErrorCode, int EventInfo,
+            byte[] FramePtr, int FrameSizeX, int FrameSizeY, double CurrentFrameRate, double NominalFrameRate,
+            int GB_Diagnostic, Object UserDefinedParameters) {
         try {
             String LogPhaseStr = "";
             String LogInfoStr = "";
@@ -406,7 +425,8 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
             StartChronometer();
 
             if (OccurredEventCode == GBMSAPIJavaWrapperDefinesAcquisitionEvents.GBMSAPI_AE_VALID_FRAME_ACQUIRED) {
-                if (!FirstFrameAcquired) FirstFrameAcquired = true;
+                if (!FirstFrameAcquired)
+                    FirstFrameAcquired = true;
                 LogBitmap(FramePtr, FrameSizeX, FrameSizeY, false, false);
                 LogInfoStr = String.format("FR: %.2f/%.2f", CurrentFrameRate, NominalFrameRate);
                 // size and contrast
@@ -415,11 +435,12 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
             } else if (OccurredEventCode == GBMSAPIJavaWrapperDefinesAcquisitionEvents.GBMSAPI_AE_ACQUISITION_END) {
                 AcquisitionEnded = true;
                 AcquisitionStarted = false;
-                if (
-                        ((GB_Diagnostic & GBMSAPIJavaWrapperDefinesDiagnosticMessage.GBMSAPI_DM_SCANNER_SURFACE_NOT_NORMA) == 0) &&
-                                ((GB_Diagnostic & GBMSAPIJavaWrapperDefinesDiagnosticMessage.GBMSAPI_DM_SCANNER_FAILURE) == 0)
-                ) {
-                    if (!GBMSAPIJavaWrapperDefinesScannableBiometricType.ObjToAcquireIsRoll(GB_AcquisitionOptionsGlobals.ObjTypeToAcquire)) {
+                if (((GB_Diagnostic
+                        & GBMSAPIJavaWrapperDefinesDiagnosticMessage.GBMSAPI_DM_SCANNER_SURFACE_NOT_NORMA) == 0)
+                        && ((GB_Diagnostic
+                                & GBMSAPIJavaWrapperDefinesDiagnosticMessage.GBMSAPI_DM_SCANNER_FAILURE) == 0)) {
+                    if (!GBMSAPIJavaWrapperDefinesScannableBiometricType
+                            .ObjToAcquireIsRoll(GB_AcquisitionOptionsGlobals.ObjTypeToAcquire)) {
                         int RetVal = GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.ImageFinalization(FramePtr);
                         if (RetVal != GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_NO_ERROR) {
                             ManageGbmsapiErrors("Callback: finalization", RetVal, false);
@@ -448,12 +469,18 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
                         + String.format(", %X", GB_Diagnostic));
             }
 
-            if (AcquisitionEnded) LogPhaseStr = "Acquisition End";
-            else if (PreviewEnded) LogPhaseStr = "Acquisition";
-            else if (FirstFrameAcquired) LogPhaseStr = "Preview";
-            else LogPhaseStr = "Don't place finger on the scanner";
-            if (ValToRet) LogImageInfoOnScreen(LogPhaseStr);
-            if (ValToRet) LogAcquisitionInfoOnScreen(LogInfoStr);
+            if (AcquisitionEnded)
+                LogPhaseStr = "Acquisition End";
+            else if (PreviewEnded)
+                LogPhaseStr = "Acquisition";
+            else if (FirstFrameAcquired)
+                LogPhaseStr = "Preview";
+            else
+                LogPhaseStr = "Don't place finger on the scanner";
+            if (ValToRet)
+                LogImageInfoOnScreen(LogPhaseStr);
+            if (ValToRet)
+                LogAcquisitionInfoOnScreen(LogInfoStr);
 
             return ValToRet;
         } catch (Exception ex) {
@@ -487,7 +514,8 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
             return;
         }
         LogImageInfoOnScreen(checkGbmsapi);
-        checkGbmsapi = GBMSAPIJavaWrapperDefinesDeviceName.DevIDToString(currentDevice.DeviceID) + ", " + currentDevice.DeviceSerialNum;
+        checkGbmsapi = GBMSAPIJavaWrapperDefinesDeviceName.DevIDToString(currentDevice.DeviceID) + ", "
+                + currentDevice.DeviceSerialNum;
         GB_AcquisitionOptionsGlobals.DeviceID = currentDevice.DeviceID;
         this.setTitle(checkGbmsapi);
 
@@ -509,8 +537,10 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
             ManageGbmsapiErrors("Load Features, GetScannableTypes", RetVal, true);
             return;
         }
-        List<String> objTypes = GBMSAPIJavaWrapperDefinesScannableBiometricType.ScannableTypesToStringList(objTypesMask.Get());
-        ArrayAdapter<String> objectsToAcquireAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, objTypes);
+        List<String> objTypes = GBMSAPIJavaWrapperDefinesScannableBiometricType
+                .ScannableTypesToStringList(objTypesMask.Get());
+        ArrayAdapter<String> objectsToAcquireAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, objTypes);
         objectsToAcquireAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         comboObjectsToAcquire.setAdapter(objectsToAcquireAdapter);
 
@@ -561,68 +591,123 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
         return objToAcquire;
     }
 
-//    private int GetGbfinimgTypeFromString(String objToAcquireString) {
-//        int GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_NO_TYPE;
-//        if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_SINGLE_FINGER) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_SINGLE_FINGER_FLAT;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLL_SINGLE_FINGER) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_SINGLE_FINGER;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_INDEXES_2) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_THUMBS_2;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_LOWER_HALF_PALM) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_HALF_PALM;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_SLAP_2) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_2;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_SLAP_4) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_4;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_THUMBS_2) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_THUMBS_2;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_UPPER_HALF_PALM) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_HALF_PALM_UPPER;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_WRITER_PALM) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_WRITER_PALM;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_PLAIN_JOINT_LEFT_SIDE) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_FLAT_JOINT_FINGER_FV2;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_PLAIN_JOINT_RIGHT_SIDE) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_FLAT_JOINT_FINGER_FV4;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_DOWN) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_SINGLE_FINGER_FLAT;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_HYPOTHENAR) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_ROLLED_THENAR;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_JOINT) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_ROLLED_JOINT_FINGER_FV1;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_JOINT_CENTER) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_ROLLED_JOINT_FINGER_FV1;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_THENAR) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_ROLLED_THENAR;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_TIP) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_ROLLED_TIP;
-//        } else if (objToAcquireString == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_UP) {
-//            GbfinimgType = GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_SINGLE_FINGER_FLAT;
-//        }
-//        return GbfinimgType;
-//    }
+    // private int GetGbfinimgTypeFromString(String objToAcquireString) {
+    // int GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_NO_TYPE;
+    // if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_SINGLE_FINGER)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_SINGLE_FINGER_FLAT;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLL_SINGLE_FINGER)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_SINGLE_FINGER;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_INDEXES_2)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_THUMBS_2;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_LOWER_HALF_PALM)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_HALF_PALM;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_SLAP_2)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_2;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_SLAP_4)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_4;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_THUMBS_2)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_THUMBS_2;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_UPPER_HALF_PALM)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_HALF_PALM_UPPER;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_FLAT_WRITER_PALM)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_WRITER_PALM;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_PLAIN_JOINT_LEFT_SIDE)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_FLAT_JOINT_FINGER_FV2;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_PLAIN_JOINT_RIGHT_SIDE)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_FLAT_JOINT_FINGER_FV4;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_DOWN)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_SINGLE_FINGER_FLAT;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_HYPOTHENAR)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_ROLLED_THENAR;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_JOINT)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_ROLLED_JOINT_FINGER_FV1;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_JOINT_CENTER)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_ROLLED_JOINT_FINGER_FV1;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_THENAR)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_ROLLED_THENAR;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_TIP)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_ROLLED_TIP;
+    // } else if (objToAcquireString ==
+    // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_STRING_ROLLED_UP)
+    // {
+    // GbfinimgType =
+    // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_SINGLE_FINGER_FLAT;
+    // }
+    // return GbfinimgType;
+    // }
 
-    // 5ran6: FUNCTION TO BE CALLED : This function runs to put on the scanner and wait for fingers to be placed on it. Then it acquires. Remembe, acquiring is automated. After the beep sound, user fingerprint has been acquired. So he/she can remove it
+    // 5ran6: FUNCTION TO BE CALLED : This function runs to put on the scanner and
+    // wait for fingers to be placed on it. Then it acquires. Remembe, acquiring is
+    // automated. After the beep sound, user fingerprint has been acquired. So
+    // he/she can remove it
     private boolean StartStopAcquisition() {
         try {
             int objToAcquire = GetObjToAcquireFromString(comboObjectsToAcquire.getSelectedItem().toString());
-            GB_AcquisitionOptionsGlobals.ObjTypeToAcquire =
-                    GBMSAPIJavaWrapperDefinesScannableBiometricType.ScannableTypeFromString(comboObjectsToAcquire.getSelectedItem().toString());
-            int acqOpt = GB_AcquisitionOptionsGlobals.GetAcquisitionOptionsForObjectType(GB_AcquisitionOptionsGlobals.ObjTypeToAcquire);
+            GB_AcquisitionOptionsGlobals.ObjTypeToAcquire = GBMSAPIJavaWrapperDefinesScannableBiometricType
+                    .ScannableTypeFromString(comboObjectsToAcquire.getSelectedItem().toString());
+            int acqOpt = GB_AcquisitionOptionsGlobals
+                    .GetAcquisitionOptionsForObjectType(GB_AcquisitionOptionsGlobals.ObjTypeToAcquire);
 
             if (!AcquisitionStarted) {
                 String checkGbmsapi = "";
                 ResetAcquisitionGlobals();
-                GB_AcquisitionOptionsGlobals.ScanArea = GB_AcquisitionOptionsGlobals.GetScanAreaFromAcquisitionOptionsAndObject();
+                GB_AcquisitionOptionsGlobals.ScanArea = GB_AcquisitionOptionsGlobals
+                        .GetScanAreaFromAcquisitionOptionsAndObject();
 
-                int RetVal = GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.StartAcquisition(
-                        objToAcquire,
-                        acqOpt,
-                        GB_AcquisitionOptionsGlobals.ScanArea,
-                        this, null,
-                        0, 0, 0
-                );
+                int RetVal = GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.StartAcquisition(objToAcquire, acqOpt,
+                        GB_AcquisitionOptionsGlobals.ScanArea, this, null, 0, 0, 0);
                 if (RetVal == GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_NO_ERROR) {
                     checkGbmsapi = "Don't place finger on the scanner";
                     AcquisitionStarted = true;
@@ -639,7 +724,8 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
                 LogAcquisitionInfoOnScreen(checkGbmsapi);
                 LogImageInfoOnScreen("");
                 return true;
-            } else if ((acqOpt & GBMSAPIJavaWrapperDefinesAcquisitionOptions.GBMSAPI_AO_MANUAL_ROLL_PREVIEW_STOP) != 0) {
+            } else if ((acqOpt
+                    & GBMSAPIJavaWrapperDefinesAcquisitionOptions.GBMSAPI_AO_MANUAL_ROLL_PREVIEW_STOP) != 0) {
                 GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.RollStopPreview();
                 bStartStop.setText("Stop Acquisition");
                 report.setText("Place any finger on the scanner");
@@ -676,7 +762,8 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
             }
 
             // call the GBMSAPI_SetOpenedJavaFD
-            int RetVal = GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.SetOpenedJavaFD(OpenedFD, DeviceBus, DeviceAddress, NumFD);
+            int RetVal = GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.SetOpenedJavaFD(OpenedFD, DeviceBus, DeviceAddress,
+                    NumFD);
             String checkGbmsapi;
             if (RetVal == GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_NO_ERROR) {
                 checkGbmsapi = "SetOpenedJavaFD Ok: Finished = " + UsbPermission.GetUsbPermissionFinished();
@@ -699,9 +786,11 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
             if (RetVal == GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_NO_ERROR) {
                 int numOfDev = GBMSAPIJavaWrapperDefinesDeviceInfoStruct.GetNumberOfAttachedDevices(AttachedDeviceList);
                 if (numOfDev > 0) {
-                    checkGbmsapi = "FirstDevice: DevID = " + AttachedDeviceList[0].DeviceID + ", Serial = " + AttachedDeviceList[0].DeviceSerialNum;
+                    checkGbmsapi = "FirstDevice: DevID = " + AttachedDeviceList[0].DeviceID + ", Serial = "
+                            + AttachedDeviceList[0].DeviceSerialNum;
                     LogImageInfoOnScreen(checkGbmsapi);
-                    LoadFeaturesAndSettingsForConnectedScanner(AttachedDeviceList[0].DeviceID, AttachedDeviceList[0].DeviceSerialNum);
+                    LoadFeaturesAndSettingsForConnectedScanner(AttachedDeviceList[0].DeviceID,
+                            AttachedDeviceList[0].DeviceSerialNum);
                 } else {
                     checkGbmsapi = "GetAttachedDeviceList Ok, numOfDev = " + numOfDev;
                     LogImageInfoOnScreen(checkGbmsapi);
@@ -710,7 +799,6 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
                 ManageGbmsapiErrors("WaitForUsbPermissionFinished, GetAttachedDeviceList", RetVal, true);
             }
             GB_AcquisitionOptionsGlobals.ResetAcquisitionOptions();
-
 
         } else {
             LogImageInfoOnScreen("Waiting for devices...");
@@ -798,7 +886,6 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
             GB_AcquisitionOptionsGlobals.LfsLibLoaded = true;
         }
 
-
         RetVal = GB_AcquisitionOptionsGlobals.BOZORTH_Jw.Load();
         if (RetVal != BozorthJavaWrapperLibrary.BOZORTH_NO_ERROR) {
             ManageBozorthErrors("onRefresh, Load", RetVal, true);
@@ -814,41 +901,45 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
 
     protected byte[] CreateMonochromeImage(int size, byte val) {
         byte[] valToRet = new byte[size];
-        for (int i = 0; i < size; i++) valToRet[i] = val;
+        for (int i = 0; i < size; i++)
+            valToRet[i] = val;
         return valToRet;
     }
-//
-//    public void LogOnLogcat(String funcName, String message) {
-//        Log.d("GbAndroidExample", funcName + ": " + message);
-//    }
-//
-//    public void SaveWsq() {
-//        if (GB_AcquisitionOptionsGlobals.acquiredFrameValid) {
-//            try {
-//                GB_AcquisitionOptionsGlobals.acquiredFrame.SaveToWsq(GB_AcquisitionOptionsGlobals.WsqFileName, this);
-//            } catch (Exception ex) {
-//                LogAsDialog("SaveWsq: " + ex.getMessage());
-//            }
-//        } else {
-//            LogAsDialog("SaveWsq: acquiredFrame not valid");
-//        }
-//    }
-//
-//    public void LoadWsq() {
-//        try {
-//            GbExampleGrayScaleBitmapClass bmpToShow = new GbExampleGrayScaleBitmapClass();
-//            boolean loaded = bmpToShow.GbBmpFromWsqFile(GB_AcquisitionOptionsGlobals.WsqFileName, true, true, this);
-//            if (loaded) {
-//                LogBitmap(bmpToShow);
-//                LogPopup("Loaded from wsq");
-//            } else {
-//                LogAsDialog("LoadWsq: Failure in open Wsq");
-//            }
-//        } catch (Exception ex) {
-//            LogAsDialog("LoadWsq: " + ex.getMessage());
-//        }
-//    }
-
+    //
+    // public void LogOnLogcat(String funcName, String message) {
+    // Log.d("GbAndroidExample", funcName + ": " + message);
+    // }
+    //
+    // public void SaveWsq() {
+    // if (GB_AcquisitionOptionsGlobals.acquiredFrameValid) {
+    // try {
+    // GB_AcquisitionOptionsGlobals.acquiredFrame.SaveToWsq(GB_AcquisitionOptionsGlobals.WsqFileName,
+    // this);
+    // } catch (Exception ex) {
+    // LogAsDialog("SaveWsq: " + ex.getMessage());
+    // }
+    // } else {
+    // LogAsDialog("SaveWsq: acquiredFrame not valid");
+    // }
+    // }
+    //
+    // public void LoadWsq() {
+    // try {
+    // GbExampleGrayScaleBitmapClass bmpToShow = new
+    // GbExampleGrayScaleBitmapClass();
+    // boolean loaded =
+    // bmpToShow.GbBmpFromWsqFile(GB_AcquisitionOptionsGlobals.WsqFileName, true,
+    // true, this);
+    // if (loaded) {
+    // LogBitmap(bmpToShow);
+    // LogPopup("Loaded from wsq");
+    // } else {
+    // LogAsDialog("LoadWsq: Failure in open Wsq");
+    // }
+    // } catch (Exception ex) {
+    // LogAsDialog("LoadWsq: " + ex.getMessage());
+    // }
+    // }
 
     // 5ran6: FUNCTION TO BE CALLED
     public void Identify() {
@@ -856,15 +947,14 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
         if (GB_AcquisitionOptionsGlobals.acquiredFrameValid) {
             try {
                 if (GB_AcquisitionOptionsGlobals.ObjTypeToAcquire == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_FLAT_SINGLE_FINGER) {
-                    // 5ran6: I will remove this if statement and test later..but for now just leave it
-                    if (((GB_AcquisitionOptionsGlobals.GetAcquisitionFlatSingleOptionsParameter()) &
-                            GBMSAPIJavaWrapperDefinesAcquisitionOptions.GBMSAPI_AO_FLAT_SINGLE_FINGER_ON_ROLL_AREA)
-                            == 0) {
+                    // 5ran6: I will remove this if statement and test later..but for now just leave
+                    // it
+                    if (((GB_AcquisitionOptionsGlobals.GetAcquisitionFlatSingleOptionsParameter())
+                            & GBMSAPIJavaWrapperDefinesAcquisitionOptions.GBMSAPI_AO_FLAT_SINGLE_FINGER_ON_ROLL_AREA) == 0) {
                         throw new Exception("flat single finger on roll area must be set");
                     }
-                    boolean ret = GB_AcquisitionOptionsGlobals.acquiredFrame.Identify(
-                            GbfrswJavaWrapperDefinesImageFlags.GBFRSW_FLAT_IMAGE,
-                            this);
+                    boolean ret = GB_AcquisitionOptionsGlobals.acquiredFrame
+                            .Identify(GbfrswJavaWrapperDefinesImageFlags.GBFRSW_FLAT_IMAGE, this);
                     if (ret) {
                         report.setText("Login Successful");
                         gifImageView.setBackgroundResource(R.drawable.success);
@@ -881,14 +971,14 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
 
                     }
 
-
                 }
                 // 5ran6: this is the block that identifies and what we will be calling
-                // 5ran6: that means that before you identify, you must set the value of GB_AcquisitionOptionsGlobals.ObjTypeToAcquire = GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_ROLL_SINGLE_FINGER
+                // 5ran6: that means that before you identify, you must set the value of
+                // GB_AcquisitionOptionsGlobals.ObjTypeToAcquire =
+                // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_ROLL_SINGLE_FINGER
                 else if (GB_AcquisitionOptionsGlobals.ObjTypeToAcquire == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_ROLL_SINGLE_FINGER) {
-                    GB_AcquisitionOptionsGlobals.acquiredFrame.Identify(
-                            GbfrswJavaWrapperDefinesImageFlags.GBFRSW_ROLLED_IMAGE,
-                            this);
+                    GB_AcquisitionOptionsGlobals.acquiredFrame
+                            .Identify(GbfrswJavaWrapperDefinesImageFlags.GBFRSW_ROLLED_IMAGE, this);
                 } else {
                     throw new Exception("object does not support identify");
                 }
@@ -903,16 +993,11 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             // No explanation needed, we can request the permission.
-            String[] permissions = {
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            };
-            ActivityCompat.requestPermissions(this,
-                    permissions,
-                    1);
+            String[] permissions = { Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE };
+            ActivityCompat.requestPermissions(this, permissions, 1);
         }
 
         try {
@@ -988,8 +1073,8 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
             LogImageInfoOnScreen("Image Info");
 
             byte[] whiteImage = CreateMonochromeImage(256, (byte) 255);
-            GbExampleGrayScaleBitmapClass GbBmp = new GbExampleGrayScaleBitmapClass(
-                    whiteImage, 16, 16, false, true, this);
+            GbExampleGrayScaleBitmapClass GbBmp = new GbExampleGrayScaleBitmapClass(whiteImage, 16, 16, false, true,
+                    this);
             LogBitmap(GbBmp);
 
             int RetVal = GB_AcquisitionOptionsGlobals.WSQ_Jw.Load();
@@ -1012,14 +1097,13 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
 
             onRefresh();
             StartLogTimer();
-            //starts scanner
+            // starts scanner
             StartStopAcquisition();
         } catch (Exception ex) {
             LogAsDialog("OnCreate exc:" + ex.getMessage());
             throw ex;
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -1035,7 +1119,7 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        // noinspection SimplifiableIfStatement
         if (id == R.id.process_image) {
             Intent intent = new Intent(this, GbfinimgWindow.class);
             startActivity(intent);
@@ -1089,9 +1173,10 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
                 LogPopup("No device attached");
                 return false;
             }
-            GB_AcquisitionOptionsGlobals.ObjTypeToAcquire =
-                    GBMSAPIJavaWrapperDefinesScannableBiometricType.ScannableTypeFromString(comboObjectsToAcquire.getSelectedItem().toString());
-            GB_AcquisitionOptionsGlobals.ScanArea = GB_AcquisitionOptionsGlobals.GetScanAreaFromAcquisitionOptionsAndObject();
+            GB_AcquisitionOptionsGlobals.ObjTypeToAcquire = GBMSAPIJavaWrapperDefinesScannableBiometricType
+                    .ScannableTypeFromString(comboObjectsToAcquire.getSelectedItem().toString());
+            GB_AcquisitionOptionsGlobals.ScanArea = GB_AcquisitionOptionsGlobals
+                    .GetScanAreaFromAcquisitionOptionsAndObject();
             Intent intent = new Intent(this, FrameRateSettings.class);
             startActivity(intent);
             return true;
@@ -1124,7 +1209,6 @@ public class QuarterlyVerificationWithFingerprint extends AppCompatActivity impl
             checkGbmsapi = "onDestroy, Wsq Unload Failure";
             LogAcquisitionInfoOnScreen(checkGbmsapi);
         }
-
 
     }
 
