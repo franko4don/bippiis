@@ -96,7 +96,7 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
     private Button bStartStop;
     private EditText tbName;
     private boolean AcquisitionStarted = false, ended = false;
-    public static boolean firstStart = false;
+    public static boolean firstStart = false, not_first_time = false;
 
     private ArrayList<String> LoggerPopupList;
     private ArrayList<String> LoggerAcqInfoList;
@@ -122,34 +122,58 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
     private GifImageView gifImageView;
 
     public static GbfinimgJavaWrapperDefineSegmentImageDescriptor[] segments;
-    private GbExampleGrayScaleBitmapClass gbExampleGrayScaleBitmapClass =
-            new GbExampleGrayScaleBitmapClass();
-
+    private GbExampleGrayScaleBitmapClass gbExampleGrayScaleBitmapClass = new GbExampleGrayScaleBitmapClass();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // 5ran6: FUNCTION TO BE CALLED : This function runs to put on the scanner and wait for fingers to be placed on it. Then it acquires. Remember, acquiring is automated. After the beep sound, user fingerprint has been acquired. So he/she can remove it
+    // 5ran6: FUNCTION TO BE CALLED : This function runs to put on the scanner and
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// wait
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// for
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// fingers
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// to
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// be
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// placed
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// on
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// it.
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Then
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// it
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// acquires.
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Remember,
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// acquiring
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// is
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// automated.
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// After
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// the
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// beep
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// sound,
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// user
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// fingerprint
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// has
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// been
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// acquired.
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// So
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// he/she
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// can
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// remove
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// it
     private boolean StartStopAcquisition(String finger_type) {
-        //finger can be ROLL_SINGLE_FINGER : FLAT_SLAP_4 : FLAT_THUMBS_2
+        // finger can be ROLL_SINGLE_FINGER : FLAT_SLAP_4 : FLAT_THUMBS_2
         proceed = false;
 
         try {
             int objToAcquire = GetObjToAcquireFromString(finger_type);
-            GB_AcquisitionOptionsGlobals.ObjTypeToAcquire =
-                    GBMSAPIJavaWrapperDefinesScannableBiometricType.ScannableTypeFromString(finger_type);
-            int acqOpt = GB_AcquisitionOptionsGlobals.GetAcquisitionOptionsForObjectType(GB_AcquisitionOptionsGlobals.ObjTypeToAcquire);
+            GB_AcquisitionOptionsGlobals.ObjTypeToAcquire = GBMSAPIJavaWrapperDefinesScannableBiometricType
+                    .ScannableTypeFromString(finger_type);
+            int acqOpt = GB_AcquisitionOptionsGlobals
+                    .GetAcquisitionOptionsForObjectType(GB_AcquisitionOptionsGlobals.ObjTypeToAcquire);
 
             if (!AcquisitionStarted) {
                 String checkGbmsapi = "";
                 ResetAcquisitionGlobals();
-                GB_AcquisitionOptionsGlobals.ScanArea = GB_AcquisitionOptionsGlobals.GetScanAreaFromAcquisitionOptionsAndObject();
+                GB_AcquisitionOptionsGlobals.ScanArea = GB_AcquisitionOptionsGlobals
+                        .GetScanAreaFromAcquisitionOptionsAndObject();
 
-                int RetVal = GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.StartAcquisition(
-                        objToAcquire,
-                        acqOpt,
-                        GB_AcquisitionOptionsGlobals.ScanArea,
-                        this, null,
-                        0, 0, 0
-                );
+                int RetVal = GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.StartAcquisition(objToAcquire, acqOpt,
+                        GB_AcquisitionOptionsGlobals.ScanArea, this, null, 0, 0, 0);
                 if (RetVal == GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_NO_ERROR) {
                     checkGbmsapi = "Don't place finger on the scanner";
                     AcquisitionStarted = true;
@@ -167,7 +191,8 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
                 LogAcquisitionInfoOnScreen(checkGbmsapi);
                 LogImageInfoOnScreen("");
                 return true;
-            } else if ((acqOpt & GBMSAPIJavaWrapperDefinesAcquisitionOptions.GBMSAPI_AO_MANUAL_ROLL_PREVIEW_STOP) != 0) {
+            } else if ((acqOpt
+                    & GBMSAPIJavaWrapperDefinesAcquisitionOptions.GBMSAPI_AO_MANUAL_ROLL_PREVIEW_STOP) != 0) {
                 GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.RollStopPreview();
                 bStartStop.setText("Stop Acquisition");
                 return true;
@@ -176,8 +201,8 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
                 int RetVal = GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.StopAcquisition();
                 bGetAttDevList.setEnabled(true);
                 StopChronometer();
-                //testing sha
-                //  proceed = true;
+                // testing sha
+                // proceed = true;
                 // hand_to_place(sequence_count);
                 if (RetVal == GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_NO_ERROR) {
                     checkGbmsapi = "Stopping...";
@@ -186,7 +211,7 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
                     return false;
                 }
                 LogImageInfoOnScreen(checkGbmsapi);
-                //  proceed = true;
+                // proceed = true;
                 return true;
 
             }
@@ -196,33 +221,28 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
         }
     }
 
-
     // 5ran6: FUNCTION ALREADY CALLED WITHIN ENROLLFINGER(...)
     public boolean ProcessSlapImage(byte[] frame, int sx, int sy, int ObjType, int ExpectedFingersNum,
-                                    GbfinimgJavaWrapperDefineSegmentImageDescriptor[] descriptors) {
+            GbfinimgJavaWrapperDefineSegmentImageDescriptor[] descriptors) {
         try {
             String funcName = "ProcessSlapImage";
             int SegmSx = 500, SegmSy = 500;
 
-            if (sx < SegmSx) SegmSx = sx;
-            if (sy < SegmSy) SegmSy = sy;
+            if (sx < SegmSx)
+                SegmSx = sx;
+            if (sy < SegmSy)
+                SegmSy = sy;
             for (int i = 0; i < 4; i++) {
                 descriptors[i] = new GbfinimgJavaWrapperDefineSegmentImageDescriptor();
                 descriptors[i].SegmentImage = new byte[SegmSx * SegmSy];
             }
             GBJavaWrapperUtilIntForJavaToCExchange SegmNum = new GBJavaWrapperUtilIntForJavaToCExchange(),
                     Diag = new GBJavaWrapperUtilIntForJavaToCExchange();
-            int RetVal = GB_AcquisitionOptionsGlobals.GBFINIMG_Jw.ProcessImage(
-                    frame, sx, sy,
-                    ObjType,
-                    GbfinimgJavaWrapperDefinesProcessOptions.GBFINIMG_REFINE_DRY_FINGERPRINT_IMAGE |
-                            GbfinimgJavaWrapperDefinesProcessOptions.GBFINIMG_REFINE_WET_FINGERPRINT_IMAGE |
-                            GbfinimgJavaWrapperDefinesProcessOptions.GBFINIMG_HALO_LATENT_ELIMINATION,
-                    SegmSx, SegmSy,
-                    null, 0,
-                    descriptors,
-                    SegmNum, Diag
-            );
+            int RetVal = GB_AcquisitionOptionsGlobals.GBFINIMG_Jw.ProcessImage(frame, sx, sy, ObjType,
+                    GbfinimgJavaWrapperDefinesProcessOptions.GBFINIMG_REFINE_DRY_FINGERPRINT_IMAGE
+                            | GbfinimgJavaWrapperDefinesProcessOptions.GBFINIMG_REFINE_WET_FINGERPRINT_IMAGE
+                            | GbfinimgJavaWrapperDefinesProcessOptions.GBFINIMG_HALO_LATENT_ELIMINATION,
+                    SegmSx, SegmSy, null, 0, descriptors, SegmNum, Diag);
             if (RetVal != GbfinimgJavaWrapperDefinesReturnCodes.GBFINIMG_NO_ERROR) {
                 ManageGbfinimgErrors("onProcess, ProcessImage", RetVal, true);
                 return false;
@@ -245,81 +265,85 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
 
     // 5ran6: FUNCTION TO BE CALLED
     public boolean EnrollFinger(int ExpectedFingers, int hand_number) {
-        // 5ran6: during enrolling, you can create an interface, most preferable with pics so users can select if they have four complete fingers or 3. by defaalt should be 4
+        // 5ran6: during enrolling, you can create an interface, most preferable with
+        // pics so users can select if they have four complete fingers or 3. by defaalt
+        // should be 4
         // 5ran6: if 4, then ExpectedFingers = 4 , else if 3, ExpectedFingers = 3
 
-        // 5ran6: also, this function is used for enrolling two thumbs. so ExpectedFingers = 2, then the UI indicates for the user to provide 2 thumbs
-//       hand_number chart:
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_NO_TYPE = 0;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_4 = 1;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_4 = 2;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_THUMBS_2 = 3;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_SINGLE_FINGER = 4;
+        // 5ran6: also, this function is used for enrolling two thumbs. so
+        // ExpectedFingers = 2, then the UI indicates for the user to provide 2 thumbs
+        // hand_number chart:
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_NO_TYPE = 0;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_4 = 1;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_4 = 2;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_THUMBS_2 = 3;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_SINGLE_FINGER = 4;
 
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_2 = 5;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_2 = 6;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_HALF_PALM = 7;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_HALF_PALM = 8;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_WRITER_PALM = 9;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_WRITER_PALM = 10;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_SINGLE_FINGER_FLAT = 11;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_ROLLED_THENAR = 12;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_ROLLED_THENAR = 13;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_ROLLED_JOINT_FINGER_FV1 = 14;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_FLAT_JOINT_FINGER_FV2 = 15;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_FLAT_JOINT_FINGER_FV3 = 16;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_FLAT_JOINT_FINGER_FV4 = 17;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_ROLLED_TIP = 18;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_HALF_PALM_UPPER = 19;
-//        public static final int GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_HALF_PALM_UPPER = 20;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_2 = 5;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_2 = 6;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_HALF_PALM = 7;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_HALF_PALM = 8;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_WRITER_PALM = 9;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_WRITER_PALM =
+        // 10;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_SINGLE_FINGER_FLAT = 11;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_ROLLED_THENAR =
+        // 12;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_ROLLED_THENAR =
+        // 13;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_ROLLED_JOINT_FINGER_FV1 =
+        // 14;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_FLAT_JOINT_FINGER_FV2 = 15;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_FLAT_JOINT_FINGER_FV3 = 16;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_FLAT_JOINT_FINGER_FV4 = 17;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_ROLLED_TIP = 18;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_LEFT_HAND_HALF_PALM_UPPER =
+        // 19;
+        // public static final int GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_HALF_PALM_UPPER
+        // = 20;
 
-//        ExpectedFingers = 4;
+        // ExpectedFingers = 4;
         boolean status = true;
         if (GB_AcquisitionOptionsGlobals.acquiredFrameValid) {
             try {
                 if (GB_AcquisitionOptionsGlobals.ObjTypeToAcquire == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_ROLL_SINGLE_FINGER) {
                     GB_AcquisitionOptionsGlobals.acquiredFrame.EncodeToTemplate(
                             GB_AcquisitionOptionsGlobals.GetTemplateFileName(tbName.getText().toString()),
-                            GbfrswJavaWrapperDefinesImageFlags.GBFRSW_ROLLED_IMAGE,
-                            this);
+                            GbfrswJavaWrapperDefinesImageFlags.GBFRSW_ROLLED_IMAGE, this);
                 } else if (GB_AcquisitionOptionsGlobals.ObjTypeToAcquire == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_FLAT_SLAP_4) {
                     GbfinimgJavaWrapperDefineSegmentImageDescriptor[] descriptors = new GbfinimgJavaWrapperDefineSegmentImageDescriptor[4];
-                    boolean ret = ProcessSlapImage(
-                            GB_AcquisitionOptionsGlobals.acquiredFrame.bytes,
+                    boolean ret = ProcessSlapImage(GB_AcquisitionOptionsGlobals.acquiredFrame.bytes,
                             GB_AcquisitionOptionsGlobals.acquiredFrame.sx,
                             GB_AcquisitionOptionsGlobals.acquiredFrame.sy,
-                            //  GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_4,  // 5ran6: Very IMPORTANT! you should change this value based on the fingers/hand to be used. For now it is for RIGHT HAND SLAP_4. There is LEFT_HAND  SLAP_4 and THUMBS_2. For 3 fingers, I'll cross check value to be passed here and let you know. Thanks
-                            hand_number,  // 5ran6: Very IMPORTANT! you should change this value based on the fingers/hand to be used. For now it is for RIGHT HAND SLAP_4. There is LEFT_HAND  SLAP_4 and THUMBS_2. For 3 fingers, I'll cross check value to be passed here and let you know. Thanks
+                            // GbfinimgJavaWrapperDefinesInputImageType.GBFINIMG_INPUT_IMAGE_TYPE_RIGHT_HAND_4,
+                            // // 5ran6: Very IMPORTANT! you should change this value based on the
+                            // fingers/hand to be used. For now it is for RIGHT HAND SLAP_4. There is
+                            // LEFT_HAND SLAP_4 and THUMBS_2. For 3 fingers, I'll cross check value to be
+                            // passed here and let you know. Thanks
+                            hand_number, // 5ran6: Very IMPORTANT! you should change this value based on the
+                                         // fingers/hand to be used. For now it is for RIGHT HAND SLAP_4. There is
+                                         // LEFT_HAND SLAP_4 and THUMBS_2. For 3 fingers, I'll cross check value to be
+                                         // passed here and let you know. Thanks
                             ExpectedFingers, // 5ran6: once ExpectedFingers value has been set, it will pass smoothly
-                            descriptors
-                    );
-                    Log.i("Check ProcessSlapImage", "ProcessSlapImage ret = " +
-                            ret);
+                            descriptors);
+                    Log.i("Check ProcessSlapImage", "ProcessSlapImage ret = " + ret);
 
                     Log.i("check", Arrays.toString(descriptors));
 
-
                     for (int i = 0; i < ExpectedFingers; i++) {
-                        Log.i("Check img size", "Step = " + i + "Expected SizeX = " + (
-                                descriptors[i].BoundingBoxR - descriptors[i].BoundingBoxL));
+                        Log.i("Check img size", "Step = " + i + "Expected SizeX = "
+                                + (descriptors[i].BoundingBoxR - descriptors[i].BoundingBoxL));
                         Log.i("Check img size", "Step = " + i + "BBR = " + (descriptors[i].BoundingBoxR));
                         Log.i("Check img size", "Step = " + i + "BBL = " + (descriptors[i].BoundingBoxL));
-                        GbExampleGrayScaleBitmapClass bmpCls =
-                                new GbExampleGrayScaleBitmapClass(
-                                        descriptors[i].SegmentImage,
-                                        500, 500,
-                                        //descriptors[i].BoundingBoxR - descriptors[i].BoundingBoxL,
-                                        //descriptors[i].BoundingBoxB - descriptors[i].BoundingBoxT,
-                                        false,
-                                        false,
-                                        this
-                                );
-                        Log.i("Check img size", "Real SizeX = " + (
-                                bmpCls.sx));
-                        bmpCls.EncodeToAnsi378Template(
+                        GbExampleGrayScaleBitmapClass bmpCls = new GbExampleGrayScaleBitmapClass(
+                                descriptors[i].SegmentImage, 500, 500,
+                                // descriptors[i].BoundingBoxR - descriptors[i].BoundingBoxL,
+                                // descriptors[i].BoundingBoxB - descriptors[i].BoundingBoxT,
+                                false, false, this);
+                        Log.i("Check img size", "Real SizeX = " + (bmpCls.sx));
+                        bmpCls.EncodeToTemplate(
                                 GB_AcquisitionOptionsGlobals.GetTemplateFileName(tbName.getText().toString() + i),
-                                GbfrswJavaWrapperDefinesImageFlags.GBFRSW_FLAT_IMAGE,
-                                this);
+                                GbfrswJavaWrapperDefinesImageFlags.GBFRSW_FLAT_IMAGE, this);
                     }
                     if (!ret) {
                         throw new Exception("ProcessSlapImage error");
@@ -342,21 +366,16 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-          bippiis_number = getIntent().getStringExtra("bippiis_number");
-          
-        //  tbName.setText(bippiis_number);
+        bippiis_number = getIntent().getStringExtra("bippiis_number");
+
+        // tbName.setText(bippiis_number);
         setContentView(R.layout.activity_enroll_fingerprints);
         if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             // No explanation needed, we can request the permission.
-            String[] permissions = {
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            };
-            ActivityCompat.requestPermissions(this,
-                    permissions,
-                    1);
+            String[] permissions = { Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE };
+            ActivityCompat.requestPermissions(this, permissions, 1);
         } else {
             // Permission has already been granted
         }
@@ -374,7 +393,6 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
             GB_AcquisitionOptionsGlobals.GBNFIQ2_Jw = new GbNfiq2JavaWrapperLibrary();
             GB_AcquisitionOptionsGlobals.LFS_Jw = new LfsJavaWrapperLibrary();
             GB_AcquisitionOptionsGlobals.BOZORTH_Jw = new BozorthJavaWrapperLibrary();
-
 
             LoggerAcquisitionInfoTv = findViewById(R.id.Acquisition_Info);
             LoggerImageInfoTv = findViewById(R.id.Image_Info);
@@ -404,12 +422,12 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
 
             bStartStop = findViewById(R.id.bStartStop);
             bStartStop.setEnabled(false);
-//            bStartStop.setOnClickListener(view -> StartStopAcquisition(""));
+            // bStartStop.setOnClickListener(view -> StartStopAcquisition(""));
             bStartStop.setText("Start Acquisition");
 
             Button bEnroll = findViewById(R.id.bEnroll);
             bEnroll.setEnabled(true);
-//            bEnroll.setOnClickListener(view -> EnrollFinger());
+            // bEnroll.setOnClickListener(view -> EnrollFinger());
             bEnroll.setText("Enroll");
 
             Button bIdentify = findViewById(R.id.bIdentify);
@@ -425,8 +443,8 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
             LogImageInfoOnScreen("Image Info");
 
             byte[] whiteImage = CreateMonochromeImage(256, (byte) 255);
-            GbExampleGrayScaleBitmapClass GbBmp = new GbExampleGrayScaleBitmapClass(
-                    whiteImage, 16, 16, false, true, this);
+            GbExampleGrayScaleBitmapClass GbBmp = new GbExampleGrayScaleBitmapClass(whiteImage, 16, 16, false, true,
+                    this);
             LogBitmap(GbBmp);
 
             int RetVal = GB_AcquisitionOptionsGlobals.WSQ_Jw.Load();
@@ -533,11 +551,11 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
                     sequence_count = 3;
 
                     report.setText("All Done.");
-                    
+
                     // take action here
                     getReactInstanceManager().getCurrentReactContext()
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("onEnrollmentComplete", "true");
+                            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("onEnrollmentComplete", "true");
 
                 }
             }
@@ -560,7 +578,7 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
         return text;
     }
 
-    //DONE
+    // DONE
     private void toggleFabMode(View v) {
         rotate = ViewAnimation.rotateFab(v, !rotate);
         if (rotate) {
@@ -590,7 +608,7 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        // noinspection SimplifiableIfStatement
         if (id == R.id.process_image) {
             Intent intent = new Intent(this, GbfinimgWindow.class);
             startActivity(intent);
@@ -644,9 +662,10 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
                 LogPopup("No device attached");
                 return false;
             }
-            GB_AcquisitionOptionsGlobals.ObjTypeToAcquire =
-                    GBMSAPIJavaWrapperDefinesScannableBiometricType.ScannableTypeFromString(comboObjectsToAcquire.getSelectedItem().toString());
-            GB_AcquisitionOptionsGlobals.ScanArea = GB_AcquisitionOptionsGlobals.GetScanAreaFromAcquisitionOptionsAndObject();
+            GB_AcquisitionOptionsGlobals.ObjTypeToAcquire = GBMSAPIJavaWrapperDefinesScannableBiometricType
+                    .ScannableTypeFromString(comboObjectsToAcquire.getSelectedItem().toString());
+            GB_AcquisitionOptionsGlobals.ScanArea = GB_AcquisitionOptionsGlobals
+                    .GetScanAreaFromAcquisitionOptionsAndObject();
             Intent intent = new Intent(this, FrameRateSettings.class);
             startActivity(intent);
             return true;
@@ -680,7 +699,6 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
             LogAcquisitionInfoOnScreen(checkGbmsapi);
         }
 
-
     }
 
     public void thumbSequence(View view) {
@@ -697,8 +715,7 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
         hand_to_place(sequence_count, false);
     }
 
-
-    /////////////////////////////////////////////    //////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////// //////////////////////////////////////////////////////////////////////////////////////////
     private void StartChronometer() {
         ChronometerStarted = true;
         ChronometerMillisecs = System.currentTimeMillis();
@@ -710,7 +727,8 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
     }
 
     private long ChronoGetTimeMillisecs() {
-        if (ChronometerStarted == false) return -1;
+        if (ChronometerStarted == false)
+            return -1;
         return (System.currentTimeMillis() - ChronometerMillisecs);
     }
 
@@ -718,10 +736,10 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
         LogAcquisitionInfoOnScreen(strToLog);
     }
 
-
     public void CreatePopup(String popupText) {
-//        Toast popup = Toast.makeText(getBaseContext(), popupText, Toast.LENGTH_SHORT);
-//        popup.show();
+        // Toast popup = Toast.makeText(getBaseContext(), popupText,
+        // Toast.LENGTH_SHORT);
+        // popup.show();
     }
 
     public void LogPopup(String text) {
@@ -735,7 +753,7 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
     }
 
     public void LogAsDialog(String logStr) {
-        //   GB_AcquisitionOptionsGlobals.CreateDialogNeutral(logStr, this);
+        // GB_AcquisitionOptionsGlobals.CreateDialogNeutral(logStr, this);
 
         // Log.e("finger", "CRASHED HERE");
 
@@ -778,20 +796,21 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
 
                         float scaleWidth = metrics.scaledDensity / 8;
 
-                        //set image in imageView
+                        // set image in imageView
                         LoggerView.setImageBitmap(bmp);
 
-                        //set imageView dynamic width and height
-//                        LoggerView.setMaxWidth((int) scaleWidth);
-//                        LoggerView.setMaxHeight((int) scaleWidth);
-//                        LoggerView.setMinimumWidth((int) scaleWidth);
-//                        LoggerView.setMinimumHeight((int) scaleWidth);
+                        // set imageView dynamic width and height
+                        // LoggerView.setMaxWidth((int) scaleWidth);
+                        // LoggerView.setMaxHeight((int) scaleWidth);
+                        // LoggerView.setMinimumWidth((int) scaleWidth);
+                        // LoggerView.setMinimumHeight((int) scaleWidth);
 
                         if (GbBmp.hasToBeSaved) {
-                            //----------------------------------------
+                            // ----------------------------------------
                             // save image
-                            //----------------------------------------
-                            // 5ran6: I am saving all these format just for testing sha.... We sha eventually only save one format (e.g ANSI_Nist)
+                            // ----------------------------------------
+                            // 5ran6: I am saving all these format just for testing sha.... We sha
+                            // eventually only save one format (e.g ANSI_Nist)
 
                             GbBmp.SaveIntoAnsiNistFile("Image_" + LoggerBitmapFileSaveCounter, this, 0);
                             GbBmp.SaveToGallery("Image_" + LoggerBitmapFileSaveCounter, this);
@@ -800,14 +819,14 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
                             GbBmp.SaveToJpeg2("Image_" + LoggerBitmapFileSaveCounter, this);
                             GbBmp.SaveToWsq("Image_" + LoggerBitmapFileSaveCounter, this);
                             GbBmp.SaveToFIR("Image_" + LoggerBitmapFileSaveCounter, this);
-//                            GbBmp.GetNFIQQuality(this);
-//                            GbBmp.GetNFIQ2Quality(this);
+                            // GbBmp.GetNFIQQuality(this);
+                            // GbBmp.GetNFIQ2Quality(this);
 
-//                            try {
-//                                GbBmp.TestLfsBozorth(this);
-//                            }catch (Exception e){
-//                                e.printStackTrace();
-//                            }
+                            // try {
+                            // GbBmp.TestLfsBozorth(this);
+                            // }catch (Exception e){
+                            // e.printStackTrace();
+                            // }
 
                             LoggerBitmapFileSaveCounter++;
 
@@ -815,11 +834,19 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
                         if (GbBmp.isAcquisitionResult) {
                             GB_AcquisitionOptionsGlobals.acquiredFrame = GbBmp;
                             GB_AcquisitionOptionsGlobals.acquiredFrameValid = true;
-                            //END OF BEEP: then proceed
-                            report.setText("Processing! Please Remove your hands. ");
+                            // END OF BEEP: then proceed
+                            if (not_first_time) {
+
+                                report.setText("Processing! Please Remove your hand. ");
+
+                            } else {
+                                report.setText("Preparing! ");
+                                not_first_time = true;
+                            }
                             proceed = true;
                             ended = true;
-                            //               Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(getApplicationContext(), "success",
+                            // Toast.LENGTH_SHORT).show();
 
                             new Handler().postDelayed(new Runnable() {
                                 @Override
@@ -840,7 +867,8 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
             LoggerBitmapChanged = false;
         }
         if (LoggerAcqinfoListChanged) {
-            while (LoggerAcqInfoList.size() > 1) LoggerAcqInfoList.remove(0);
+            while (LoggerAcqInfoList.size() > 1)
+                LoggerAcqInfoList.remove(0);
 
             String bigLog = "";
             for (String item : LoggerAcqInfoList) {
@@ -850,7 +878,8 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
             LoggerAcqinfoListChanged = false;
         }
         if (LoggerImageInfoListChanged) {
-            while (LoggerImageInfoList.size() > 1) LoggerImageInfoList.remove(0);
+            while (LoggerImageInfoList.size() > 1)
+                LoggerImageInfoList.remove(0);
 
             String bigLog = "";
             for (String item : LoggerImageInfoList) {
@@ -888,38 +917,47 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
 
     private void ManageGbmsapiErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_NO_ERROR) {
-            String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.GetLastErrorString() + "; RetVal = " + RetVal;
+            String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.GetLastErrorString()
+                    + "; RetVal = " + RetVal;
             if (RetVal == GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_USB_DRIVER) {
                 GBJavaWrapperUtilIntForJavaToCExchange usbError = new GBJavaWrapperUtilIntForJavaToCExchange();
                 GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.GetUSBErrorCode(usbError);
                 errorToLog += "; USB CODE: " + usbError.Get();
             }
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageGbfrswErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GbfrswJavaWrapperDefinesReturnCodes.GBFRSW_SUCCESS) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBFRSW_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageGbfinimgErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GbfinimgJavaWrapperDefinesReturnCodes.GBFINIMG_NO_ERROR) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBFINIMG_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageAn2000Errors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GBANJavaWrapperDefinesReturnCodes.AN2K_DLL_NO_ERROR) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.AN2000_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
             LogPopup(errorToLog);
         }
     }
@@ -927,45 +965,56 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
     private void ManageGbfirErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GbfirJavaWrapperDefinesReturnCodes.GBFIR_RET_SUCCESS) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBFIR_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageGbNfiqErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GbNfiqJavaWrapperDefineReturnCodes.GBNFIQ_NO_ERROR) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBNFIQ_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageGbNfiq2Errors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != GbNfiq2JavaWrapperDefineReturnCodes.GBNFIQ2_NO_ERROR) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.GBNFIQ2_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageLfsErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != LfsJavaWrapperLibrary.LFS_SUCCESS) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.LFS_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void ManageBozorthErrors(String fName, int RetVal, boolean ShowAsDialog) {
         if (RetVal != BozorthJavaWrapperLibrary.BOZORTH_NO_ERROR) {
             String errorToLog = fName + ": " + GB_AcquisitionOptionsGlobals.BOZORTH_Jw.GetLastErrorString();
-            if (ShowAsDialog) LogAsDialog(errorToLog);
-            else LogAcquisitionInfoOnScreen(errorToLog);
+            if (ShowAsDialog)
+                LogAsDialog(errorToLog);
+            else
+                LogAcquisitionInfoOnScreen(errorToLog);
         }
     }
 
     private void LogSizeAndContrast() {
-        if (!GBMSAPIJavaWrapperDefinesScannableBiometricType.ObjToAcquireIsRoll(GB_AcquisitionOptionsGlobals.ObjTypeToAcquire)) {
+        if (!GBMSAPIJavaWrapperDefinesScannableBiometricType
+                .ObjToAcquireIsRoll(GB_AcquisitionOptionsGlobals.ObjTypeToAcquire)) {
             String LogImageInfoStr = "";
             GBJavaWrapperUtilIntForJavaToCExchange fpSize = new GBJavaWrapperUtilIntForJavaToCExchange(),
                     fpContrast = new GBJavaWrapperUtilIntForJavaToCExchange();
@@ -978,14 +1027,9 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
     }
 
     @Override
-    public boolean AcquisitionEventsManagerCallback(
-            int OccurredEventCode, int GetFrameErrorCode, int EventInfo,
-            byte[] FramePtr,
-            int FrameSizeX, int FrameSizeY,
-            double CurrentFrameRate, double NominalFrameRate,
-            int GB_Diagnostic,
-            Object UserDefinedParameters
-    ) {
+    public boolean AcquisitionEventsManagerCallback(int OccurredEventCode, int GetFrameErrorCode, int EventInfo,
+            byte[] FramePtr, int FrameSizeX, int FrameSizeY, double CurrentFrameRate, double NominalFrameRate,
+            int GB_Diagnostic, Object UserDefinedParameters) {
         try {
             String LogPhaseStr = "";
             String LogInfoStr = "";
@@ -994,7 +1038,8 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
             StartChronometer();
 
             if (OccurredEventCode == GBMSAPIJavaWrapperDefinesAcquisitionEvents.GBMSAPI_AE_VALID_FRAME_ACQUIRED) {
-                if (!FirstFrameAcquired) FirstFrameAcquired = true;
+                if (!FirstFrameAcquired)
+                    FirstFrameAcquired = true;
                 LogBitmap(FramePtr, FrameSizeX, FrameSizeY, false, false);
                 LogInfoStr = String.format("FR: %.2f/%.2f", CurrentFrameRate, NominalFrameRate);
                 // size and contrast
@@ -1005,11 +1050,12 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
                 AcquisitionEnded = true;
                 AcquisitionStarted = false;
 
-                if (
-                        ((GB_Diagnostic & GBMSAPIJavaWrapperDefinesDiagnosticMessage.GBMSAPI_DM_SCANNER_SURFACE_NOT_NORMA) == 0) &&
-                                ((GB_Diagnostic & GBMSAPIJavaWrapperDefinesDiagnosticMessage.GBMSAPI_DM_SCANNER_FAILURE) == 0)
-                ) {
-                    if (!GBMSAPIJavaWrapperDefinesScannableBiometricType.ObjToAcquireIsRoll(GB_AcquisitionOptionsGlobals.ObjTypeToAcquire)) {
+                if (((GB_Diagnostic
+                        & GBMSAPIJavaWrapperDefinesDiagnosticMessage.GBMSAPI_DM_SCANNER_SURFACE_NOT_NORMA) == 0)
+                        && ((GB_Diagnostic
+                                & GBMSAPIJavaWrapperDefinesDiagnosticMessage.GBMSAPI_DM_SCANNER_FAILURE) == 0)) {
+                    if (!GBMSAPIJavaWrapperDefinesScannableBiometricType
+                            .ObjToAcquireIsRoll(GB_AcquisitionOptionsGlobals.ObjTypeToAcquire)) {
                         int RetVal = GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.ImageFinalization(FramePtr);
                         if (RetVal != GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_NO_ERROR) {
                             ManageGbmsapiErrors("Callback: finalization", RetVal, false);
@@ -1039,13 +1085,18 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
                         + String.format(", %X", GB_Diagnostic));
             }
 
-            if (AcquisitionEnded) LogPhaseStr = "Acquisition End";
-            else if (PreviewEnded) LogPhaseStr = "Acquisition";
-            else if (FirstFrameAcquired) LogPhaseStr = "Preview";
-            else LogPhaseStr = "Don't place finger on the scanner";
-            if (ValToRet) LogImageInfoOnScreen(LogPhaseStr);
-            if (ValToRet) LogAcquisitionInfoOnScreen(LogInfoStr);
-
+            if (AcquisitionEnded)
+                LogPhaseStr = "Acquisition End";
+            else if (PreviewEnded)
+                LogPhaseStr = "Acquisition";
+            else if (FirstFrameAcquired)
+                LogPhaseStr = "Preview";
+            else
+                LogPhaseStr = "Don't place finger on the scanner";
+            if (ValToRet)
+                LogImageInfoOnScreen(LogPhaseStr);
+            if (ValToRet)
+                LogAcquisitionInfoOnScreen(LogInfoStr);
 
             return ValToRet;
         } catch (Exception ex) {
@@ -1079,7 +1130,8 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
             return;
         }
         LogImageInfoOnScreen(checkGbmsapi);
-        checkGbmsapi = GBMSAPIJavaWrapperDefinesDeviceName.DevIDToString(currentDevice.DeviceID) + ", " + currentDevice.DeviceSerialNum;
+        checkGbmsapi = GBMSAPIJavaWrapperDefinesDeviceName.DevIDToString(currentDevice.DeviceID) + ", "
+                + currentDevice.DeviceSerialNum;
         GB_AcquisitionOptionsGlobals.DeviceID = currentDevice.DeviceID;
         this.setTitle(checkGbmsapi);
 
@@ -1101,8 +1153,10 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
             ManageGbmsapiErrors("Load Features, GetScannableTypes", RetVal, true);
             return;
         }
-        List<String> objTypes = GBMSAPIJavaWrapperDefinesScannableBiometricType.ScannableTypesToStringList(objTypesMask.Get());
-        ArrayAdapter<String> objectsToAcquireAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, objTypes);
+        List<String> objTypes = GBMSAPIJavaWrapperDefinesScannableBiometricType
+                .ScannableTypesToStringList(objTypesMask.Get());
+        ArrayAdapter<String> objectsToAcquireAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, objTypes);
         objectsToAcquireAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         comboObjectsToAcquire.setAdapter(objectsToAcquireAdapter);
 
@@ -1164,7 +1218,8 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
             }
 
             // call the GBMSAPI_SetOpenedJavaFD
-            int RetVal = GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.SetOpenedJavaFD(OpenedFD, DeviceBus, DeviceAddress, NumFD);
+            int RetVal = GB_AcquisitionOptionsGlobals.GBMSAPI_Jw.SetOpenedJavaFD(OpenedFD, DeviceBus, DeviceAddress,
+                    NumFD);
             String checkGbmsapi;
             if (RetVal == GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_NO_ERROR) {
                 checkGbmsapi = "SetOpenedJavaFD Ok: Finished = " + UsbPermission.GetUsbPermissionFinished();
@@ -1187,9 +1242,11 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
             if (RetVal == GBMSAPIJavaWrapperDefinesReturnCodes.GBMSAPI_ERROR_CODE_NO_ERROR) {
                 int numOfDev = GBMSAPIJavaWrapperDefinesDeviceInfoStruct.GetNumberOfAttachedDevices(AttachedDeviceList);
                 if (numOfDev > 0) {
-                    checkGbmsapi = "FirstDevice: DevID = " + AttachedDeviceList[0].DeviceID + ", Serial = " + AttachedDeviceList[0].DeviceSerialNum;
+                    checkGbmsapi = "FirstDevice: DevID = " + AttachedDeviceList[0].DeviceID + ", Serial = "
+                            + AttachedDeviceList[0].DeviceSerialNum;
                     LogImageInfoOnScreen(checkGbmsapi);
-                    LoadFeaturesAndSettingsForConnectedScanner(AttachedDeviceList[0].DeviceID, AttachedDeviceList[0].DeviceSerialNum);
+                    LoadFeaturesAndSettingsForConnectedScanner(AttachedDeviceList[0].DeviceID,
+                            AttachedDeviceList[0].DeviceSerialNum);
                 } else {
                     checkGbmsapi = "GetAttachedDeviceList Ok, numOfDev = " + numOfDev;
                     LogImageInfoOnScreen(checkGbmsapi);
@@ -1198,7 +1255,6 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
                 ManageGbmsapiErrors("WaitForUsbPermissionFinished, GetAttachedDeviceList", RetVal, true);
             }
             GB_AcquisitionOptionsGlobals.ResetAcquisitionOptions();
-
 
         } else {
             LogImageInfoOnScreen("Waiting for devices...");
@@ -1286,7 +1342,6 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
             GB_AcquisitionOptionsGlobals.LfsLibLoaded = true;
         }
 
-
         RetVal = GB_AcquisitionOptionsGlobals.BOZORTH_Jw.Load();
         if (RetVal != BozorthJavaWrapperLibrary.BOZORTH_NO_ERROR) {
             ManageBozorthErrors("onRefresh, Load", RetVal, true);
@@ -1302,7 +1357,8 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
 
     protected byte[] CreateMonochromeImage(int size, byte val) {
         byte[] valToRet = new byte[size];
-        for (int i = 0; i < size; i++) valToRet[i] = val;
+        for (int i = 0; i < size; i++)
+            valToRet[i] = val;
         return valToRet;
     }
 
@@ -1311,22 +1367,22 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
         if (GB_AcquisitionOptionsGlobals.acquiredFrameValid) {
             try {
                 if (GB_AcquisitionOptionsGlobals.ObjTypeToAcquire == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_FLAT_SINGLE_FINGER) {
-                    // 5ran6: I will remove this if statement and test later..but for now just leave it
-                    if (((GB_AcquisitionOptionsGlobals.GetAcquisitionFlatSingleOptionsParameter()) &
-                            GBMSAPIJavaWrapperDefinesAcquisitionOptions.GBMSAPI_AO_FLAT_SINGLE_FINGER_ON_ROLL_AREA)
-                            == 0) {
+                    // 5ran6: I will remove this if statement and test later..but for now just leave
+                    // it
+                    if (((GB_AcquisitionOptionsGlobals.GetAcquisitionFlatSingleOptionsParameter())
+                            & GBMSAPIJavaWrapperDefinesAcquisitionOptions.GBMSAPI_AO_FLAT_SINGLE_FINGER_ON_ROLL_AREA) == 0) {
                         throw new Exception("flat single finger on roll area must be set");
                     }
-                    GB_AcquisitionOptionsGlobals.acquiredFrame.Identify(
-                            GbfrswJavaWrapperDefinesImageFlags.GBFRSW_FLAT_IMAGE,
-                            this);
+                    GB_AcquisitionOptionsGlobals.acquiredFrame
+                            .Identify(GbfrswJavaWrapperDefinesImageFlags.GBFRSW_FLAT_IMAGE, this);
                 }
                 // 5ran6: this is the block that identifies and what we will be calling
-                // 5ran6: that means that before you identify, you must set the value of GB_AcquisitionOptionsGlobals.ObjTypeToAcquire = GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_ROLL_SINGLE_FINGER
+                // 5ran6: that means that before you identify, you must set the value of
+                // GB_AcquisitionOptionsGlobals.ObjTypeToAcquire =
+                // GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_ROLL_SINGLE_FINGER
                 else if (GB_AcquisitionOptionsGlobals.ObjTypeToAcquire == GBMSAPIJavaWrapperDefinesScannableBiometricType.GBMSAPI_SBT_ROLL_SINGLE_FINGER) {
-                    GB_AcquisitionOptionsGlobals.acquiredFrame.Identify(
-                            GbfrswJavaWrapperDefinesImageFlags.GBFRSW_ROLLED_IMAGE,
-                            this);
+                    GB_AcquisitionOptionsGlobals.acquiredFrame
+                            .Identify(GbfrswJavaWrapperDefinesImageFlags.GBFRSW_ROLLED_IMAGE, this);
                 } else {
                     throw new Exception("object does not support identify");
                 }
@@ -1337,6 +1393,5 @@ public class EnrollFingerprints extends ReactActivity implements IGreenbitLogger
             LogAsDialog("Identify: acquiredFrame not valid");
         }
     }
-
 
 }
