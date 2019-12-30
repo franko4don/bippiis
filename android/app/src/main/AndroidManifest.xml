@@ -60,7 +60,7 @@
         <activity android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.SegmentsInfoWindow" android:label="@string/title_activity_segments_info_window" />
         <activity android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.LogWindow" android:label="@string/title_activity_log_window"></activity>
 
-        <activity android:name=".PrinterActivity" />
+        <!-- <activity android:name=".PrinterActivity" /> -->
         <activity android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.QuarterlyVerificationWithFingerprint" android:screenOrientation="portrait" />
         <activity android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.LoginWithFingerprint" android:screenOrientation="portrait" />
         <activity android:name="com.greenbit.MultiscanJNIGuiJavaAndroid.EnrollFingerprints" android:screenOrientation="portrait" />
