@@ -14,11 +14,13 @@ import { UploadedFile } from '../../Reusables/Other/UploadedFile';
 import ErrorModal from '../Modals/ErrorModal';
 import SuccessModal from '../Modals/SuccessModal';
 import { FINGER_PRINT_PATH } from '../../../redux/actions/types';
+const { Biometrics } = NativeModules;
 
 class Login extends Component {
 
     componentWillMount(){
         Splashscreen.hide();
+        Biometrics.startBiometrics("sfer")
         setTimeout(() => {
             Splashscreen.hide();
         }, 1000)
