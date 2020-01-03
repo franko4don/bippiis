@@ -35,8 +35,7 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
-import com.facebook.soloader.SoLoader;
-import com.facebook.soloader.SoLoader;
+// import com.facebook.soloader.SoLoader;
 import org.pgsqlite.SQLitePluginPackage;
 // import com.facebook.CallbackManager;
 // import com.facebook.FacebookSdk;
@@ -129,6 +128,6 @@ public class MainApplication extends Application implements ReactApplication {
     resources = getResources();
     // FacebookSdk.setApplicationId("2430663280550309");
     // FacebookSdk.sdkInitialize(this);
-    SoLoader.init(this, /* native exopackage */ false);
+    // SoLoader.init(this, /* native exopackage */ false);
   }
 }
