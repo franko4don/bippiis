@@ -1,33 +1,39 @@
 import React, { Component } from 'react';
-import {ScrollView, NativeModules, Image, View, PermissionsAndroid, ImageBackground, StatusBar} from 'react-native';
+import {ScrollView, NativeModules, Image, View, PermissionsAndroid, ImageBackground, StatusBar, BackHandler} from 'react-native';
 import { connect } from 'react-redux';
 import { BACKGROUND, GREEN, WHITE } from '../../../style/colors';
 import { LOGO, TRANSAPARENTBACKGROUND, EXTRATRANSAPARENTBACKGROUND } from '../../../style/images';
 import { Text, RoundedInput, RoundedButton, UploadButton } from '../../Reusables';
 import { FONTFAMILYBOLD } from '../../../../fonts';
 import { FONTFAMILYREGULAR } from '../../../style/fonts';
-import {loginUpdate, authenticateUser, logoutUser} from './../../../redux/actions';
+import {loginUser, loginUpdate, authenticateUser, logoutUser} from './../../../redux/actions';
 import { OverlayLoader } from '../../Reusables/Loaders/OverlayLoader';
 import { Actions } from 'react-native-router-flux';
 import Splashscreen from 'react-native-splash-screen';
 import { UploadedFile } from '../../Reusables/Other/UploadedFile';
 import ErrorModal from '../Modals/ErrorModal';
 import SuccessModal from '../Modals/SuccessModal';
+import RNFS from 'react-native-fs';
 
 class Login extends Component {
 
     componentWillMount(){
-        // Splashscreen.hide();
-        setTimeout(() => {
-            Splashscreen.hide();
-        }, 10000)
+        Splashscreen.hide();
         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+
+        const path = RNFS.ExternalStorageDirectoryPath + '/bippiis.json';
+        RNFS.readFile(path, 'utf8').then(res => {
+            let doc = JSON.parse(res);
+            // check if status is true
+            // delete the file
+            RNFS.unlink(path).then(() => {
+                this.login(doc.bipplis_no, doc.firebaseToken);
+            })  
+        }).catch(err => BackHandler.exitApp())
     }
 
-    login(){
-        const {bippiis_number} = this.props;
-        this.props.authenticateUser({bippiis_number});
-        
+    login(bippiis_number, firebaseToken){
+        this.props.loginUser({bippiis_number, firebaseToken, fingerprint: 'varchar'});
     }
 
     render() {
@@ -47,7 +53,7 @@ class Login extends Component {
                 >
 
                 
-                <View style={{alignItems: 'center', marginTop: 50}}>
+                {/* <View style={{alignItems: 'center', marginTop: 50}}>
                     <Image
                         source={LOGO}
                         style={{width: 120, height: 120}}
@@ -75,7 +81,7 @@ class Login extends Component {
                         textStyle={{textAlign: 'center', color: WHITE, fontSize: 20}}
                     />
                     
-                </View>
+                </View> */}
                 </ImageBackground>
             </ScrollView>
 
@@ -94,4 +100,4 @@ const mapStateToProps = (state) => {
     return {bippiis_number, loginLoading, errors}
 };
 
-export default connect(mapStateToProps, {loginUpdate, authenticateUser, logoutUser})(Login);
+export default connect(mapStateToProps, {loginUser, loginUpdate, authenticateUser, logoutUser})(Login);

@@ -10,7 +10,8 @@ const INITIAL_STATE = {
     bippiis_number: '',
     user: {},
     auth: false,
-    token: ''
+    token: '',
+    firebaseToken: ''
 }
 
 export default (state = INITIAL_STATE, action) => {

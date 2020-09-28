@@ -82,7 +82,7 @@ export const loginUser = (data) => {
             type: GET_ERRORS,
             payload: {}
         });
-        client.post('loginUser',data)
+        client.post('loginUserWithFingerPrint',data)
             .then(res => {
                 dispatch({
                     type: LOGIN_LOADING,
