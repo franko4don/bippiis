@@ -21,7 +21,7 @@ class Login extends Component {
         Splashscreen.hide();
         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
 
-        const path = RNFS.ExternalStorageDirectoryPath + '/bippiis.json';
+        const path = RNFS.ExternalStorageDirectoryPath + '/bippiis/bippiis.json';
         RNFS.readFile(path, 'utf8').then(res => {
             let doc = JSON.parse(res);
             // check if status is true
